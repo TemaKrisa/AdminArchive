@@ -1,0 +1,28 @@
+"filename", "language", "C#", "XML", "comment", "blank", "total"
+"c:\Users\A S\source\AdminArchive\View\Pages\AccountPage.xaml", "XML", 0, 59, 0, 2, 61
+"c:\Users\A S\source\AdminArchive\View\Pages\AccountPage.xaml.cs", "C#", 24, 0, 3, 2, 29
+"c:\Users\A S\source\AdminArchive\View\Pages\AdminPage.xaml", "XML", 0, 11, 0, 2, 13
+"c:\Users\A S\source\AdminArchive\View\Pages\AdminPage.xaml.cs", "C#", 24, 0, 3, 2, 29
+"c:\Users\A S\source\AdminArchive\View\Pages\DocumentPage.xaml", "XML", 0, 34, 0, 2, 36
+"c:\Users\A S\source\AdminArchive\View\Pages\DocumentPage.xaml.cs", "C#", 24, 0, 3, 2, 29
+"c:\Users\A S\source\AdminArchive\View\Pages\FundPage.xaml", "XML", 0, 46, 0, 1, 47
+"c:\Users\A S\source\AdminArchive\View\Pages\FundPage.xaml.cs", "C#", 25, 0, 3, 2, 30
+"c:\Users\A S\source\AdminArchive\View\Pages\InventoryPage.xaml", "XML", 0, 38, 0, 1, 39
+"c:\Users\A S\source\AdminArchive\View\Pages\InventoryPage.xaml.cs", "C#", 25, 0, 3, 2, 30
+"c:\Users\A S\source\AdminArchive\View\Pages\MainPage.xaml", "XML", 0, 36, 0, 1, 37
+"c:\Users\A S\source\AdminArchive\View\Pages\MainPage.xaml.cs", "C#", 14, 0, 3, 2, 19
+"c:\Users\A S\source\AdminArchive\View\Pages\SettingsPage.xaml", "XML", 0, 49, 0, 1, 50
+"c:\Users\A S\source\AdminArchive\View\Pages\SettingsPage.xaml.cs", "C#", 24, 0, 3, 2, 29
+"c:\Users\A S\source\AdminArchive\View\Pages\StorageUnitPage.xaml", "XML", 0, 12, 0, 3, 15
+"c:\Users\A S\source\AdminArchive\View\Pages\StorageUnitPage.xaml.cs", "C#", 24, 0, 3, 2, 29
+"c:\Users\A S\source\AdminArchive\View\Windows\Container.xaml", "XML", 0, 40, 0, 1, 41
+"c:\Users\A S\source\AdminArchive\View\Windows\Container.xaml.cs", "C#", 14, 0, 3, 2, 19
+"c:\Users\A S\source\AdminArchive\View\Windows\DocumentWindow.xaml", "XML", 0, 171, 0, 2, 173
+"c:\Users\A S\source\AdminArchive\View\Windows\DocumentWindow.xaml.cs", "C#", 23, 0, 3, 2, 28
+"c:\Users\A S\source\AdminArchive\View\Windows\FundWindow.xaml", "XML", 0, 249, 0, 2, 251
+"c:\Users\A S\source\AdminArchive\View\Windows\FundWindow.xaml.cs", "C#", 24, 0, 3, 2, 29
+"c:\Users\A S\source\AdminArchive\View\Windows\InventoryWindow.xaml", "XML", 0, 193, 0, 2, 195
+"c:\Users\A S\source\AdminArchive\View\Windows\InventoryWindow.xaml.cs", "C#", 23, 0, 3, 2, 28
+"c:\Users\A S\source\AdminArchive\View\Windows\StorageUnitWindow.xaml", "XML", 0, 11, 0, 2, 13
+"c:\Users\A S\source\AdminArchive\View\Windows\StorageUnitWindow.xaml.cs", "C#", 23, 0, 3, 2, 28
+"Total", "-", 291, 949, 39, 48, 1327

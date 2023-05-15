@@ -1,0 +1,40 @@
+﻿<Page x:Class="AdminArchive.View.Pages.StorageUnitPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Единицы хранения">
+    <Page.DataContext>
+        <vm:StorageUnitPageVM/>
+    </Page.DataContext>
+    <Grid Margin="30,0,30,30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <ui:Button Content="Добавить новую запись" Icon="Add24" Appearance="Info" Command="{Binding Add}"/>
+                <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
+            </StackPanel>
+        </Grid>
+        <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding StorageUnits}" AutoGenerateColumns="False" RowHeaderWidth="0">
+            <ui:DataGrid.Columns>
+                <DataGridTextColumn Header="№" Binding="{Binding UnitId}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Том"></DataGridTextColumn>
+                <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding UnitName}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Категория"  Binding="{Binding CategoryNavigation.CategoryName}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Дата нач." Binding="{Binding StartDate}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Дата кон." Binding="{Binding EndDate}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Объем ед. хр." Binding="{Binding Volume}"></DataGridTextColumn>
+            </ui:DataGrid.Columns>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding Open}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ui:DataGrid>
+    </Grid>
+</Page>
