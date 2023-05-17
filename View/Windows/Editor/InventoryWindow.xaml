@@ -1,14 +1,18 @@
-﻿<ui:UiWindow  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" x:Class="AdminArchive.View.Windows.InventoryWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AdminArchive.View.Windows"
-        mc:Ignorable="d"        
+﻿<ui:UiWindow   x:Class="AdminArchive.View.Windows.InventoryWindow"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+               mc:Ignorable="d"        
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
         WindowCornerPreference="Round" WindowStartupLocation="CenterScreen"
         Title="FundWindow" MinHeight="720" MinWidth="1000">
+    <Window.DataContext>
+        <vm:InventoryWindowVM/>
+    </Window.DataContext>
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -69,7 +73,7 @@
                     </Grid>
                     <Grid Grid.Row="1">
                         <TextBlock HorizontalAlignment="Left" Margin="105,0">Наименование</TextBlock>
-                        <TextBox Margin="210,0,30,0"/>
+                        <TextBox Margin="210,0,30,0" Text="{Binding SelectedItem.Name}"/>
                     </Grid>
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
@@ -81,7 +85,7 @@
                             <ColumnDefinition Width="180"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Носитель</TextBlock>
-                        <ComboBox Grid.Column="1" Margin="5" IsEditable="True"/>
+                        <ComboBox Grid.Column="1" Margin="5" IsEditable="True" ItemsSource="{Binding Carrier}"/>
                         <TextBlock Grid.Column="2" HorizontalAlignment="Right">Хар-ка секретности:</TextBlock>
                         <ComboBox Grid.Column="3" Margin="5" ItemsSource="{Binding SecretChar}" DisplayMemberPath="CharName" IsEditable="True" SelectedIndex="0"/>
                         <TextBlock Grid.Column="4">Доступ:</TextBlock>
@@ -105,7 +109,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Тип описи</TextBlock>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding FondType}" DisplayMemberPath="TypeName"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding FondType}" DisplayMemberPath="TypeName" SelectedItem="{Binding SelectedItem.Type}"/>
                         <TextBlock HorizontalAlignment="Right" Margin="3" Grid.Column="2">Тип документов</TextBlock>
                         <ComboBox Grid.Column="3" ItemsSource="{Binding DocType}" DisplayMemberPath="TypeName" Margin="0,0,30,0"/>
                     </Grid>
@@ -130,7 +134,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Движение</TextBlock>
-                        <ComboBox x:Name="frstMov" Grid.Column="1" ItemsSource="{Binding Movement}" DisplayMemberPath="{Binding MovementName}"/>
+                        <ComboBox x:Name="frstMov" Grid.Column="1" ItemsSource="{Binding Movement}" DisplayMemberPath="MovementName"/>
                         <ComboBox Grid.Column="2" Margin="5" IsEnabled="False"/>
                         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Margin="5">Основание поступления</TextBlock>
                         <ComboBox Grid.Column="4" Margin="0,0,30,0"/>

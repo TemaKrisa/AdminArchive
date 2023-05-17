@@ -29,7 +29,6 @@
         <ui:TitleBar Grid.Row="0" UseSnapLayout="True"/>
         <Grid Grid.Row="1">
             <ui:Button Content="Протокол" Icon="History24" IconFilled="True" Margin="117,0,0,0"/>
-            <ui:Button Content="Сведения" Icon="Info24" IconFilled="True" Margin="231,0,0,0"/>
             <ui:Button Content="Добавить" Icon="Add24" Margin="5" IconFilled="True"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <ui:Button Margin="5" Height="30" Icon="Previous16" IconFilled="True"/>
@@ -64,7 +63,7 @@
                         <TextBlock Grid.Column="0">Номер*</TextBlock>
                         <TextBox   Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding SelectedItem.DocumentId}" Margin="10,0,110,0"/>
                         <TextBlock Grid.Column="2">Дата документа</TextBlock>
-                        <DatePicker Grid.Column="3"/>
+                        <DatePicker Grid.Column="3" SelectedDate="{Binding SelectedItem.Date}"/>
                     </Grid>
                     <Grid Grid.Row="1" >
                         <Grid.ColumnDefinitions>
@@ -94,9 +93,9 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Хар-ка секретности" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding SelectedItem.SecretChar}"/>
                         <TextBlock Text="Вид документа" Grid.Column="2" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="3"/>
+                        <ComboBox Grid.Column="3" ItemsSource="{Binding SelectedItem.DocType}"/>
                     </Grid>
                     <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
@@ -120,7 +119,7 @@
                         <TextBlock>Подлинность</TextBlock>
                         <ComboBox Grid.Column="1"/>
                         <TextBlock Grid.Column="2">Способ воспроизведения</TextBlock>
-                        <ComboBox Grid.Column="3"/>
+                        <ComboBox Grid.Column="3" ItemsSource="{Binding SelectedItem.Reproduction}"/>
                     </Grid>
                     <Grid Grid.Row="5">
                         <Grid.ColumnDefinitions>
@@ -128,7 +127,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock>Приложения</TextBlock>
-                        <TextBox Grid.Column="1" Margin="5,0,0,0" />
+                        <TextBox Grid.Column="1" Text="{Binding SelectedItem.Applications}" Margin="5,0,0,0" />
                     </Grid>
                     <Grid Grid.Row="8">
                         <Grid.ColumnDefinitions>

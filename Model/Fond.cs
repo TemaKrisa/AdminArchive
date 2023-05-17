@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AdminArchive.Model;
+﻿namespace AdminArchive.Model;
 
 public partial class Fond
 {
@@ -57,7 +54,7 @@ public partial class Fond
 
     public virtual Acess? AcessNavigation { get; set; }
 
-    public virtual FondCategory? CategoryNavigation { get; set; }
+    public virtual Category? CategoryNavigation { get; set; }
 
     public virtual CharRestrict? CharRestrictNavigation { get; set; }
 

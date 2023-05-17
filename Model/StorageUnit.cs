@@ -59,7 +59,7 @@ public partial class StorageUnit
 
     public virtual Carrier? CarrierNavigation { get; set; }
 
-    public virtual Category? CategoryNavigation { get; set; }
+    public virtual UnitCategory? CategoryNavigation { get; set; }
 
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 

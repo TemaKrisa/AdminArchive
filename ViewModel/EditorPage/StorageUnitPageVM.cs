@@ -3,7 +3,6 @@ using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace AdminArchive.ViewModel
 {
@@ -20,13 +19,23 @@ namespace AdminArchive.ViewModel
             set => _selectedItem = value;
         }
         private Inventory curInv;
-        public StorageUnitPageVM(Inventory inv)
+        private Fond curFond;
+        public StorageUnitPageVM(Inventory inv, Fond fond)
         {
+            curFond = fond;
             curInv = inv;
             dc = new ArchiveBdContext();
             UpdateData();
         }
         public StorageUnitPageVM() { }
+
+
+        protected override void GoBack() 
+        {
+            InventoryPageVM vm = new(curFond);
+            InventoryPage v = new() { DataContext = vm };
+            FrameManager.mainFrame.Navigate(v);
+        }
 
         public void UpdateData()
         {
@@ -46,7 +55,7 @@ namespace AdminArchive.ViewModel
         {
             if (SelectedItem != null)
             {
-                DocumentPageVM vm = new(SelectedItem);
+                DocumentPageVM vm = new(SelectedItem,curFond,curInv);
                 DocumentPage v = new() { DataContext = vm };
                 FrameManager.mainFrame.Navigate(v);
             }

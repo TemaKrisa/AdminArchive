@@ -1,11 +1,8 @@
-﻿using AdminArchive.Model;
+﻿using AdminArchive.Classes;
+using AdminArchive.Model;
+using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdminArchive.ViewModel
 {
@@ -22,39 +19,46 @@ namespace AdminArchive.ViewModel
             set => _selectedItem = value;
         }
         private StorageUnit curUnit;
-        public DocumentPageVM(StorageUnit unit)
+        private Inventory curInv;
+        private Fond curFond;
+        public DocumentPageVM(StorageUnit unit,Fond fond, Inventory inventory)
         {
-            curUnit = unit;
             dc = new ArchiveBdContext();
+            curUnit = unit;
+            curFond = fond;
+            curInv = inventory;
             UpdateData();
         }
-        public DocumentPageVM() { }
 
         public void UpdateData()
         {
             Documents = new ObservableCollection<Document>(dc.Documents.Where(u => u.StorageUnit == curUnit.UnitId));
         }
 
+        protected override void GoBack()
+        {
+            StorageUnitPageVM vm = new(curInv,curFond);
+            StorageUnitPage v = new() { DataContext = vm };
+            FrameManager.mainFrame.Navigate(v);
+        }
+
         protected override void EditItem()
         {
-            //DocumentWindow Editor = new();
-            //DocumentWindowVM EditorVM = Editor.DataContext as DocumentWindowVM;
-            //EditorVM.SelectedUnit = (SelectedItem as Document);
-            //EditorVM.pageVM = this;
-            //Editor.Show();
+            DocumentWindow Editor = new();
+            DocumentWindowVM EditorVM = Editor.DataContext as DocumentWindowVM;
+            EditorVM.SelectedItem = (SelectedItem as Document);
+            EditorVM.pageVM = this;
+            Editor.Show();
         }
-
-        protected override void OpenItem()
-        {
-
-        }
-
 
         protected override void AddItem()
         {
-            StorageUnitWindowVM vm = new();
-            var newWindow = new StorageUnitWindow { DataContext = vm };
+            DocumentWindowVM vm = new();
+            var newWindow = new DocumentWindow { DataContext = vm };
             newWindow.ShowDialog();
         }
+
+        protected override void OpenItem() {}
+        public DocumentPageVM() { }
     }
 }

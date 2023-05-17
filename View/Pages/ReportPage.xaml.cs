@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace AdminArchive.View.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для AdminPage.xaml
+    /// Логика взаимодействия для ReportPage.xaml
     /// </summary>
-    public partial class AdminPage : Page
+    public partial class ReportPage : Page
     {
-        public AdminPage()
+        public ReportPage()
         {
             InitializeComponent();
         }

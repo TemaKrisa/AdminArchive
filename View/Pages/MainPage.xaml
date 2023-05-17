@@ -4,8 +4,12 @@
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:converters="clr-namespace:AdminArchive.Classes"
            xmlns:local="clr-namespace:AdminArchive.View.Pages"
            mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
+    <Page.Resources>
+        <converters:BooleanConverter x:Key="BooleanConverter"/>
+    </Page.Resources>
     <Grid x:Name="RootMainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -23,10 +27,10 @@
         </Border>
         <ui:NavigationStore Width="64" x:Name="RootNavigation" Margin="5,0" Frame="{Binding ElementName=RootFrame, Mode=OneWay}">
             <ui:NavigationStore.Items>
-                <ui:NavigationItem Width="64" Command="{Binding Nav}" Content="Ведение БД" PageType="{x:Type local:FundPage}" Icon="Database24" PageTag="db" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" Command="{Binding BackCommand}" Content="Ведение БД" PageType="{x:Type local:FundPage}" Icon="Database24" PageTag="db" Cursor="Hand"/>
                 <ui:NavigationItem Width="64" Content="Аккаунты" Icon="InprivateAccount24" PageType="{x:Type local:AccountPage}" PageTag="acc" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" Content="Профиль" Icon="Person24" PageTag="dep" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" Content="Администрирование" Icon="Person24" PageTag="dep1" PageType="{x:Type local:CategoryPage}" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" Content="Отчёты" Icon="Book24" PageTag="rep" PageType="{x:Type local:ReportPage}" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" Content="Администрирование" Icon="Person24" PageTag="dep1" PageType="{x:Type local:AdministrationPage}" Cursor="Hand"/>
             </ui:NavigationStore.Items>
             <ui:NavigationStore.Footer>
                 <ui:NavigationItem Content="Настройки" Icon="Settings24" PageTag="set" PageType="{x:Type local:SettingsPage}"/>

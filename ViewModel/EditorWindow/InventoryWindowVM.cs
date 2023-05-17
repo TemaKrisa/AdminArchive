@@ -1,12 +1,6 @@
 ﻿using AdminArchive.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace AdminArchive.ViewModel
 {
@@ -27,14 +21,14 @@ namespace AdminArchive.ViewModel
         public ObservableCollection<Ownership> Ownership { get; set; }
         public ObservableCollection<StorageTime> StorageTime { get; set; }
 
-        public Inventory _selectedInventory = new();
+        public Inventory _selectedItem = new();
 
-        public Inventory SelectedInventory
+        public Inventory SelectedItem
         {
-            get => _selectedInventory;
+            get => _selectedItem;
             set
             {
-                _selectedInventory = value;
+                _selectedItem = value;
             }
         }
 
@@ -67,15 +61,15 @@ namespace AdminArchive.ViewModel
         }
         protected override void AddItem()
         {
-            SelectedInventory = new Inventory();
+            SelectedItem = new Inventory();
         }
 
         protected override void SaveItem()
         {
             try
             {
-                if (!dc.Inventories.Any(u => u.InventoryId == SelectedInventory.InventoryId))
-                    dc.Inventories.Add(SelectedInventory);
+                if (!dc.Inventories.Any(u => u.InventoryId == SelectedItem.InventoryId))
+                    dc.Inventories.Add(SelectedItem);
                 dc.SaveChanges();
                 pageVM.UpdateData();
             }
@@ -85,5 +79,27 @@ namespace AdminArchive.ViewModel
             }
         }
         protected override void OpenItem() { }
+        protected override void OpenLog() { }
+
+        protected override void CloseLog()
+        {
+
+        }
+        protected override void GoNext()
+        {
+        }
+        protected override void GoPrev()
+        {
+
+        }
+        protected override void GoLast()
+        {
+
+        }
+        protected override void GoFirst()
+        {
+
+        }
+
     }
 }

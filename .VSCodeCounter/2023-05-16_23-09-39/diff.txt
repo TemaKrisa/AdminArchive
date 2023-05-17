@@ -1,0 +1,50 @@
+Date : 2023-05-16 23:09:39
+Directory : c:\Users\A S\source\AdminArchive\ViewModel
+Total : 19 files,  953 codes, 29 comments, 134 blanks, all 1116 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C#       |         19 |        953 |         29 |        134 |      1,116 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                           | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                              |         19 |        953 |         29 |        134 |      1,116 |
+| . (Files)                                                                      |          5 |        229 |         12 |         27 |        268 |
+| ..                                                                             |          2 |        -16 |          0 |         -3 |        -19 |
+| ..\Classes                                                                     |          2 |        -16 |          0 |         -3 |        -19 |
+| Administration                                                                 |          1 |         36 |          6 |          7 |         49 |
+| BaseViewModel                                                                  |          3 |         47 |          0 |         11 |         58 |
+| EditorPage                                                                     |          4 |        328 |         11 |         50 |        389 |
+| EditorWindow                                                                   |          4 |        329 |          0 |         42 |        371 |
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                       | language | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\A S\source\AdminArchive\Classes\FrameManager.cs                       | C#       |        -11 |          0 |         -2 |        -13 |
+| c:\Users\A S\source\AdminArchive\Classes\GlobalUsings.cs                       | C#       |         -5 |          0 |         -1 |         -6 |
+| c:\Users\A S\source\AdminArchive\ViewModel\AccountVM.cs                        | C#       |         16 |          0 |          2 |         18 |
+| c:\Users\A S\source\AdminArchive\ViewModel\Administration\CategoryVM.cs        | C#       |         36 |          6 |          7 |         49 |
+| c:\Users\A S\source\AdminArchive\ViewModel\BaseViewModel\BaseViewModel.cs      | C#       |         16 |          0 |          5 |         21 |
+| c:\Users\A S\source\AdminArchive\ViewModel\BaseViewModel\EditBaseVM.cs         | C#       |         15 |          0 |          2 |         17 |
+| c:\Users\A S\source\AdminArchive\ViewModel\BaseViewModel\PageBaseVM.cs         | C#       |         16 |          0 |          4 |         20 |
+| c:\Users\A S\source\AdminArchive\ViewModel\ContainerVM.cs                      | C#       |         24 |          0 |          5 |         29 |
+| c:\Users\A S\source\AdminArchive\ViewModel\EditorPage\DocumentPageVM.cs        | C#       |         56 |          0 |          9 |         65 |
+| c:\Users\A S\source\AdminArchive\ViewModel\EditorPage\FundPageVM.cs            | C#       |        155 |         11 |         19 |        185 |
+| c:\Users\A S\source\AdminArchive\ViewModel\EditorPage\InventoryPageVM.cs       | C#       |         55 |          0 |         11 |         66 |
+| c:\Users\A S\source\AdminArchive\ViewModel\EditorPage\StorageUnitPageVM.cs     | C#       |         62 |          0 |         11 |         73 |
+| c:\Users\A S\source\AdminArchive\ViewModel\EditorWindow\DocumentWindowVM.cs    | C#       |         75 |          0 |          8 |         83 |
+| c:\Users\A S\source\AdminArchive\ViewModel\EditorWindow\FundWindowVM.cs        | C#       |        102 |          0 |         18 |        120 |
+| c:\Users\A S\source\AdminArchive\ViewModel\EditorWindow\InventoryWindowVM.cs   | C#       |         76 |          0 |          8 |         84 |
+| c:\Users\A S\source\AdminArchive\ViewModel\EditorWindow\StorageUnitWindowVM.cs | C#       |         76 |          0 |          8 |         84 |
+| c:\Users\A S\source\AdminArchive\ViewModel\MainPageVM.cs                       | C#       |         11 |          0 |          3 |         14 |
+| c:\Users\A S\source\AdminArchive\ViewModel\ReportVM.cs                         | C#       |        149 |          9 |         12 |        170 |
+| c:\Users\A S\source\AdminArchive\ViewModel\SettingVM.cs                        | C#       |         29 |          3 |          5 |         37 |
+| Total                                                                          |          |        953 |         29 |        134 |      1,116 |
++--------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

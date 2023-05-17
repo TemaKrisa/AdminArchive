@@ -12,12 +12,12 @@ namespace AdminArchive.Classes
 
         public static void ShowDialog(string Title, string Content)
         {
-            MessageBox d = new()
+            Wpf.Ui.Controls.Dialog d = new()
             {
                 Content = Content,
                 Title = Title
             };
-            d.ShowDialog();
+            d.Show();
         }
 
     }

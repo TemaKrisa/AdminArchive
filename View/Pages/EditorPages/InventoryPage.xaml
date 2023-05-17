@@ -15,6 +15,7 @@
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <ui:Button Command="{Binding Back}" Content="Назад" HorizontalAlignment="Right" Icon="ArrowLeft24" Appearance="Info" Margin="0,-100,0,0"/>
         <Grid Margin="5">
             <StackPanel Orientation="Horizontal">
                 <ui:Button Content="Добавить новую запись" Icon="Add24" Appearance="Info" Command="{Binding Add}"/>
@@ -22,13 +23,21 @@
                 <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
             </StackPanel>
         </Grid>
-        <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Inventories}" AutoGenerateColumns="False" RowHeaderWidth="0">
+        <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Inventories}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0">
             <ui:DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding InventoryId}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Том"></DataGridTextColumn>
-                <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding Name}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Категория"  Binding="{Binding CategoryNavigation.CategoryName}"></DataGridTextColumn>
+                <DataGridTextColumn Header="№" Binding="{Binding InventoryNumber}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Тип" Width="*" Binding="{Binding Type}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Начальная дата" Width="*" Binding="{Binding StartDate,Mode=OneWay}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Конечная дата" Width="*" Binding="{Binding EndDate,Mode=OneWay}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Объем ед. хр." Binding="{Binding Volume}"></DataGridTextColumn>
+                <DataGridTemplateColumn Width="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.Edit, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </ui:DataGrid.Columns>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">

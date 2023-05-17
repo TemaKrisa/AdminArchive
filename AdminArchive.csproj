@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <ApplicationIcon>Resources\Logo2.ico</ApplicationIcon>
-    <StartupObject>AdminArchive.App</StartupObject>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<ApplicationIcon>Resources\Logo2.ico</ApplicationIcon>
+		<StartupObject>AdminArchive.App</StartupObject>
+	</PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Новая папка\**" />
@@ -48,7 +49,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Logo.png" />
+    <Resource Include="Resources\Logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

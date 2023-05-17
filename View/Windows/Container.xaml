@@ -5,8 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdminArchive.View.Windows"
-        xmlns:vm="clr-namespace:AdminArchive.ViewModel" 
-        Background="{DynamicResource ApplicationBackgroundBrush}"
+        xmlns:vm="clr-namespace:AdminArchive.ViewModel" d:DataContext="{d:DesignInstance Type=vm:ContainerVM}"
+              Background="{DynamicResource ApplicationBackgroundBrush}"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
         ExtendsContentIntoTitleBar="True" WindowBackdropType="Mica"
         WindowCornerPreference="Round" WindowStartupLocation="CenterScreen"
@@ -17,7 +17,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Frame Grid.Row="1" x:Name="RootFrame" NavigationUIVisibility="Hidden"/>
-        <ui:TitleBar Title="AdminArchive" Grid.Row="0" UseSnapLayout="True">
+        <ui:TitleBar  Title="AdminArchive" Grid.Row="0" UseSnapLayout="True" Icon="pack://application:,,,/Resources/Logo.png">
             <ui:TitleBar.Tray>
                 <ui:NotifyIcon
                     FocusOnLeftClick="True"

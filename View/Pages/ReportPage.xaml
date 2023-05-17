@@ -1,0 +1,24 @@
+﻿<Page x:Class="AdminArchive.View.Pages.ReportPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Отчёты">
+    <Page.DataContext>
+        <vm:ReportVM/>
+    </Page.DataContext>
+    <Grid>
+        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"  Width="220" SelectedIndex="{Binding SelectedType,Mode=TwoWay}">
+            <ComboBox.Items>
+                <ComboBoxItem Content="Перечень Фондов"/>
+                <ComboBoxItem Content="Перечень Описей"/>
+                <ComboBoxItem Content="Перечень Единиц Хранения"/>
+            </ComboBox.Items>
+        </ComboBox>
+        <ui:Button VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Command="{Binding SaveRep}" Margin="30" Content="Сформировать"/>
+    </Grid>
+</Page>

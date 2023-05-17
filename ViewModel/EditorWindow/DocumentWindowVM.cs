@@ -1,11 +1,6 @@
 ﻿using AdminArchive.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Drawing;
 
 namespace AdminArchive.ViewModel
 {
@@ -84,5 +79,29 @@ namespace AdminArchive.ViewModel
             }
         }
         protected override void OpenItem() { }
+        protected override void OpenLog() 
+        {
+
+        }
+
+        protected override void CloseLog()
+        {
+
+        }
+        protected override void GoNext()
+        {
+        }
+        protected override void GoPrev()
+        {
+
+        }
+        protected override void GoLast()
+        {
+
+        }
+        protected override void GoFirst()
+        {
+
+        }
     }
 }

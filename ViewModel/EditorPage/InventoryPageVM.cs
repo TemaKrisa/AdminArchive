@@ -3,8 +3,6 @@ using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
 
 namespace AdminArchive.ViewModel
 {
@@ -34,11 +32,14 @@ namespace AdminArchive.ViewModel
             Inventories = new ObservableCollection<Inventory>(dc.Inventories.Where(u=>u.Fond == curFond.FondId));
         }
 
+        protected override void GoBack() { FrameManager.mainFrame.Navigate(new FundPage()); }
+
+
         protected override void EditItem()
         {
             InventoryWindow Editor = new();
             InventoryWindowVM EditorVM = Editor.DataContext as InventoryWindowVM;
-            EditorVM.SelectedInventory = (SelectedItem as Inventory);
+            EditorVM.SelectedItem = (SelectedItem as Inventory);
             EditorVM.pageVM = this;
             Editor.Show();
         }
@@ -47,7 +48,7 @@ namespace AdminArchive.ViewModel
         {
             if (SelectedItem != null)
             {
-                StorageUnitPageVM vm = new(SelectedItem);
+                StorageUnitPageVM vm = new(SelectedItem,curFond);
                 StorageUnitPage v = new() { DataContext = vm };
                 FrameManager.mainFrame.Navigate(v);
             }

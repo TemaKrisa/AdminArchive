@@ -1,10 +1,5 @@
 ﻿using AdminArchive.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace AdminArchive.ViewModel
@@ -20,7 +15,7 @@ namespace AdminArchive.ViewModel
         public ObservableCollection<HistoricalPeriod> HistoricalPeriod { get; set; }
         public ObservableCollection<FondType> FondType { get; set; }
         public ObservableCollection<DocType> DocType { get; set; }
-        public ObservableCollection<FondCategory> Category { get; set; }
+        public ObservableCollection<Category> Category { get; set; }
         public ObservableCollection<SecretChar> SecretChar { get; set; }
         public ObservableCollection<IncomeSource> IncomeSource { get; set; }
         public ObservableCollection<Ownership> Ownership { get; set; }
@@ -53,7 +48,7 @@ namespace AdminArchive.ViewModel
                 HistoricalPeriod = new ObservableCollection<HistoricalPeriod>(dc.HistoricalPeriods);
                 FondType = new ObservableCollection<FondType>(dc.FondTypes);
                 DocType = new ObservableCollection<DocType>(dc.DocTypes);
-                Category = new ObservableCollection<FondCategory>(dc.FondCategories);
+                Category = new ObservableCollection<Category>(dc.Categories);
                 SecretChar = new ObservableCollection<SecretChar>(dc.SecretChars);
                 IncomeSource = new ObservableCollection<IncomeSource>(dc.IncomeSources);
                 Ownership = new ObservableCollection<Ownership>(dc.Ownerships);
@@ -84,5 +79,27 @@ namespace AdminArchive.ViewModel
             }
         }
         protected override void OpenItem() { }
+        protected override void OpenLog() { }
+
+        protected override void CloseLog()
+        {
+
+        }
+        protected override void GoNext()
+        {
+        }
+        protected override void GoPrev()
+        {
+
+        }
+        protected override void GoLast()
+        {
+
+        }
+        protected override void GoFirst()
+        {
+
+        }
+
     }
 }

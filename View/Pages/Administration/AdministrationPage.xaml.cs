@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AdminArchive.View.UserControls
+namespace AdminArchive.View.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для ProtocolUC.xaml
+    /// Логика взаимодействия для AdministrationPage.xaml
     /// </summary>
-    public partial class ProtocolUC : UserControl
+    public partial class AdministrationPage : Page
     {
-        public ProtocolUC()
+        public AdministrationPage()
         {
             InitializeComponent();
         }

@@ -3,8 +3,10 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:i="http://schemas.microsoft.com/xaml/behaviors" Title="Фонды"
+      xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+      Title="Фонды"
       mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
     <Page.DataContext>
         <vm:FundPageVM/>
@@ -22,17 +24,13 @@
             </StackPanel>
         </Grid>
         <ui:DataGrid Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding Fonds}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"  AutoGenerateColumns="False" RowHeaderWidth="0">
-            <!--<DataGrid.InputBindings>
-                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Open}"/>
-            </DataGrid.InputBindings>-->
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding Open}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding FondId}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Том"></DataGridTextColumn>
+                <DataGridTextColumn Header="№" Binding="{Binding FondNumber}" ></DataGridTextColumn>
                 <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding FondName}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Категория"  Binding="{Binding CategoryNavigation.CategoryName}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Дата нач." Binding="{Binding StartDate}"></DataGridTextColumn>

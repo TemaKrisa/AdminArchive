@@ -11,12 +11,12 @@
     <Page.DataContext>
         <vm:CategoryVM/>
     </Page.DataContext>
-    <DataGrid ItemsSource="{Binding Categories}" RowHeaderWidth="0" IsReadOnly="False" AutoGenerateColumns="False" Margin="30,0,30,30">
+    <DataGrid ItemsSource="{Binding Categories}" CanUserDeleteRows="False" RowHeaderWidth="0" IsReadOnly="False" AutoGenerateColumns="False" Margin="30,0,30,30">
         <DataGrid.Columns>
             <DataGridTextColumn Header="Наименование"  Binding="{Binding CategoryName}" Width="*" />
         </DataGrid.Columns>
         <i:Interaction.Triggers>
-            <i:EventTrigger EventName="RowEditEnding">
+            <i:EventTrigger EventName="CellEditEnding">
                 <i:InvokeCommandAction Command="{Binding AddCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path=SelectedItem}" />
             </i:EventTrigger>
         </i:Interaction.Triggers>

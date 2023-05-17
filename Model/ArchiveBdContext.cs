@@ -33,8 +33,6 @@ public partial class ArchiveBdContext : DbContext
 
     public virtual DbSet<Fond> Fonds { get; set; }
 
-    public virtual DbSet<FondCategory> FondCategories { get; set; }
-
     public virtual DbSet<FondLog> FondLogs { get; set; }
 
     public virtual DbSet<FondName> FondNames { get; set; }
@@ -59,8 +57,6 @@ public partial class ArchiveBdContext : DbContext
 
     public virtual DbSet<Ownership> Ownerships { get; set; }
 
-    public virtual DbSet<ReceiptGround> ReceiptGrounds { get; set; }
-
     public virtual DbSet<ReceiptReason> ReceiptReasons { get; set; }
 
     public virtual DbSet<Reproduction> Reproductions { get; set; }
@@ -77,13 +73,15 @@ public partial class ArchiveBdContext : DbContext
 
     public virtual DbSet<UndocumentPeriod> UndocumentPeriods { get; set; }
 
+    public virtual DbSet<UnitCategory> UnitCategories { get; set; }
+
     public virtual DbSet<UnitLog> UnitLogs { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True");
+        => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -114,8 +112,6 @@ public partial class ArchiveBdContext : DbContext
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK_Category_1");
-
             entity.ToTable("Category");
 
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
@@ -259,16 +255,6 @@ public partial class ArchiveBdContext : DbContext
                 .HasConstraintName("FK_Fond_FondView");
         });
 
-        modelBuilder.Entity<FondCategory>(entity =>
-        {
-            entity.HasKey(e => e.CategoryId).HasName("PK_Category");
-
-            entity.ToTable("FondCategory");
-
-            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
-            entity.Property(e => e.CategoryName).HasMaxLength(50);
-        });
-
         modelBuilder.Entity<FondLog>(entity =>
         {
             entity.HasKey(e => e.LogId);
@@ -352,7 +338,9 @@ public partial class ArchiveBdContext : DbContext
 
             entity.Property(e => e.InventoryId).HasColumnName("InventoryID");
             entity.Property(e => e.InventoryNumber).HasMaxLength(50);
+            entity.Property(e => e.MovementNote).HasMaxLength(350);
             entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.Note).HasMaxLength(350);
             entity.Property(e => e.Title).HasMaxLength(50);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.Inventories)
@@ -363,9 +351,37 @@ public partial class ArchiveBdContext : DbContext
                 .HasForeignKey(d => d.Carrier)
                 .HasConstraintName("FK_Inventory_Carrier");
 
+            entity.HasOne(d => d.CategoryNavigation).WithMany(p => p.Inventories)
+                .HasForeignKey(d => d.Category)
+                .HasConstraintName("FK_Inventory_Category");
+
+            entity.HasOne(d => d.CharRestrictNavigation).WithMany(p => p.Inventories)
+                .HasForeignKey(d => d.CharRestrict)
+                .HasConstraintName("FK_Inventory_CharRestrict");
+
             entity.HasOne(d => d.FondNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.Fond)
                 .HasConstraintName("FK_Inventory_Fond");
+
+            entity.HasOne(d => d.IncomeSourceNavigation).WithMany(p => p.Inventories)
+                .HasForeignKey(d => d.IncomeSource)
+                .HasConstraintName("FK_Inventory_IncomeSource");
+
+            entity.HasOne(d => d.MovementNavigation).WithMany(p => p.Inventories)
+                .HasForeignKey(d => d.Movement)
+                .HasConstraintName("FK_Inventory_Movement");
+
+            entity.HasOne(d => d.MovementTypeNavigation).WithMany(p => p.Inventories)
+                .HasForeignKey(d => d.MovementType)
+                .HasConstraintName("FK_Inventory_MovementType");
+
+            entity.HasOne(d => d.ReceiptReasonNavigation).WithMany(p => p.Inventories)
+                .HasForeignKey(d => d.ReceiptReason)
+                .HasConstraintName("FK_Inventory_ReceiptReason");
+
+            entity.HasOne(d => d.StorageTimeNavigation).WithMany(p => p.Inventories)
+                .HasForeignKey(d => d.StorageTime)
+                .HasConstraintName("FK_Inventory_StorageTime");
 
             entity.HasOne(d => d.TypeNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.Type)
@@ -427,14 +443,6 @@ public partial class ArchiveBdContext : DbContext
 
             entity.Property(e => e.OwnershipId).HasColumnName("OwnershipID");
             entity.Property(e => e.OwershipName).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<ReceiptGround>(entity =>
-        {
-            entity.HasKey(e => e.GroundId);
-
-            entity.Property(e => e.GroundId).HasColumnName("GroundID");
-            entity.Property(e => e.GroundName).HasMaxLength(150);
         });
 
         modelBuilder.Entity<ReceiptReason>(entity =>
@@ -551,6 +559,16 @@ public partial class ArchiveBdContext : DbContext
                 .HasForeignKey(d => d.Fond)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UndocumentPeriods_Fond");
+        });
+
+        modelBuilder.Entity<UnitCategory>(entity =>
+        {
+            entity.HasKey(e => e.CategoryId).HasName("PK_Category_1");
+
+            entity.ToTable("UnitCategory");
+
+            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+            entity.Property(e => e.CategoryName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<UnitLog>(entity =>

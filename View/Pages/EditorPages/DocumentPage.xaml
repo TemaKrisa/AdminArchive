@@ -14,21 +14,29 @@
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <ui:Button Command="{Binding Back}" Content="Назад" HorizontalAlignment="Right" Icon="ArrowLeft24" Appearance="Info" Margin="0,-100,0,0"/>
         <Grid Margin="5">
             <StackPanel Orientation="Horizontal">
                 <ui:Button Content="Добавить новую запись" Icon="Add24" Appearance="Info" Command="{Binding  Add}"/>
                 <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
             </StackPanel>
         </Grid>
-        <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Documents}" AutoGenerateColumns="False" RowHeaderWidth="0">
+        <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Documents}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0">
             <ui:DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding DocumentId}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Том"></DataGridTextColumn>
                 <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding DocumentName}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Категория"  Binding="{Binding CategoryNavigation.CategoryName}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Дата нач." Binding="{Binding VolStart}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Дата кон." Binding="{Binding VolEnd}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Объем ед. хр." Binding="{Binding Volume}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Дата документа" Width="*" Binding="{Binding Date}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Кол-во листов"  Binding="{Binding Vol}"></DataGridTextColumn>
+                <DataGridTextColumn Header="С" Binding="{Binding VolStart}"></DataGridTextColumn>
+                <DataGridTextColumn Header="По" Binding="{Binding VolEnd}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Хар-ка секретности" Binding="{Binding SecretChar}"></DataGridTextColumn>
+                <DataGridTemplateColumn Width="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.Edit, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </ui:DataGrid.Columns>
         </ui:DataGrid>
     </Grid>

@@ -10,4 +10,6 @@ public partial class Movement
     public string MovementName { get; set; } = null!;
 
     public virtual ICollection<Fond> Fonds { get; set; } = new List<Fond>();
+
+    public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
 }

@@ -1,356 +1,356 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Class Name="AdminArchive.Classes.FrameManager" Collapsed="true">
-    <Position X="25.5" Y="20" Width="1.5" />
+  <Class Name="AdminArchive.Classes.FrameManager">
+    <Position X="29.5" Y="19.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ABAAAAAAAAAACAAAAEAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Classes\FrameManager.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Acess" Collapsed="true">
-    <Position X="29" Y="17" Width="1.5" />
+  <Class Name="AdminArchive.Model.Acess">
+    <Position X="29.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAEAAAAAAAAAAAAAAAAAAABAAAAAAAEAAAIAAAAAA=</HashCode>
       <FileName>Model\Acess.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Activity" Collapsed="true">
-    <Position X="30.75" Y="17" Width="1.5" />
+  <Class Name="AdminArchive.Model.Activity">
+    <Position X="29.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAAAAAEAAAACCAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
       <FileName>Model\Activity.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.ArchiveBdContext" Collapsed="true">
-    <Position X="37.75" Y="17" Width="1.5" />
+  <Class Name="AdminArchive.Model.ArchiveBdContext">
+    <Position X="29.25" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAMCkiAAAwIYACgIBACjAQAAEwAAECECUAAIIpAAAEA=</HashCode>
+      <HashCode>AANCkiAAAwIYACgIBACjAQAAEwAAEAECEAAIIpAAAEA=</HashCode>
       <FileName>Model\ArchiveBdContext.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Carrier" Collapsed="true">
-    <Position X="25.5" Y="18" Width="1.5" />
+  <Class Name="AdminArchive.Model.Carrier">
+    <Position X="24.25" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAgAAAAAAAQAAAIAAAAAA=</HashCode>
       <FileName>Model\Carrier.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Category" Collapsed="true">
-    <Position X="27.25" Y="18" Width="1.5" />
+  <Class Name="AdminArchive.Model.Category">
+    <Position X="14" Y="13.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAACAAAAAAAAAAIAAAAAA=</HashCode>
+      <HashCode>AAIAEAAAAAAAAgAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Category.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.CharRestrict" Collapsed="true">
-    <Position X="30.75" Y="18" Width="1.5" />
+  <Class Name="AdminArchive.Model.CharRestrict">
+    <Position X="16.5" Y="22" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <HashCode>AAMAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
       <FileName>Model\CharRestrict.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.DocType" Collapsed="true">
-    <Position X="34.25" Y="18" Width="1.5" />
+  <Class Name="AdminArchive.Model.DocType">
+    <Position X="25.75" Y="20.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAABAiAAAAAAAAAAA=</HashCode>
       <FileName>Model\DocType.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Document" Collapsed="true">
-    <Position X="36" Y="18" Width="1.5" />
+  <Class Name="AdminArchive.Model.Document">
+    <Position X="31" Y="10.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAgAABABAAAQAAABAAAFAAAgBAABAAAAIAEQBgA=</HashCode>
       <FileName>Model\Document.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Feature" Collapsed="true">
-    <Position X="27.25" Y="19" Width="1.5" />
+  <Class Name="AdminArchive.Model.Feature">
+    <Position X="14" Y="11.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAACACAAAAAAAAAAA=</HashCode>
       <FileName>Model\Feature.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Fond" Collapsed="true">
-    <Position X="29" Y="19" Width="1.5" />
+  <Class Name="AdminArchive.Model.Fond">
+    <Position X="26.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IAICAAAAAgQJAQgDhBKwAAAgQgQJBEAASQIQAEAATgA=</HashCode>
       <FileName>Model\Fond.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.FondCategory" Collapsed="true">
-    <Position X="30.75" Y="19" Width="1.5" />
+  <Class Name="AdminArchive.Model.FondCategory">
+    <Position X="24.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAAAAAgAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\FondCategory.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.FondLog" Collapsed="true">
-    <Position X="32.5" Y="19" Width="1.5" />
+  <Class Name="AdminArchive.Model.FondLog">
+    <Position X="25.75" Y="10" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAAQEAAAAAAAAAgAAAAABAAgAAkAAAAA=</HashCode>
       <FileName>Model\FondLog.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.FondName" Collapsed="true">
-    <Position X="34.25" Y="19" Width="1.5" />
+  <Class Name="AdminArchive.Model.FondName">
+    <Position X="31" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAQgAAAAAAAACAAAAkEAAAA=</HashCode>
       <FileName>Model\FondName.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.FondType" Collapsed="true">
-    <Position X="36" Y="19" Width="1.5" />
+  <Class Name="AdminArchive.Model.FondType">
+    <Position X="25.75" Y="22.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAAAAA=</HashCode>
       <FileName>Model\FondType.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.FondView" Collapsed="true">
-    <Position X="37.75" Y="19" Width="1.5" />
+  <Class Name="AdminArchive.Model.FondView">
+    <Position X="24" Y="22" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
       <FileName>Model\FondView.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.HistoricalPeriod" Collapsed="true">
-    <Position X="30.75" Y="20" Width="1.5" />
+  <Class Name="AdminArchive.Model.HistoricalPeriod">
+    <Position X="27.5" Y="20" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
       <FileName>Model\HistoricalPeriod.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.IncomeSource" Collapsed="true">
-    <Position X="32.5" Y="20" Width="1.5" />
+  <Class Name="AdminArchive.Model.IncomeSource">
+    <Position X="29.5" Y="21.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAgAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAIAEAAAAAAAAgAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\IncomeSource.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Inventory" Collapsed="true">
-    <Position X="34.25" Y="20" Width="1.5" />
+  <Class Name="AdminArchive.Model.Inventory">
+    <Position X="28" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAgAAAAABAEQCAAAKAAQAAAAABAAAAUIAIgAAAgA=</HashCode>
+      <HashCode>AAACAgIAAgQBAEQDBBIKAAQgAAAIBEAACUIAIkEASgA=</HashCode>
       <FileName>Model\Inventory.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.InventoryLog" Collapsed="true">
-    <Position X="36" Y="20" Width="1.5" />
+  <Class Name="AdminArchive.Model.InventoryLog">
+    <Position X="31.25" Y="21" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAAgEAAAAAAAAAgAAAAABAAgAAkAAAAA=</HashCode>
       <FileName>Model\InventoryLog.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.InventoryType" Collapsed="true">
-    <Position X="25.5" Y="21" Width="1.5" />
+  <Class Name="AdminArchive.Model.InventoryType">
+    <Position X="31.25" Y="19.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAAAAA=</HashCode>
       <FileName>Model\InventoryType.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Movement" Collapsed="true">
-    <Position X="32.5" Y="21" Width="1.5" />
+  <Class Name="AdminArchive.Model.Movement">
+    <Position X="31.25" Y="17.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <HashCode>AAIAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
       <FileName>Model\Movement.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.MovementType" Collapsed="true">
-    <Position X="34.25" Y="21" Width="1.5" />
+  <Class Name="AdminArchive.Model.MovementType">
+    <Position X="22.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAAAAA=</HashCode>
+      <HashCode>AAIAEAAAAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAAAAA=</HashCode>
       <FileName>Model\MovementType.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Ownership" Collapsed="true">
-    <Position X="36" Y="21" Width="1.5" />
+  <Class Name="AdminArchive.Model.Ownership">
+    <Position X="17.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAABAAAAA=</HashCode>
       <FileName>Model\Ownership.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.ReceiptGround" Collapsed="true">
-    <Position X="25.5" Y="22" Width="1.5" />
+  <Class Name="AdminArchive.Model.ReceiptGround">
+    <Position X="25.75" Y="19.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ABAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\ReceiptGround.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.ReceiptReason" Collapsed="true">
-    <Position X="27.25" Y="22" Width="1.5" />
+  <Class Name="AdminArchive.Model.ReceiptReason">
+    <Position X="24" Y="14.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAEAAAAAA=</HashCode>
+      <HashCode>AAIAEAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAEAAAAAA=</HashCode>
       <FileName>Model\ReceiptReason.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Reproduction" Collapsed="true">
-    <Position X="29" Y="22" Width="1.5" />
+  <Class Name="AdminArchive.Model.Reproduction">
+    <Position X="20.5" Y="22.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAACAAAAAAAACAA=</HashCode>
       <FileName>Model\Reproduction.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.Role" Collapsed="true">
-    <Position X="30.75" Y="22" Width="1.5" />
+  <Class Name="AdminArchive.Model.Role">
+    <Position X="18.25" Y="23.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAACIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
       <FileName>Model\Role.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.SecretChar" Collapsed="true">
-    <Position X="32.5" Y="22" Width="1.5" />
+  <Class Name="AdminArchive.Model.SecretChar">
+    <Position X="22.5" Y="13" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAE=</HashCode>
       <FileName>Model\SecretChar.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.StorageTime" Collapsed="true">
-    <Position X="36" Y="22" Width="1.5" />
+  <Class Name="AdminArchive.Model.StorageTime">
+    <Position X="29.5" Y="17.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAAAAA=</HashCode>
+      <HashCode>AAIAEAAAAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAAAAA=</HashCode>
       <FileName>Model\StorageTime.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.StorageUnit" Collapsed="true">
-    <Position X="37.75" Y="22" Width="1.5" />
+  <Class Name="AdminArchive.Model.StorageUnit">
+    <Position X="27.5" Y="10" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAgAAAAABABgDhAEAAAAhAgAlAIADBEIEClEACQA=</HashCode>
       <FileName>Model\StorageUnit.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.StorageUnitFeature" Collapsed="true">
-    <Position X="25.5" Y="23" Width="1.75" />
+  <Class Name="AdminArchive.Model.StorageUnitFeature">
+    <Position X="15.75" Y="11.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAIAAAAAAAQAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>Model\StorageUnitFeature.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.UndocumentPeriod" Collapsed="true">
-    <Position X="31.25" Y="23.25" Width="1.75" />
+  <Class Name="AdminArchive.Model.UndocumentPeriod">
+    <Position X="27.5" Y="17.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAQAAAAAAAAAAYAAAAAAAAwAAAAAAAAAAAAAkEAAAA=</HashCode>
       <FileName>Model\UndocumentPeriod.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.UnitLog" Collapsed="true">
-    <Position X="32.5" Y="23" Width="1.5" />
+  <Class Name="AdminArchive.Model.UnitLog">
+    <Position X="31" Y="14.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAAAEIAAAAAAAQgAAAAABAAgAAEAAAAA=</HashCode>
       <FileName>Model\UnitLog.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.Model.User" Collapsed="true">
-    <Position X="34.25" Y="23" Width="1.5" />
+  <Class Name="AdminArchive.Model.User">
+    <Position X="29.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIgAAAAAAAAAAEACCAAwABAAAAAACAAAQABAAAAA=</HashCode>
       <FileName>Model\User.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.View.Pages.AccountPage" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="25.5" Y="17" Width="1.5" />
+  <Class Name="AdminArchive.View.Pages.AccountPage" BaseTypeListCollapsed="true">
+    <Position X="24.25" Y="11.25" Width="1.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Pages\AccountPage.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Pages.AdminPage" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="32.5" Y="17" Width="1.5" />
+  <Class Name="AdminArchive.View.Pages.AdminPage" BaseTypeListCollapsed="true">
+    <Position X="20" Y="14" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Pages\AdminPage.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Pages.DocumentPage" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="37.75" Y="18" Width="1.5" />
+  <Class Name="AdminArchive.View.Pages.DocumentPage" BaseTypeListCollapsed="true">
+    <Position X="24.25" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Pages\EditorPages\DocumentPage.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Pages.FundPage" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="27.25" Y="20" Width="1.5" />
+  <Class Name="AdminArchive.View.Pages.FundPage" BaseTypeListCollapsed="true">
+    <Position X="14" Y="0.5" Width="1.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Pages\EditorPages\FundPage.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Pages.InventoryPage" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="37.75" Y="20" Width="1.5" />
+  <Class Name="AdminArchive.View.Pages.InventoryPage" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Pages\EditorPages\InventoryPage.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Pages.MainPage" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="29" Y="21" Width="1.5" />
+  <Class Name="AdminArchive.View.Pages.MainPage" BaseTypeListCollapsed="true">
+    <Position X="24.75" Y="5" Width="1.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Pages\MainPage.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Pages.SettingsPage" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="34.25" Y="22" Width="1.5" />
+  <Class Name="AdminArchive.View.Pages.SettingsPage" BaseTypeListCollapsed="true">
+    <Position X="23" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Pages\SettingsPage.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Pages.StorageUnitPage" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="27.25" Y="23" Width="1.5" />
+  <Class Name="AdminArchive.View.Pages.StorageUnitPage" BaseTypeListCollapsed="true">
+    <Position X="14.75" Y="23.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Pages\EditorPages\StorageUnitPage.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.UserControls.AccountUC" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="27.25" Y="17" Width="1.5" />
+  <Class Name="AdminArchive.View.UserControls.AccountUC" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="13.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\UserControls\AccountUC.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Windows.Container" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="32.5" Y="18" Width="1.5" />
+  <Class Name="AdminArchive.View.Windows.Container" BaseTypeListCollapsed="true">
+    <Position X="22.5" Y="11.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Windows\Container.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Windows.DocumentWindow" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="25.5" Y="19" Width="1.75" />
+  <Class Name="AdminArchive.View.Windows.DocumentWindow" BaseTypeListCollapsed="true">
+    <Position X="27.5" Y="21.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Windows\Editor\DocumentWindow.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Windows.FundWindow" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="29" Y="20" Width="1.5" />
+  <Class Name="AdminArchive.View.Windows.FundWindow" BaseTypeListCollapsed="true">
+    <Position X="25.75" Y="17.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Windows\Editor\FundWindow.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Windows.InventoryWindow" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="27.25" Y="21" Width="1.5" />
+  <Class Name="AdminArchive.View.Windows.InventoryWindow" BaseTypeListCollapsed="true">
+    <Position X="25.75" Y="14.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Windows\Editor\InventoryWindow.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.Windows.StorageUnitWindow" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="29" Y="23" Width="1.75" />
+  <Class Name="AdminArchive.View.Windows.StorageUnitWindow" BaseTypeListCollapsed="true">
+    <Position X="18.25" Y="22" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Windows\Editor\StorageUnitWindow.xaml.cs</FileName>
@@ -358,7 +358,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="AdminArchive.ViewModel.AccountVM">
-    <Position X="22.5" Y="3" Width="2.75" />
+    <Position X="21.25" Y="3" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAACIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ViewModel\AccountVM.cs</FileName>
@@ -373,14 +373,35 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AdminArchive.ViewModel.ContainerVM">
-    <Position X="27.25" Y="3" Width="2.25" />
+    <Position X="20" Y="11.5" Width="2.25" />
+    <InheritanceLine Type="AdminArchive.ViewModel.BaseViewModel" ManuallyRouted="true">
+      <Path>
+        <Point X="20.75" Y="2.247" />
+        <Point X="20.75" Y="2.625" />
+        <Point X="14.218" Y="2.625" />
+        <Point X="14.218" Y="11.48" />
+        <Point X="19.877" Y="11.48" />
+        <Point X="19.877" Y="12.631" />
+        <Point X="20" Y="12.631" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAEQAAAAAAAAAAAAAAACAAAAAAAAAAAAAAgAAAA=</HashCode>
       <FileName>ViewModel\ContainerVM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.ViewModel.EditBaseVM">
-    <Position X="30.25" Y="3" Width="2" />
+    <Position X="17.75" Y="12" Width="2" />
+    <InheritanceLine Type="AdminArchive.ViewModel.BaseViewModel" ManuallyRouted="true">
+      <Path>
+        <Point X="20.75" Y="2.247" />
+        <Point X="20.75" Y="2.625" />
+        <Point X="14.221" Y="2.625" />
+        <Point X="14.221" Y="11.481" />
+        <Point X="18.75" Y="11.481" />
+        <Point X="18.75" Y="12" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAJAAIAAAAAAIAAAAAAAAAAAgAAAEAQAAAAoAAAAAAA=</HashCode>
       <FileName>ViewModel\BaseViewModel\EditBaseVM.cs</FileName>
@@ -389,33 +410,33 @@
   <Class Name="AdminArchive.ViewModel.FundPageVM">
     <Position X="20.25" Y="7.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AABAEIIEEAAAAAAAAAAAAAAAgQAAAAAAABAAAgAAAAA=</HashCode>
+      <HashCode>AABAEIIEEAAAAAAAAAAAAAAAgQAAAAEAABAAAgAAAAA=</HashCode>
       <FileName>ViewModel\EditorPage\FundPageVM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.ViewModel.FundWindowVM">
-    <Position X="31.25" Y="7.25" Width="2.5" />
+    <Position X="20.25" Y="16.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AABCAAIEAgABAAAggBAAAAAAgABAFEAAAAAQAgAACEA=</HashCode>
+      <HashCode>AARCAAIEAgABAAAggFAAAAACgABAFEAAAAAQAgAACEA=</HashCode>
       <FileName>ViewModel\EditorWindow\FundWindowVM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.ViewModel.InventoryPageVM">
     <Position X="23" Y="7.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AgJAAAIEEAAAAAAAAAAAAAAAgQAAAAAAABAAAAAAAAA=</HashCode>
+      <HashCode>AgJAAAIEEAAAAAAAAAAAAAAAgQAAAAEAABAAAAAAAAA=</HashCode>
       <FileName>ViewModel\EditorPage\InventoryPageVM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.ViewModel.InventoryWindowVM">
-    <Position X="34" Y="7.25" Width="2.5" />
+    <Position X="23" Y="16.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AABCAAIMAgABAAAAgBAAAAAAgAAAFEAAAAARAgAACEA=</HashCode>
+      <HashCode>AABCAAIEAgABAAAAgBAAAAAAgQAAFEAAABAQAgAACEA=</HashCode>
       <FileName>ViewModel\EditorWindow\InventoryWindowVM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.ViewModel.MainPageVM">
-    <Position X="25.5" Y="3" Width="1.5" />
+    <Position X="21.25" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ViewModel\MainPageVM.cs</FileName>
@@ -424,40 +445,34 @@
   <Class Name="AdminArchive.ViewModel.PageBaseVM">
     <Position X="19" Y="3" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAJAAAAEAAAAIAAAAAAAAAAAgAAAAgQCAAAIAAAAAAA=</HashCode>
+      <HashCode>AQJAAAAMAAAAIAAAAAAAAAAAgAAAAgUCAAAIAAAAAAA=</HashCode>
       <FileName>ViewModel\BaseViewModel\PageBaseVM.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.App" Collapsed="true">
-    <Position X="34.25" Y="17" Width="1.5" />
+  <Class Name="AdminArchive.App">
+    <Position X="14.75" Y="5.75" Width="1.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>App.xaml.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.AppSettings" Collapsed="true">
-    <Position X="36" Y="17" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAQAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="AdminArchive.Classes.MessageBoxs" Collapsed="true">
-    <Position X="30.75" Y="21" Width="1.5" />
+  <Class Name="AdminArchive.Classes.MessageBoxs">
+    <Position X="14.75" Y="22" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAEAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Classes\MessageBoxs.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AdminArchive.View.Pages.CategoryPage" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="29" Y="18" Width="1.5" />
+  <Class Name="AdminArchive.View.Pages.CategoryPage" BaseTypeListCollapsed="true">
+    <Position X="25.75" Y="16.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\Pages\Administration\CategoryPage.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="AdminArchive.View.UserControls.ProtocolUC" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="37.75" Y="21" Width="1.5" />
+  <Class Name="AdminArchive.View.UserControls.ProtocolUC" BaseTypeListCollapsed="true">
+    <Position X="22.25" Y="22.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>View\UserControls\ProtocolUC.xaml.cs</FileName>
@@ -474,26 +489,26 @@
   <Class Name="AdminArchive.ViewModel.DocumentPageVM">
     <Position X="17.5" Y="7.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AABAAAIEECAAAAAAAAAAAAAAgQAAAAACABAAAAAAAAA=</HashCode>
+      <HashCode>AgBAAAIEECAAAAAAAAAAAAAAgQAAAAECIBAAAAAAAAA=</HashCode>
       <FileName>ViewModel\EditorPage\DocumentPageVM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.ViewModel.StorageUnitPageVM">
     <Position X="14.75" Y="7.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AABAAAIEEAAAAAAAAAAAAAAAgQAAAAAAIBAAIAAAAAA=</HashCode>
+      <HashCode>AgBAAAIEEAAAAAAAAAAAAAAAgQAAAAEAIBAAIAAAAAA=</HashCode>
       <FileName>ViewModel\EditorPage\StorageUnitPageVM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.ViewModel.DocumentWindowVM">
-    <Position X="28.5" Y="7.25" Width="2.5" />
+    <Position X="17.5" Y="16.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AABCAAIEAgABAAAAgBAAAAAAgQAAFEAAABAQAgAACEA=</HashCode>
       <FileName>ViewModel\EditorWindow\DocumentWindowVM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.ViewModel.StorageUnitWindowVM">
-    <Position X="25.75" Y="7.25" Width="2.5" />
+    <Position X="14.75" Y="16.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AABCAAIEAgABAAAApBAAAAAAgAAAFEAAAAAQAgAACEA=</HashCode>
       <FileName>ViewModel\EditorWindow\StorageUnitWindowVM.cs</FileName>

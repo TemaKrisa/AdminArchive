@@ -4,12 +4,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AdminArchive.View.Windows" xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+        xmlns:local="clr-namespace:AdminArchive.View.Windows" xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
     mc:Ignorable="d"        
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
         WindowCornerPreference="Round" WindowStartupLocation="CenterScreen"
-        Title="FundWindow" MinHeight="720" MinWidth="1000">
+        x:Name="Window" Title="FundWindow" MinHeight="720" MinWidth="1000">
     <Window.DataContext>
         <vm:FundWindowVM/>
     </Window.DataContext>
@@ -17,6 +17,7 @@
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -27,18 +28,13 @@
         <ui:TitleBar Grid.Row="0" UseSnapLayout="True" Title="Фонд"/>
         <Grid Grid.Row="1">
             <ui:Button Content="Сохранить" Command="{Binding Save}" Icon="Save24" Margin="5" IconFilled="True"/>
-            <ui:Button Content="Протокол" Icon="History24" IconFilled="True" Margin="236,0,0,0"/>
-            <ui:Button Content="Сведения" Icon="Info24" IconFilled="True" Margin="350,0,0,0"/>
+            <ui:Button Content="Протокол" Command="{Binding ShowLog}" Icon="History24" IconFilled="True" Margin="236,0,0,0"/>
             <ui:Button Content="Добавить" Command="{Binding Add}" Icon="Add24" Margin="124,0,0,0" IconFilled="True"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <ui:Button Margin="5" Height="30" Icon="Previous16" IconFilled="True"/>
-                <ui:Button Margin="0" Height="30" Icon="Play12" RenderTransformOrigin="0.5,0.5" IconFilled="True">
-                    <ui:Button.RenderTransform>
-                        <ScaleTransform ScaleX="-1" CenterX="0.5"/>
-                    </ui:Button.RenderTransform>
-                </ui:Button>
-                <ui:Button Margin="5" Height="30" Icon="Play12" IconFilled="True"/>
-                <ui:Button Margin="0" Height="30" Icon="Next16" IconFilled="True"/>
+                <ui:Button Icon="Previous24" IconFilled="{Binding IsFirst}" Command="{Binding First}" IsEnabled="{Binding IsFirst}"/>
+                <ui:Button Icon="Play24" IconFilled="{Binding IsFirst}" Command="{Binding Prev}" IsEnabled="{Binding IsFirst}"/>
+                <ui:Button Icon="Play24" IconFilled="{Binding IsLast}" Command="{Binding Next}" IsEnabled="{Binding IsLast}"/>
+                <ui:Button Icon="Next24" IconFilled="{Binding IsLast}" Command="{Binding Last}" IsEnabled="{Binding IsLast}"/>
             </StackPanel>
         </Grid>
         <TabControl Grid.Row="2">
@@ -59,17 +55,17 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="160,15,10,15">Номер*</TextBlock>
-                        <TextBox Width="50" MaxLength="1"/>
-                        <ui:NumberBox IntegersOnly="True" Margin="5,0" Text=" "/>
-                        <TextBox Width="70" MaxLength="2"/>
+                        <TextBox Width="50" MaxLength="1" Text="{Binding  Prefix}"/>
+                        <ui:NumberBox IntegersOnly="True" Margin="5,0" Text="{Binding Number}"/>
+                        <TextBox Width="70" MaxLength="2" Text="{Binding Literal}"/>
                     </StackPanel>
                     <Grid Grid.Row="1">
                         <TextBlock HorizontalAlignment="Left" Margin="105,0">Наименование</TextBlock>
-                        <TextBox Margin="210,0,30,0" Text="{Binding SelectedFond.FondName}" />
+                        <TextBox Margin="210,0,30,0" Text="{Binding SelectedItem.FondName}" />
                     </Grid>
                     <Grid Grid.Row="2">
                         <TextBlock Margin="15   ,0,793,0">Сокращенное наименование</TextBlock>
-                        <TextBox Margin="210,0,30,0" Text="{Binding SelectedFond.FondShortName}" ></TextBox>
+                        <TextBox Margin="210,0,30,0" Text="{Binding SelectedItem.FondShortName}" ></TextBox>
                     </Grid>
                     <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
@@ -81,11 +77,11 @@
                             <ColumnDefinition Width="180"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="10">Вид</TextBlock>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding FondView}" SelectedValuePath="ViewId" DisplayMemberPath="ViewName" SelectedValue="{Binding SelectedFond.View}"/>
-                        <TextBlock Grid.Column="2" HorizontalAlignment="Right">Хар-ка секретности:</TextBlock>
-                        <ComboBox Grid.Column="3" Margin="5" ItemsSource="{Binding SecretChar}" SelectedValuePath="CharId" DisplayMemberPath="CharName" SelectedValue="{Binding SelectedFond.SecretChar}"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="1" ItemsSource="{Binding FondView}" SelectedValuePath="ViewId" DisplayMemberPath="ViewName" SelectedValue="{Binding SelectedItem.View,Mode=TwoWay}"/>
+                        <TextBlock  Grid.Column="2" HorizontalAlignment="Right">Хар-ка секретности:</TextBlock>
+                        <ComboBox SelectedIndex="0" Grid.Column="3" Margin="5" ItemsSource="{Binding SecretChar}" SelectedValuePath="CharId" DisplayMemberPath="CharName" SelectedValue="{Binding SelectedItem.SecretChar}"/>
                         <TextBlock Grid.Column="4">Доступ:</TextBlock>
-                        <ComboBox Grid.Column="5" ItemsSource="{Binding Acess}" SelectedValuePath="AcessId"  SelectedValue="{Binding SelectedFond.Acess}" DisplayMemberPath="AcessName" Margin="5,0,30,0"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="5" ItemsSource="{Binding Acess}" SelectedValuePath="AcessId"  SelectedValue="{Binding SelectedItem.Acess}" DisplayMemberPath="AcessName" Margin="5,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
@@ -95,9 +91,9 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="10">Исторический период</TextBlock>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding HistoricalPeriod}" SelectedValue="{Binding SelectedFond}" DisplayMemberPath="PeriodName"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="1" ItemsSource="{Binding HistoricalPeriod}" SelectedValuePath="PeriodId"  SelectedValue="{Binding SelectedItem.HistoricalPeriod}" DisplayMemberPath="PeriodName"/>
                         <TextBlock Grid.Column="2" Margin="5" > Причина ограничения доступа</TextBlock>
-                        <ComboBox Grid.Column="3" Margin="0,0,30,0" ItemsSource="{Binding CharRestrict}" SelectedValue="{Binding SelectedFond.CharRestrict}" SelectedValuePath="RestrictId" DisplayMemberPath="RestrictName"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="3" Margin="0,0,30,0" ItemsSource="{Binding CharRestrict}" SelectedValue="{Binding SelectedItem.CharRestrict}" SelectedValuePath="RestrictId" DisplayMemberPath="RestrictName"/>
                     </Grid>
                     <Grid Grid.Row="5">
                         <Grid.ColumnDefinitions>
@@ -107,9 +103,9 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Тип фонда</TextBlock>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding FondType}" SelectedValue="{Binding SelectedFond.Type}" DisplayMemberPath="TypeName"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="1" ItemsSource="{Binding FondType}" SelectedValuePath="TypeId" SelectedValue="{Binding SelectedItem.Type}" DisplayMemberPath="TypeName"/>
                         <TextBlock HorizontalAlignment="Right" Margin="3" Grid.Column="2">Тип документов</TextBlock>
-                        <ComboBox Grid.Column="3" ItemsSource="{Binding DocType}" SelectedValue="{Binding SelectedFond.DocType}" DisplayMemberPath="TypeName" SelectedValuePath="TypeId" Margin="0,0,30,0"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="3" ItemsSource="{Binding DocType}" SelectedValue="{Binding SelectedItem.DocType}" DisplayMemberPath="TypeName" SelectedValuePath="TypeId" Margin="0,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="6">
                         <Grid.ColumnDefinitions>
@@ -119,9 +115,9 @@
                             <ColumnDefinition Width="170"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Источник поступления</TextBlock>
-                        <ComboBox Grid.Column="1" Margin="0,0,5,0" ItemsSource="{Binding IncomeSource}" SelectedValue="{Binding SelectedFond.IncomeSource}" DisplayMemberPath="SourceName"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="1" Margin="0,0,5,0" ItemsSource="{Binding IncomeSource}" SelectedValuePath="SourceId" SelectedValue="{Binding SelectedItem.IncomeSource}" DisplayMemberPath="SourceName"/>
                         <TextBlock Grid.Column="2" Margin="5">Категория</TextBlock>
-                        <ComboBox Grid.Column="3" ItemsSource="{Binding Category}" SelectedValue="{Binding SelectedFond.Category}" SelectedValuePath="CatetoryId" DisplayMemberPath="CategoryName" Margin="0,0,30,0"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="3" ItemsSource="{Binding Category}" SelectedValue="{Binding SelectedItem.Category}" SelectedValuePath="CatetoryId" DisplayMemberPath="CategoryName" Margin="0,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="7">
                         <Grid.ColumnDefinitions>
@@ -131,9 +127,9 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Собственность</TextBlock>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding Ownership}" DisplayMemberPath="OwershipName" SelectedValue="{Binding SelectedFond.OwnerShip}" IsEditable="True"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Ownership}" SelectedValuePath="OwnershipID" DisplayMemberPath="OwershipName" SelectedValue="{Binding SelectedItem.OwnerShip}" IsEditable="True"/>
                         <TextBlock Grid.Column="2" HorizontalAlignment="Center">Срок хранения</TextBlock>
-                        <ComboBox Grid.Column="3" Margin="0,0,30,0" ItemsSource="{Binding StorageTime}" SelectedValue="{Binding SelectedFond.StorageTime}" DisplayMemberPath="TymeName"/>
+                        <ComboBox Grid.Column="3" Margin="0,0,30,0" ItemsSource="{Binding StorageTime}" SelectedValuePath="TymeID" SelectedValue="{Binding SelectedItem.StorageTime}" DisplayMemberPath="TymeName"/>
                     </Grid>
                     <Grid Grid.Row="8">
                         <Grid.ColumnDefinitions>
@@ -144,14 +140,14 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Движение</TextBlock>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding Movement}" DisplayMemberPath="MovementName" />
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Movements}" DisplayMemberPath="MovementName" SelectedValuePath="MovementId" SelectedItem="{Binding SelectedItem.Movement}"/>
                         <ComboBox Grid.Column="2" ItemsSource="{Binding }" Margin="5"/>
                         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Margin="5">Основание поступления</TextBlock>
-                        <ComboBox Grid.Column="4" Margin="0,0,30,0"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="4" Margin="0,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="9">
                         <TextBlock Margin="55,0,0,0">Справка по движению</TextBlock>
-                        <TextBox Margin="210,3,30,3" TextWrapping="Wrap" Text="{Binding SelectedFond.MovementNote}" VerticalAlignment="Stretch"/>
+                        <TextBox Margin="210,3,30,3" TextWrapping="Wrap" Text="{Binding SelectedItem.MovementNote}" VerticalAlignment="Stretch"/>
                     </Grid>
                     <Grid Grid.Row="15">
                         <Grid.ColumnDefinitions>
@@ -180,7 +176,7 @@
                                 </Grid>
                                 <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" Height="76">
                                     <TextBlock HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap">Первое поступление документов</TextBlock>
-                                    <TextBox Margin="15,5" Text="{Binding SelectedFond.ReceiptDate}"/>
+                                    <TextBox Margin="15,5" Text="{Binding SelectedItem.ReceiptDate}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -194,9 +190,9 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <TextBlock HorizontalAlignment="Right" Margin="0,0,15,0">Поседняя выверка учетных документов</TextBlock>
-                            <TextBox Grid.Column="1" Margin="0,0,30,0" Text="{Binding SelectedFond.LastCheck}" />
+                            <TextBox Grid.Column="1" Margin="0,0,30,0" Text="{Binding SelectedItem.LastCheck}" />
                             <TextBlock Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,15,0">Поседняя проверка наличия</TextBlock>
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="0,0,30,0" Text="{Binding SelectedFond.LastReconcilation}"/>
+                            <TextBox Grid.Column="1" Grid.Row="1" Margin="0,0,30,0" Text="{Binding SelectedItem.LastReconcilation}"/>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -212,11 +208,17 @@
                         <Grid>
                             <TextBlock VerticalAlignment="Top" Width="auto" Margin="10,-13,786,0" Background="Gray">Переименования фонда</TextBlock>
                             <ui:Button Icon="Add24" VerticalAlignment="Top" Margin="5">Добавить</ui:Button>
-                            <ui:DataGrid Margin="5,42,5,5">
+                            <ui:DataGrid Margin="5,42,5,5" AutoGenerateColumns="False" ColumnWidth="*">
                                 <ui:DataGrid.Columns>
-                                    <DataGridTextColumn Header="Сокращенное наименование"/>
-                                    <DataGridTextColumn Header="Дата начала"/>
-                                    <DataGridTextColumn Header="Дата окончания"/>
+                                    <DataGridTextColumn Header="Сокращенное наименование" Width="*"/>
+                                    <DataGridTemplateColumn Header="Дата начала" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <DatePicker/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn> 
+                                    <DataGridTextColumn Header="Дата окончания" Width=""/>
                                     <DataGridTextColumn Header="Примечание" Width="*"/>
                                 </ui:DataGrid.Columns>
                             </ui:DataGrid>
@@ -228,7 +230,13 @@
                             <ui:Button Icon="Add24" VerticalAlignment="Top" Margin="5">Добавить</ui:Button>
                             <ui:DataGrid Margin="5,42,5,5">
                                 <ui:DataGrid.Columns>
-                                    <DataGridTextColumn Header="Год начала периода"/>
+                                    <DataGridTemplateColumn>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ui:NumberBox IntegersOnly="True"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                     <DataGridTextColumn Header="Год окончания периода"/>
                                     <DataGridTextColumn Header="Причина отсутсвия информации"/>
                                     <DataGridTextColumn Header="Местонахождение документа"/>
@@ -239,12 +247,15 @@
                     </Border>
                 </Grid>
             </TabItem>
-            <TabItem Header="Физ. состояние" Width="150"/>
             <TabItem Header="Особенности" Width="150" IsSelected="True" >
                 <Grid>
-
+                    <DataGrid Margin="30" ItemsSource="{Binding SelectedItem}"></DataGrid>
                 </Grid>
             </TabItem>
         </TabControl>
+        <uc:LogUC DataContext="{Binding DataContext, ElementName=Window}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding LogVisibility}"/>
+
+
     </Grid>
 </ui:UiWindow>
