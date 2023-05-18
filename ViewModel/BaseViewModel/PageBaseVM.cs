@@ -2,7 +2,10 @@
 
 namespace AdminArchive.ViewModel
 {
-    internal abstract class PageBaseVM : BaseViewModel
+    /// <summary>
+    /// Базовая ViewModel для страниц фондов, документов, описей, ед.хранения 
+    /// </summary>
+    internal abstract class PageBaseVM : BaseViewModel 
     {
         private RelayCommand _add, _open, _edit,_back;
 

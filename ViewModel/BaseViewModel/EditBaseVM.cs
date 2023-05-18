@@ -2,6 +2,9 @@
 
 namespace AdminArchive.ViewModel
 {
+    /// <summary>
+    /// ViewModel для редактирования Фондов, Описей, Ед.Хранения и Документов
+    /// </summary>
     internal abstract class EditBaseVM : BaseViewModel
     {
         private RelayCommand? _add, _open, _save, _close, _next, _prev, _last, _first;

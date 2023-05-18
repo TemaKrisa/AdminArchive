@@ -1,15 +1,16 @@
-﻿<ui:UiWindow  
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" x:Class="AdminArchive.View.Windows.FundWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AdminArchive.View.Windows" xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
+﻿<ui:UiWindow
+    x:Class="AdminArchive.View.Windows.FundWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
+    xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"        
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
-        WindowCornerPreference="Round" WindowStartupLocation="CenterScreen"
-        x:Name="Window" Title="FundWindow" MinHeight="720" MinWidth="1000">
+        WindowCornerPreference="Round" WindowStartupLocation="CenterScreen" x:Name="Window" MinHeight="720" MinWidth="1000">
     <Window.DataContext>
         <vm:FundWindowVM/>
     </Window.DataContext>
@@ -55,9 +56,9 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="160,15,10,15">Номер*</TextBlock>
-                        <TextBox Width="50" MaxLength="1" Text="{Binding  Prefix}"/>
-                        <ui:NumberBox IntegersOnly="True" Margin="5,0" Text="{Binding Number}"/>
-                        <TextBox Width="70" MaxLength="2" Text="{Binding Literal}"/>
+                        <TextBox Width="50" MaxLength="1" Text="{Binding  SelectedItem.FondIndex}"/>
+                        <ui:NumberBox IntegersOnly="True" Margin="5,0" Text="{Binding SelectedItem.FondNumber}"/>
+                        <TextBox Width="70" MaxLength="2" Text="{Binding SelectedItem.FondLiteral}"/>
                     </StackPanel>
                     <Grid Grid.Row="1">
                         <TextBlock HorizontalAlignment="Left" Margin="105,0">Наименование</TextBlock>
@@ -117,7 +118,7 @@
                         <TextBlock HorizontalAlignment="Right" Margin="5">Источник поступления</TextBlock>
                         <ComboBox SelectedIndex="0" Grid.Column="1" Margin="0,0,5,0" ItemsSource="{Binding IncomeSource}" SelectedValuePath="SourceId" SelectedValue="{Binding SelectedItem.IncomeSource}" DisplayMemberPath="SourceName"/>
                         <TextBlock Grid.Column="2" Margin="5">Категория</TextBlock>
-                        <ComboBox SelectedIndex="0" Grid.Column="3" ItemsSource="{Binding Category}" SelectedValue="{Binding SelectedItem.Category}" SelectedValuePath="CatetoryId" DisplayMemberPath="CategoryName" Margin="0,0,30,0"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="3" SelectedValuePath="CategoryId" DisplayMemberPath="CategoryName" ItemsSource="{Binding Categories}" SelectedValue="{Binding SelectedItem.Category}" Margin="0,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="7">
                         <Grid.ColumnDefinitions>
@@ -141,7 +142,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Движение</TextBlock>
                         <ComboBox Grid.Column="1" ItemsSource="{Binding Movements}" DisplayMemberPath="MovementName" SelectedValuePath="MovementId" SelectedItem="{Binding SelectedItem.Movement}"/>
-                        <ComboBox Grid.Column="2" ItemsSource="{Binding }" Margin="5"/>
+                        <ComboBox Grid.Column="2" Margin="5" ItemsSource="{Binding Movements}" DisplayMemberPath="MovementName" SelectedValuePath="MovementId" SelectedItem="{Binding SelectedItem.MovementType}"/>
                         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Margin="5">Основание поступления</TextBlock>
                         <ComboBox SelectedIndex="0" Grid.Column="4" Margin="0,0,30,0"/>
                     </Grid>
@@ -197,7 +198,27 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="НСА" Width="75"/>
+            <TabItem Header="НСА" Width="75">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>                        
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock FontSize="16" Grid.Column="1" FontWeight="DemiBold">Аннотация</TextBlock>
+                    <TextBox Text="{Binding SelectedItem.Annotation}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" MaxLength="350" />                    
+                    <TextBlock FontSize="16" Grid.Row="2" Grid.Column="1" FontWeight="DemiBold">Историческая справка</TextBlock>
+                    <TextBox Text="{Binding SelectedItem.HistoricalOverview}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" MaxLength="350" />
+                </Grid>
+            </TabItem>
             <TabItem Header="Доп. инф." Width="150">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -207,19 +228,31 @@
                     <Border CornerRadius="6" BorderThickness="3" BorderBrush="Gray" Height="250" Margin="30,20">
                         <Grid>
                             <TextBlock VerticalAlignment="Top" Width="auto" Margin="10,-13,786,0" Background="Gray">Переименования фонда</TextBlock>
-                            <ui:Button Icon="Add24" VerticalAlignment="Top" Margin="5">Добавить</ui:Button>
-                            <ui:DataGrid Margin="5,42,5,5" AutoGenerateColumns="False" ColumnWidth="*">
+                            <ui:DataGrid Margin="10" SelectedItem="{Binding SelectedName}" AutoGenerateColumns="False" ColumnWidth="*" ItemsSource="{Binding FondNames, UpdateSourceTrigger=PropertyChanged}">
                                 <ui:DataGrid.Columns>
-                                    <DataGridTextColumn Header="Сокращенное наименование" Width="*"/>
+                                    <DataGridTextColumn Header="Сокращенное наименование" Width="*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
                                     <DataGridTemplateColumn Header="Дата начала" Width="*">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <DatePicker/>
+                                                <DatePicker SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn> 
-                                    <DataGridTextColumn Header="Дата окончания" Width=""/>
-                                    <DataGridTextColumn Header="Примечание" Width="*"/>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Дата окончания" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <DatePicker SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Примечание" Width="*" Binding="{Binding Note, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTemplateColumn>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ui:Button Icon="Delete24" Width="50"  Command="{Binding DataContext.RemoveName, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </ui:DataGrid.Columns>
                             </ui:DataGrid>
                         </Grid>
@@ -227,34 +260,41 @@
                     <Border Grid.Row="1" CornerRadius="6" BorderThickness="3" BorderBrush="Gray" Height="250" Margin="30,10">
                         <Grid>
                             <TextBlock VerticalAlignment="Top" Width="auto" Margin="10,-13,726,0" Background="Gray"><Run Text="Незадокументированные периоды"/></TextBlock>
-                            <ui:Button Icon="Add24" VerticalAlignment="Top" Margin="5">Добавить</ui:Button>
-                            <ui:DataGrid Margin="5,42,5,5">
+                            <ui:DataGrid Margin="10" ItemsSource="{Binding UndocumentPeriods}">
                                 <ui:DataGrid.Columns>
-                                    <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Дата начала">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <ui:NumberBox IntegersOnly="True"/>
+                                                <DatePicker SelectedDate="{Binding StartDate}"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTextColumn Header="Год окончания периода"/>
-                                    <DataGridTextColumn Header="Причина отсутсвия информации"/>
-                                    <DataGridTextColumn Header="Местонахождение документа"/>
-                                    <DataGridTextColumn Header="Примечание" Width="*"/>
+                                    <DataGridTemplateColumn Header="Дата конца">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <DatePicker SelectedDate="{Binding EndDate}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Причина отсутсвия информации" Binding="{Binding Reason}"/>
+                                    <DataGridTextColumn Header="Местонахождение документа" Binding="{Binding DocumentLocation}"/>
+                                    <DataGridTextColumn Header="Примечание" Width="*" Binding="{Binding Note}"/>
+                                    <DataGridTemplateColumn>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ui:Button Icon="Delete24" Width="50"  Command="{Binding DataContext.RemoveName, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </ui:DataGrid.Columns>
                             </ui:DataGrid>
                         </Grid>
                     </Border>
                 </Grid>
             </TabItem>
-            <TabItem Header="Особенности" Width="150" IsSelected="True" >
-                <Grid>
-                    <DataGrid Margin="30" ItemsSource="{Binding SelectedItem}"></DataGrid>
-                </Grid>
-            </TabItem>
         </TabControl>
         <uc:LogUC DataContext="{Binding DataContext, ElementName=Window}"
- Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding LogVisibility}"/>
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
 
 
     </Grid>

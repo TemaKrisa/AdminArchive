@@ -81,7 +81,7 @@ public partial class ArchiveBdContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True;");
+        => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True").EnableSensitiveDataLogging();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -193,9 +193,12 @@ public partial class ArchiveBdContext : DbContext
             entity.ToTable("Fond");
 
             entity.Property(e => e.FondId).HasColumnName("FondID");
-            entity.Property(e => e.FondName).HasMaxLength(50);
-            entity.Property(e => e.FondNumber).HasMaxLength(10);
-            entity.Property(e => e.FondShortName).HasMaxLength(50);
+            entity.Property(e => e.Annotation).HasMaxLength(350);
+            entity.Property(e => e.FondIndex).HasMaxLength(1);
+            entity.Property(e => e.FondLiteral).HasMaxLength(2);
+            entity.Property(e => e.FondName).HasMaxLength(150);
+            entity.Property(e => e.FondShortName).HasMaxLength(76);
+            entity.Property(e => e.HistoricalOverview).HasMaxLength(350);
             entity.Property(e => e.MovementNote).HasMaxLength(350);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.Fonds)
@@ -284,9 +287,7 @@ public partial class ArchiveBdContext : DbContext
         {
             entity.HasKey(e => e.NamesId);
 
-            entity.Property(e => e.NamesId)
-                .ValueGeneratedNever()
-                .HasColumnName("NamesID");
+            entity.Property(e => e.NamesId).HasColumnName("NamesID");
             entity.Property(e => e.EndDate).HasColumnType("date");
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Note).HasMaxLength(50);
@@ -451,9 +452,7 @@ public partial class ArchiveBdContext : DbContext
 
             entity.ToTable("ReceiptReason");
 
-            entity.Property(e => e.ReasonId)
-                .ValueGeneratedNever()
-                .HasColumnName("ReasonID");
+            entity.Property(e => e.ReasonId).HasColumnName("ReasonID");
             entity.Property(e => e.ReasonName).HasMaxLength(50);
         });
 

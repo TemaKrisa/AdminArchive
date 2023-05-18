@@ -1,5 +1,6 @@
 ﻿using AdminArchive.Model;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
@@ -58,8 +59,8 @@ namespace AdminArchive.ViewModel
             flowDoc.Blocks.Add(new Paragraph());
             foreach (var item in Fonds)
             {
-                flowDoc.Blocks.Add(new Paragraph(new Run($"{item.FondShortName}"))
-                { TextAlignment = TextAlignment.Left, FontWeight = FontWeights.Bold, FontFamily = font, FontSize = 22 });
+                flowDoc.Blocks.Add(new Paragraph(new Run($"{"Фонд №" + item.FullNumber +" " + item.FondName}"))
+                { TextAlignment = TextAlignment.Left, FontWeight = FontWeights.Bold, FontFamily = font, FontSize = 20 });
                  TableRowGroup dataGroup = new();
                 Table table = new() { BorderBrush = Brushes.Black, BorderThickness = new Thickness(1), FontSize = 14 };
                 for (int i = 0; i < 6; i++) { table.Columns.Add(new TableColumn()); }
@@ -68,23 +69,28 @@ namespace AdminArchive.ViewModel
                     FontWeight = FontWeights.Bold,
                     FontFamily = font,
                     FontSize = 22,
-                    Cells = { new TableCell(new Paragraph(new Run("№ "))), new TableCell(new Paragraph(new Run("Заголовок"))),
-                    new TableCell(new Paragraph(new Run("Дата нач."))),new TableCell(new Paragraph(new Run("Дата кон."))),
+                    Cells = { new TableCell(new Paragraph(new Run("№ "))), new TableCell(new Paragraph(new Run("Название описи"))),
+                    new TableCell(new Paragraph(new Run("Тип описи"))),new TableCell(new Paragraph(new Run("Дата нач."))),new TableCell(new Paragraph(new Run("Дата кон."))),
                     new TableCell(new Paragraph(new Run("Объем ед. хр.")))}
                 };
                 table.RowGroups.Add(new TableRowGroup { Rows = { headerRow } });
 
-                foreach (var invent in dc.Inventories.Where(u=>u.Fond == item.FondId))
+                foreach (var invent in dc.Inventories.Where(u=>u.Fond == item.FondId).Include(u=>u.TypeNavigation))
                 {
                         TableRow dataRow = new();
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.InventoryNumber))));
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.Title))));
+                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.TypeNavigation.TypeName))));
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.StartDate.ToString()))));
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.EndDate.ToString()))));
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.Volume.ToString()))));
+
                         dataGroup.Rows.Add(dataRow);
                 }
-
+                TableRow finalRow = new();
+                finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Описей всего: {dc.Inventories.Where(u => u.Fond == item.FondId).Count()}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
+                finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Обьём всего: {dc.Inventories.Where(u => u.Fond == item.FondId).Sum(u => u.Volume)}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
+                dataGroup.Rows.Add(finalRow);
                 table.RowGroups.Add(dataGroup); 
                 flowDoc.Blocks.Add(table);
             }
@@ -128,7 +134,7 @@ namespace AdminArchive.ViewModel
             {
                 TableRow dataRow = new();
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.FondId.ToString()))));
-                dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.FondName))));
+                dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.FondShortName))));
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.CategoryNavigation?.CategoryName))));
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.StartDate.ToString()))));
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.EndDate.ToString()))));

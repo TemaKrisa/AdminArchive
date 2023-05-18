@@ -1,4 +1,7 @@
-﻿namespace AdminArchive.Model;
+﻿using System;
+using System.Collections.Generic;
+
+namespace AdminArchive.Model;
 
 public partial class Fond
 {
@@ -36,7 +39,7 @@ public partial class Fond
 
     public int? MovementType { get; set; }
 
-    public string? FondNumber { get; set; }
+    public int? FondNumber { get; set; }
 
     public int? HistoricalPeriod { get; set; }
 
@@ -51,6 +54,14 @@ public partial class Fond
     public short? LastCheck { get; set; }
 
     public string? MovementNote { get; set; }
+
+    public string? Annotation { get; set; }
+
+    public string? HistoricalOverview { get; set; }
+
+    public string? FondIndex { get; set; }
+
+    public string? FondLiteral { get; set; }
 
     public virtual Acess? AcessNavigation { get; set; }
 

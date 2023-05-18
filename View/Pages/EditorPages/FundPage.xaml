@@ -19,19 +19,18 @@
         <Grid Margin="5">
             <StackPanel Orientation="Horizontal">
                 <ui:Button Command="{Binding Add}" Content="Добавить новую запись" Icon="Add24" Appearance="Info"/>
-                <ui:Button Command="{Binding ReportAdd}" Content="Отчёт" Appearance="Success" Icon="Document24"/>
                 <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
             </StackPanel>
         </Grid>
-        <ui:DataGrid Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding Fonds}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"  AutoGenerateColumns="False" RowHeaderWidth="0">
+        <ui:DataGrid CanUserSortColumns="False" Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding Fonds}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"  AutoGenerateColumns="False" RowHeaderWidth="0">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding Open}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding FondNumber}" ></DataGridTextColumn>
-                <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding FondName}"></DataGridTextColumn>
+                <DataGridTextColumn Header="№" Binding="{Binding FullNumber}"/>
+                <DataGridTextColumn Header="Сокращенное наименование" Width="*" Binding="{Binding FondShortName}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Категория"  Binding="{Binding CategoryNavigation.CategoryName}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Дата нач." Binding="{Binding StartDate}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Дата кон." Binding="{Binding EndDate}"></DataGridTextColumn>

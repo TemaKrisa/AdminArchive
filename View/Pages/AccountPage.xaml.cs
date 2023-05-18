@@ -11,5 +11,6 @@ namespace AdminArchive.View.Pages
         {
             InitializeComponent();
         }
+
     }
 }

@@ -6,21 +6,22 @@ using System.Collections.ObjectModel;
 
 namespace AdminArchive.ViewModel
 {
+    /// <summary>
+    /// ViewModel для страницы документов
+    /// </summary>
     class DocumentPageVM : PageBaseVM
     {
         public ObservableCollection<Document>? Documents { get; set; }
-
         private ArchiveBdContext dc;
-
         private Document _selectedItem;
+        private StorageUnit curUnit;
+        private Inventory curInv;
+        private Fond curFond;
         public Document SelectedItem
         {
             get => _selectedItem;
             set => _selectedItem = value;
         }
-        private StorageUnit curUnit;
-        private Inventory curInv;
-        private Fond curFond;
         public DocumentPageVM(StorageUnit unit,Fond fond, Inventory inventory)
         {
             dc = new ArchiveBdContext();
@@ -30,10 +31,8 @@ namespace AdminArchive.ViewModel
             UpdateData();
         }
 
-        public void UpdateData()
-        {
-            Documents = new ObservableCollection<Document>(dc.Documents.Where(u => u.StorageUnit == curUnit.UnitId));
-        }
+        public void UpdateData() =>
+         Documents = new ObservableCollection<Document>(dc.Documents.Where(u => u.StorageUnit == curUnit.UnitId));
 
         protected override void GoBack()
         {
