@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 
 namespace AdminArchive.Model;
 
@@ -18,6 +17,8 @@ public partial class ArchiveBdContext : DbContext
     public virtual DbSet<Acess> Acesses { get; set; }
 
     public virtual DbSet<Activity> Activities { get; set; }
+
+    public virtual DbSet<Authenticity> Authenticities { get; set; }
 
     public virtual DbSet<Carrier> Carriers { get; set; }
 
@@ -82,7 +83,7 @@ public partial class ArchiveBdContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True").EnableSensitiveDataLogging();
+        => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -102,6 +103,14 @@ public partial class ArchiveBdContext : DbContext
 
             entity.Property(e => e.ActivityId).HasColumnName("ActivityID");
             entity.Property(e => e.ActivityName).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Authenticity>(entity =>
+        {
+            entity.ToTable("Authenticity");
+
+            entity.Property(e => e.AuthenticityId).HasColumnName("AuthenticityID");
+            entity.Property(e => e.AuthenticityName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Carrier>(entity =>
@@ -150,6 +159,10 @@ public partial class ArchiveBdContext : DbContext
             entity.Property(e => e.Date).HasColumnType("date");
             entity.Property(e => e.DocumentName).HasMaxLength(50);
             entity.Property(e => e.Note).HasMaxLength(50);
+
+            entity.HasOne(d => d.AuthenticityNavigation).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.Authenticity)
+                .HasConstraintName("FK_Document_Authenticity");
 
             entity.HasOne(d => d.DocTypeNavigation).WithMany(p => p.Documents)
                 .HasForeignKey(d => d.DocType)
@@ -530,12 +543,13 @@ public partial class ArchiveBdContext : DbContext
             entity.Property(e => e.UnitId).HasColumnName("UnitID");
             entity.Property(e => e.AccessRestrictionNote).HasMaxLength(50);
             entity.Property(e => e.Date).HasMaxLength(50);
+            entity.Property(e => e.Index).HasMaxLength(15);
             entity.Property(e => e.IsFm).HasColumnName("IsFM");
             entity.Property(e => e.IsSf).HasColumnName("IsSF");
             entity.Property(e => e.Note).HasMaxLength(150);
             entity.Property(e => e.Tite).HasMaxLength(50);
+            entity.Property(e => e.UnitLiteral).HasMaxLength(2);
             entity.Property(e => e.UnitName).HasMaxLength(50);
-            entity.Property(e => e.UnitNumber).HasMaxLength(5);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.StorageUnits)
                 .HasForeignKey(d => d.Acess)
@@ -554,6 +568,10 @@ public partial class ArchiveBdContext : DbContext
                 .HasForeignKey(d => d.Inventory)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_StorageUnit_Inventory");
+
+            entity.HasOne(d => d.SecretCharNavigation).WithMany(p => p.StorageUnits)
+                .HasForeignKey(d => d.SecretChar)
+                .HasConstraintName("FK_StorageUnit_SecretChar");
         });
 
         modelBuilder.Entity<StorageUnitFeature>(entity =>

@@ -1,4 +1,6 @@
-﻿namespace AdminArchive.Model
+﻿using System.Linq;
+
+namespace AdminArchive.Model
 {
     partial class Inventory
     {

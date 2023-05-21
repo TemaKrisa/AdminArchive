@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace AdminArchive.ViewModel
@@ -17,7 +18,7 @@ namespace AdminArchive.ViewModel
 
         public ObservableCollection<Category> Categories
         {
-            get { return _categories; }
+            get => _categories;
             set
             {
                 _categories = value;

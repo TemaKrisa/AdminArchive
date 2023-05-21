@@ -1,8 +1,10 @@
 ﻿using AdminArchive.Model;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Input;
 
 namespace AdminArchive.ViewModel
@@ -27,6 +29,7 @@ namespace AdminArchive.ViewModel
         private ObservableCollection<Document> itemList = new();
         public ObservableCollection<Document> ItemList { get => itemList; set { itemList = value; OnPropertyChanged(); } }
 
+        private StorageUnit storageUnit { get; set; }
         public ObservableCollection<DocumentFile> DocFiles { get => docFiles;  set { docFiles = value; OnPropertyChanged(); } }
 
         public Document _selectedItem = new();
@@ -67,7 +70,7 @@ namespace AdminArchive.ViewModel
 
         protected override void GoLast()
         {
-            SelectedItem = (ItemList.Count > 0) ? ItemList[ItemList.Count - 1] : null;
+            SelectedItem = (ItemList.Count > 0) ? ItemList[^1] : null;
             currentIndex = ItemList.IndexOf(SelectedItem);
             IsFirst = currentIndex != 0;
             IsLast = currentIndex != ItemList.Count - 1;
@@ -87,7 +90,7 @@ namespace AdminArchive.ViewModel
         #region Инициализация
         public DocumentWindowVM() { }
 
-        public DocumentWindowVM(Document selDoc, DocumentPageVM vm, int selIndex, ObservableCollection<Document> items)
+        public DocumentWindowVM(Document selDoc, DocumentPageVM vm, int selIndex, ObservableCollection<Document> items, StorageUnit unit)
         {
             SelectedItem = selDoc;
             pageVM = vm;
@@ -96,10 +99,11 @@ namespace AdminArchive.ViewModel
             FillCollections();
         }
 
-        public DocumentWindowVM(DocumentPageVM vm, ObservableCollection<Document> items)
+        public DocumentWindowVM(DocumentPageVM vm, ObservableCollection<Document> items, StorageUnit unit)
         {
             ItemList = items;
             pageVM = vm;
+            storageUnit = unit;
             FillCollections();
         }
         #endregion

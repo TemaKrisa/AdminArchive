@@ -2,8 +2,8 @@
 using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace AdminArchive.ViewModel
 {
@@ -13,7 +13,7 @@ namespace AdminArchive.ViewModel
         private ObservableCollection<Inventory> _inventories;
         public ObservableCollection<Inventory> Inventories
         {
-            get { return _inventories; }
+            get => _inventories; 
             set
             {
                 _inventories = value;

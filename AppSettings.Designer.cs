@@ -18,9 +18,7 @@ namespace AdminArchive {
         private static AppSettings defaultInstance = ((AppSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new AppSettings())));
         
         public static AppSettings Default {
-            get {
-                return defaultInstance;
-            }
+            get => defaultInstance;
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]

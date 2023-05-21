@@ -3,6 +3,7 @@ using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace AdminArchive.ViewModel
 {
@@ -42,16 +43,16 @@ namespace AdminArchive.ViewModel
 
         protected override void EditItem()
         {
-            DocumentWindow Editor = new();
-            DocumentWindowVM? EditorVM = Editor.DataContext as DocumentWindowVM;
-            EditorVM.SelectedItem = (SelectedItem as Document);
-            EditorVM.pageVM = this;
-            Editor.Show();
+            int index = Documents.IndexOf(SelectedItem);
+            DocumentWindow newWindow = new();
+            DocumentWindowVM? viewModel = new((SelectedItem as Document), this, index, Documents, curUnit);
+            newWindow.DataContext = viewModel;
+            newWindow.ShowDialog();
         }
 
         protected override void AddItem()
         {
-            DocumentWindowVM vm = new();
+            DocumentWindowVM vm = new(this,Documents,curUnit);
             var newWindow = new DocumentWindow { DataContext = vm };
             newWindow.ShowDialog();
         }

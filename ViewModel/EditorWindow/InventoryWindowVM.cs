@@ -1,5 +1,6 @@
 ﻿using AdminArchive.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -21,7 +22,7 @@ namespace AdminArchive.ViewModel
         private ObservableCollection<InventoryLog> _Log;
         public ObservableCollection<InventoryLog> Log
         {
-            get { return _Log; }
+            get => _Log;
             set { _Log = value; OnPropertyChanged(); }
         }
             
@@ -60,7 +61,7 @@ namespace AdminArchive.ViewModel
             }
         }
         private ObservableCollection<Inventory> itemList = new();
-        public ObservableCollection<Inventory> ItemList { get { return itemList; } set { itemList = value; OnPropertyChanged(); } }
+        public ObservableCollection<Inventory> ItemList { get => itemList; set { itemList = value; OnPropertyChanged(); } }
 
         #endregion
 

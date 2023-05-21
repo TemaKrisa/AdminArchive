@@ -1,5 +1,7 @@
 ﻿using AdminArchive.Classes;
+using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 
@@ -24,7 +26,7 @@ namespace AdminArchive.ViewModel
         private Visibility _uCVisibility = Visibility.Collapsed;
         public Visibility UCVisibility
         {
-            get { return _uCVisibility; }
+            get => _uCVisibility;
             set { _uCVisibility = value; OnPropertyChanged(); }
         }
     }

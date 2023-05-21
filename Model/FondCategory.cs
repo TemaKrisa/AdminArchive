@@ -1,4 +1,6 @@
-﻿namespace AdminArchive.Model;
+﻿using System.Collections.Generic;
+
+namespace AdminArchive.Model;
 
 public partial class FondCategory
 {

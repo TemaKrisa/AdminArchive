@@ -1,7 +1,9 @@
 ﻿using AdminArchive.Model;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -186,15 +188,6 @@ namespace AdminArchive.ViewModel
             FillTables();
         }
 
-        protected override void GoLast()
-        {
-            SelectedItem = (ItemList.Count > 0) ? ItemList[ItemList.Count - 1] : null;
-            currentIndex = ItemList.IndexOf(SelectedItem);
-            IsFirst = currentIndex != 0;
-            IsLast = currentIndex != ItemList.Count - 1;
-            FillTables();
-        }
-
         protected override void GoFirst()
         {
             SelectedItem = (ItemList.Count > 0) ? ItemList[0] : null;
@@ -204,6 +197,14 @@ namespace AdminArchive.ViewModel
             FillTables();
         }
 
+        protected override void GoLast()
+        {
+            SelectedItem = (ItemList.Count > 0) ? ItemList[^1] : null;
+            currentIndex = ItemList.IndexOf(SelectedItem);
+            IsFirst = currentIndex != 0;
+            IsLast = currentIndex != ItemList.Count - 1;
+            FillTables();
+        }
         #endregion
 
         #region Инициализация

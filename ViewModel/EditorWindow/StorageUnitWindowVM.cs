@@ -1,5 +1,7 @@
 ﻿using AdminArchive.Model;
+using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 
 namespace AdminArchive.ViewModel
@@ -23,12 +25,13 @@ namespace AdminArchive.ViewModel
 
         public StorageUnit _selectedUnit = new();
 
-        public StorageUnit SelectedUnit
+        public StorageUnit SelectedItem
         {
             get => _selectedUnit;
             set
             {
                 _selectedUnit = value;
+                OnPropertyChanged();
             }
         }
 
@@ -61,15 +64,15 @@ namespace AdminArchive.ViewModel
         }
         protected override void AddItem()
         {
-            SelectedUnit = new StorageUnit();
+            SelectedItem = new StorageUnit();
         }
 
         protected override void SaveItem()
         {
             try
             {
-                if (!dc.StorageUnits.Any(u => u.UnitId == SelectedUnit.UnitId))
-                    dc.StorageUnits.Add(SelectedUnit);
+                if (!dc.StorageUnits.Any(u => u.UnitId == SelectedItem.UnitId))
+                    dc.StorageUnits.Add(SelectedItem);
                 dc.SaveChanges();
                 pageVM.UpdateData();
             }

@@ -2,8 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
+using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Documents;
@@ -80,7 +82,7 @@ namespace AdminArchive.ViewModel
                         TableRow dataRow = new();
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.InventoryNumber))));
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.Title))));
-                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.TypeNavigation.TypeName))));
+                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.TypeNavigation?.TypeName))));
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.StartDate.ToString()))));
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.EndDate.ToString()))));
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.Volume.ToString()))));

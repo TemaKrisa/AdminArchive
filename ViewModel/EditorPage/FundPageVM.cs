@@ -4,8 +4,7 @@ using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Controls;
+using System.Linq;
 
 namespace AdminArchive.ViewModel
 {
@@ -14,7 +13,7 @@ namespace AdminArchive.ViewModel
         private ObservableCollection<Fond> _fonds;
         public ObservableCollection<Fond> Fonds 
         { 
-            get { return _fonds; } 
+            get => _fonds; 
             set 
             {
                 _fonds = value;

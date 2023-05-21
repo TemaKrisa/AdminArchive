@@ -31,6 +31,10 @@ public partial class Document
 
     public string? Annotation { get; set; }
 
+    public int? Authenticity { get; set; }
+
+    public virtual Authenticity? AuthenticityNavigation { get; set; }
+
     public virtual DocType DocTypeNavigation { get; set; } = null!;
 
     public virtual ICollection<DocumentFile> DocumentFiles { get; set; } = new List<DocumentFile>();

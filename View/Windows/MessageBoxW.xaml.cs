@@ -1,4 +1,5 @@
 ﻿using AdminArchive.Classes;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -41,7 +42,7 @@ namespace AdminArchive.View.Windows
 
         private DoubleAnimation anim; //Анимация отображения окна
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             Closing -= Window_Closing;
             e.Cancel = true;

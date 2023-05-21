@@ -2,12 +2,13 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace AdminArchive.ViewModel
 {
     /// <summary>
-    /// ViewModel for managing categories in the database.
+    /// ViewModel for managing income sources in the database.
     /// </summary>
     public partial class IncomeSourceVM : BaseViewModel
     {
@@ -19,7 +20,7 @@ namespace AdminArchive.ViewModel
 
         public ObservableCollection<IncomeSource> DataList
         {
-            get { return _dataList; }
+            get => _dataList;
             set
             {
                 _dataList = value;

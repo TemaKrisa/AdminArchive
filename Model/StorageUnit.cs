@@ -25,7 +25,7 @@ public partial class StorageUnit
 
     public int Inventory { get; set; }
 
-    public string UnitNumber { get; set; } = null!;
+    public int UnitNumber { get; set; }
 
     public string Date { get; set; } = null!;
 
@@ -55,6 +55,14 @@ public partial class StorageUnit
 
     public int Category { get; set; }
 
+    public int? SecretChar { get; set; }
+
+    public int? CharRestrict { get; set; }
+
+    public string? UnitLiteral { get; set; }
+
+    public string? Index { get; set; }
+
     public virtual Acess? AcessNavigation { get; set; }
 
     public virtual Carrier? CarrierNavigation { get; set; }
@@ -64,6 +72,8 @@ public partial class StorageUnit
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 
     public virtual Inventory InventoryNavigation { get; set; } = null!;
+
+    public virtual SecretChar? SecretCharNavigation { get; set; }
 
     public virtual ICollection<UnitLog> UnitLogs { get; set; } = new List<UnitLog>();
 }

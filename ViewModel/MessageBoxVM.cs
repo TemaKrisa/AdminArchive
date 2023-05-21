@@ -16,49 +16,49 @@ namespace AdminArchive.ViewModel
         // public properties to represent the model
         public string Text
         {
-            get { return _text; }
+            get => _text;
             set { _text = value; OnPropertyChanged(nameof(Text)); }
         }
 
         public string Title
         {
-            get { return _title; }
+            get => _title;
             set { _title = value; OnPropertyChanged(nameof(Title)); }
         }
 
         public Visibility ElVisibility
         {
-            get { return _elVisibility; }
+            get => _elVisibility;
             set { _elVisibility = value; OnPropertyChanged(nameof(ElVisibility)); }
         }
 
         public Visibility InfoVisibility
         {
-            get { return _infoVisibility; }
+            get => _infoVisibility;
             set { _infoVisibility = value; OnPropertyChanged(nameof(InfoVisibility)); }
         }
 
         public Visibility ErrorVisibility
         {
-            get { return _errorVisibility; }
+            get => _errorVisibility;
             set { _errorVisibility = value; OnPropertyChanged(nameof(ErrorVisibility)); }
         }
 
         public bool IsOKVisible
         {
-            get { return _isOKVisible; }
+            get => _isOKVisible;
             set { _isOKVisible = value; OnPropertyChanged(nameof(IsOKVisible)); }
         }
 
         public bool IsYesVisible
         {
-            get { return _isYesVisible; }
+            get => _isYesVisible;
             set { _isYesVisible = value; OnPropertyChanged(nameof(IsYesVisible)); }
         }
 
         public bool IsNoVisible
         {
-            get { return _isNoVisible; }
+            get => _isNoVisible;
             set { _isNoVisible = value; OnPropertyChanged(nameof(IsNoVisible)); }
         }
     }

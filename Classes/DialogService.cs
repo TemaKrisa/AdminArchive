@@ -1,4 +1,5 @@
-﻿using Wpf.Ui.Controls.Interfaces;
+﻿using System;
+using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
 
 namespace AdminArchive.Classes

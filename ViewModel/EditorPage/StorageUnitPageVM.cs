@@ -3,6 +3,7 @@ using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace AdminArchive.ViewModel
 {
@@ -46,7 +47,7 @@ namespace AdminArchive.ViewModel
         {
             StorageUnitWindow Editor = new();
             StorageUnitWindowVM? EditorVM = Editor.DataContext as StorageUnitWindowVM;
-            EditorVM.SelectedUnit = (SelectedItem as StorageUnit);
+            EditorVM.SelectedItem = (SelectedItem as StorageUnit);
             EditorVM.pageVM = this;
             Editor.Show();
         }

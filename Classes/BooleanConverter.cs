@@ -1,19 +1,11 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows.Data;
 
 namespace AdminArchive.Classes
 {
     internal class BooleanConverter : IValueConverter
     {
-        //public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        //{
-        //    if (value is Boolean && (bool)value)
-        //    {
-        //        return Visibility.Visible;
-        //    }
-        //    return Visibility.Collapsed;
-        //}
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value != null && parameter != null)
@@ -29,7 +21,7 @@ namespace AdminArchive.Classes
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is bool && ((bool)value) == true;
+            return value is bool boolean && boolean == true;
         }
     }
 }

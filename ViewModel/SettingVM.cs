@@ -28,9 +28,10 @@ namespace AdminArchive.ViewModel
         {
             switch (SelectedTheme)
             {
-                case 0: Theme.Apply(ThemeType.Light); break;
-                case 1: Theme.Apply(ThemeType.Dark);  break;
+                case 0: Theme.Apply(ThemeType.Light); AppSettings.Default.Theme = "Light"; break;
+                case 1: Theme.Apply(ThemeType.Dark); AppSettings.Default.Theme = "Dark";  break;
             }
+            AppSettings.Default.Save();
         }
     }
 }

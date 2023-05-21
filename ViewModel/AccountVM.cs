@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 
 namespace AdminArchive.ViewModel
@@ -14,25 +15,25 @@ namespace AdminArchive.ViewModel
         private ObservableCollection<Role> roles;
         public ObservableCollection<User> Users //Список отображающий пользователей
         {
-            get { return users; }
+            get => users;
             set { users = value; OnPropertyChanged(); }
         }
 
         private User curUser, selectedUser;
         public User CurUser
         {
-            get { return curUser; }
+            get => curUser;
             set { curUser = value; OnPropertyChanged(); }
         }
         public User SelectedUser
         {
-            get { return selectedUser; }
+            get => selectedUser;
             set { selectedUser = value; OnPropertyChanged(); }
         }
 
         public ObservableCollection<Role> Roles 
         { 
-            get { return roles; } 
+            get => roles; 
             set { roles = value; OnPropertyChanged(); }
         }
         private RelayCommand? _add, _open,_save,_close;
