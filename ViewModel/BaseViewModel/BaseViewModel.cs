@@ -16,7 +16,7 @@ namespace AdminArchive.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
 
         private protected static void ShowMessage(string message) => 
-            MessageBoxs.ShowDialog("Внимание", message, MessageBoxs.Buttons.OK, MessageBoxs.Icon.Error); 
+            MessageBoxs.ShowDialog(message, "Внимание", MessageBoxs.Buttons.OK, MessageBoxs.Icon.Error); 
 
         private protected static void ShowMessage(string messasge, string title) =>
             MessageBoxs.ShowDialog(messasge, title);        

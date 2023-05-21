@@ -110,7 +110,7 @@ namespace AdminArchive.ViewModel
             { FontWeight = FontWeights.Bold, Cells = { new TableCell(new Paragraph(new Run("Название критерия"))), new TableCell(new Paragraph(new Run("Дата")))}};
             tableRowGroup.Rows.Add(hR);
             // Заполнение таблицы
-            TableRow dr = new() { Cells = { new TableCell(new Paragraph(new Run("Перечень фондов в наличии"))),  new TableCell(new Paragraph(new Run($"на {DateTime.Now.Date:d}")))}};
+            TableRow dr = new() { Cells = { new TableCell(new Paragraph(new Run("Перечень фондов"))),  new TableCell(new Paragraph(new Run($"на {DateTime.Now.Date:d}")))}};
             tableRowGroup.Rows.Add(dr);
             // Обьединение заголовка таблицы с данными
             Table t1 = new() { Columns = { new TableColumn { Width = new GridLength(500) }, new TableColumn()}, RowGroups = { tableRowGroup }};
@@ -130,10 +130,10 @@ namespace AdminArchive.ViewModel
 
             // Заполненние таблицы
             TableRowGroup dataGroup = new();
-            foreach (var item in dc.Fonds)
+            foreach (var item in dc.Fonds.Include(u=>u.CategoryNavigation))
             {
                 TableRow dataRow = new();
-                dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.FondId.ToString()))));
+                dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.FullNumber))));
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.FondShortName))));
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.CategoryNavigation?.CategoryName))));
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.StartDate.ToString()))));

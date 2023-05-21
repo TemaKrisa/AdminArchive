@@ -44,8 +44,8 @@ namespace AdminArchive.ViewModel
         protected void CloseUC() => UCVisibility = Visibility.Collapsed;
         protected void AddItem() //Открытие UserControl
         {
-            curUser = new User() { Role = 1 };
             UCVisibility = Visibility.Visible;
+            curUser = new User() { Role = 1 };
         }
 
         private void UpdateData() => Users = new ObservableCollection<User>(dc.Users.Include(u => u.RoleNavigation));

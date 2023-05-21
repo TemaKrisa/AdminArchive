@@ -31,6 +31,7 @@
                 <ui:NavigationItem Width="64" Content="Аккаунты" Icon="InprivateAccount24" PageType="{x:Type local:AccountPage}" PageTag="acc" Cursor="Hand"/>
                 <ui:NavigationItem Width="64" Content="Отчёты" Icon="Book24" PageTag="rep" PageType="{x:Type local:ReportPage}" Cursor="Hand"/>
                 <ui:NavigationItem Width="64" Content="Администрирование" Icon="Person24" PageTag="dep1" PageType="{x:Type local:AdministrationPage}" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" Content="Поиск" Icon="Search24" PageTag="srch1" PageType="{x:Type local:SearchPage}" Cursor="Hand"/>
             </ui:NavigationStore.Items>
             <ui:NavigationStore.Footer>
                 <ui:NavigationItem Content="Настройки" Icon="Settings24" PageTag="set" PageType="{x:Type local:SettingsPage}"/>

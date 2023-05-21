@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Model" -f

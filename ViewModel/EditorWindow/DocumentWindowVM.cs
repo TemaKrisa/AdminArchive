@@ -1,58 +1,125 @@
 ﻿using AdminArchive.Model;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
-using System.Drawing;
+using System.IO;
+using System.Windows.Input;
 
 namespace AdminArchive.ViewModel
 {
     class DocumentWindowVM : EditBaseVM
     {
+
+        #region Переменные
         public DocumentPageVM pageVM = new();
+        
+        private int currentIndex;
 
         private ArchiveBdContext dc;
-        public ObservableCollection<Acess> Acess { get; set; }
-        public ObservableCollection<FondView> FondView { get; set; }
-        public ObservableCollection<CharRestrict> CharRestrict { get; set; }
-        public ObservableCollection<HistoricalPeriod> HistoricalPeriod { get; set; }
-        public ObservableCollection<FondType> FondType { get; set; }
-        public ObservableCollection<DocType> DocType { get; set; }
-        public ObservableCollection<Category> Category { get; set; }
+
         public ObservableCollection<SecretChar> SecretChar { get; set; }
-        public ObservableCollection<IncomeSource> IncomeSource { get; set; }
-        public ObservableCollection<Ownership> Ownership { get; set; }
-        public ObservableCollection<StorageTime> StorageTime { get; set; }
+        public ObservableCollection<DocType> DocType { get; set; }
+        public ObservableCollection<Reproduction> Reproductions { get; set; }
+        
+        private ObservableCollection<DocumentFile> docFiles;
+
+
+        private ObservableCollection<Document> itemList = new();
+        public ObservableCollection<Document> ItemList { get => itemList; set { itemList = value; OnPropertyChanged(); } }
+
+        public ObservableCollection<DocumentFile> DocFiles { get => docFiles;  set { docFiles = value; OnPropertyChanged(); } }
 
         public Document _selectedItem = new();
+        public Document SelectedItem { get => _selectedItem; set { _selectedItem = value; OnPropertyChanged(); } }
 
-        public Document SelectedItem
+        public DocumentFile _selFile = new();
+
+        public DocumentFile SelFile { get => _selFile; set { _selFile = value; OnPropertyChanged(); } }
+
+        #endregion
+
+        #region Навигация
+        private void CheckNav(int index)
         {
-            get => _selectedItem;
-            set
-            {
-                _selectedItem = value;
-            }
+            IsFirst = index != 0;
+            IsLast = index != ItemList.Count - 1;
         }
 
-        public DocumentWindowVM()
+        private void CheckNav() { IsFirst = false; IsLast = false; }
+
+        protected override void GoNext()
         {
-            dc = new ArchiveBdContext();
+            currentIndex++;
+            SelectedItem = (currentIndex < ItemList.Count) ? ItemList[currentIndex] : SelectedItem;
+            IsFirst = currentIndex != 0;
+            IsLast = currentIndex != ItemList.Count - 1;
+            FillTables();
+        }
+
+        protected override void GoPrev()
+        {
+            currentIndex--;
+            SelectedItem = (currentIndex >= 0) ? ItemList[currentIndex] : SelectedItem;
+            IsFirst = currentIndex != 0;
+            IsLast = currentIndex != ItemList.Count - 1;
+            FillTables();
+        }
+
+        protected override void GoLast()
+        {
+            SelectedItem = (ItemList.Count > 0) ? ItemList[ItemList.Count - 1] : null;
+            currentIndex = ItemList.IndexOf(SelectedItem);
+            IsFirst = currentIndex != 0;
+            IsLast = currentIndex != ItemList.Count - 1;
+            FillTables();
+        }
+
+        protected override void GoFirst()
+        {
+            SelectedItem = (ItemList.Count > 0) ? ItemList[0] : null;
+            currentIndex = ItemList.IndexOf(SelectedItem);
+            IsFirst = currentIndex != 0;
+            IsLast = currentIndex != ItemList.Count - 1;
+            FillTables();
+        }
+        #endregion
+
+        #region Инициализация
+        public DocumentWindowVM() { }
+
+        public DocumentWindowVM(Document selDoc, DocumentPageVM vm, int selIndex, ObservableCollection<Document> items)
+        {
+            SelectedItem = selDoc;
+            pageVM = vm;
+            currentIndex = selIndex;
+            ItemList = items;
             FillCollections();
         }
+
+        public DocumentWindowVM(DocumentPageVM vm, ObservableCollection<Document> items)
+        {
+            ItemList = items;
+            pageVM = vm;
+            FillCollections();
+        }
+        #endregion
+
+        private void FillTables()
+        {
+            AddedFl.File = dc.DocumentFiles.First().File;
+        }
+
+
 
         protected override void FillCollections()
         {
             try
             {
-                Acess = new ObservableCollection<Acess>(dc.Acesses);
-                FondView = new ObservableCollection<FondView>(dc.FondViews);
-                CharRestrict = new ObservableCollection<CharRestrict>(dc.CharRestricts);
-                HistoricalPeriod = new ObservableCollection<HistoricalPeriod>(dc.HistoricalPeriods);
-                FondType = new ObservableCollection<FondType>(dc.FondTypes);
                 DocType = new ObservableCollection<DocType>(dc.DocTypes);
-                Category = new ObservableCollection<Category>(dc.Categories);
                 SecretChar = new ObservableCollection<SecretChar>(dc.SecretChars);
-                IncomeSource = new ObservableCollection<IncomeSource>(dc.IncomeSources);
-                Ownership = new ObservableCollection<Ownership>(dc.Ownerships);
-                StorageTime = new ObservableCollection<StorageTime>(dc.StorageTimes);
+                DocFiles = new ObservableCollection<DocumentFile>(dc.DocumentFiles);
+                DocType = new ObservableCollection<DocType>(dc.DocTypes);
+                FillTables();
             }
             catch (Exception e)
             {
@@ -63,6 +130,8 @@ namespace AdminArchive.ViewModel
         {
             SelectedItem = new Document();
         }
+
+
 
         protected override void SaveItem()
         {
@@ -78,7 +147,7 @@ namespace AdminArchive.ViewModel
                 ShowMessage(ex.ToString());
             }
         }
-        protected override void OpenItem() { }
+
         protected override void OpenLog() 
         {
 
@@ -88,20 +157,39 @@ namespace AdminArchive.ViewModel
         {
 
         }
-        protected override void GoNext()
-        {
-        }
-        protected override void GoPrev()
-        {
 
-        }
-        protected override void GoLast()
-        {
+        public DocumentFile addedFile = new();
 
-        }
-        protected override void GoFirst()
+        public DocumentFile AddedFl
         {
+            get => addedFile;
+            set
+            {
+                addedFile = value;
+                OnPropertyChanged();
+            }
+        }
+        public ICommand ChooseFile => new RelayCommand(ChooseFiles);
 
+        private void ChooseFiles()
+        {
+            ArchiveBdContext dc = new();
+            if (SelFile != null)
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Multiselect = false
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    SelFile.File = File.ReadAllBytes(openFileDialog.FileName);
+                    //SelFile.Document = SelectedItem.DocumentId;
+                    SelFile.FileName = openFileDialog.FileName;
+                    dc.Add(SelFile);
+                    dc.SaveChanges();
+                    DocFiles = new ObservableCollection<DocumentFile>(dc.DocumentFiles);
+                }
+            }
         }
     }
 }

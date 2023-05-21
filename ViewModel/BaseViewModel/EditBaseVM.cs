@@ -8,9 +8,20 @@ namespace AdminArchive.ViewModel
     internal abstract class EditBaseVM : BaseViewModel
     {
         private RelayCommand? _add, _open, _save, _close, _next, _prev, _last, _first;
+        
+        private bool _isFirst, _isLast;
+        public bool IsFirst
+        {
+            get => _isFirst;
+            set { _isFirst = value; OnPropertyChanged(); }
+        }
+        public bool IsLast
+        {
+            get => _isLast;
+            set { _isLast = value; OnPropertyChanged(); }
+        }
         protected abstract void AddItem();
         protected abstract void SaveItem();
-        protected abstract void OpenItem();
         protected abstract void OpenLog();       
         protected abstract void CloseLog();
         protected abstract void GoNext();
@@ -25,7 +36,6 @@ namespace AdminArchive.ViewModel
         public RelayCommand First { get { return _first ??= new RelayCommand(GoFirst); } }
         public RelayCommand Add { get { return _add ??= new RelayCommand(AddItem); } }
         public RelayCommand Save { get { return _save ??= new RelayCommand(SaveItem); } }
-        public RelayCommand Open { get { return _open ??= new RelayCommand(OpenItem); } }
         public RelayCommand ShowLog { get { return _open ??= new RelayCommand(OpenLog); } }
     }
 }

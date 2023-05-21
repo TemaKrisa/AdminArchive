@@ -5,9 +5,9 @@ namespace AdminArchive.Model;
 
 public partial class StorageTime
 {
-    public int TymeId { get; set; }
+    public int TimeId { get; set; }
 
-    public string TymeName { get; set; } = null!;
+    public string TimeName { get; set; } = null!;
 
     public virtual ICollection<Fond> Fonds { get; set; } = new List<Fond>();
 

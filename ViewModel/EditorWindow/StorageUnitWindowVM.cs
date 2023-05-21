@@ -78,7 +78,6 @@ namespace AdminArchive.ViewModel
                 MessageBox.Show(ex.ToString());
             }
         }
-        protected override void OpenItem() { }
         protected override void OpenLog() { }
 
         protected override void CloseLog()

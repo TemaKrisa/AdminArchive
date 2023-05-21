@@ -4,7 +4,7 @@
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+               xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:local="clr-namespace:AdminArchive.Classes"
                mc:Ignorable="d"        
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
@@ -17,6 +17,7 @@
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+        <local:BooleanConverter x:Key="BooleanToBool" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -24,20 +25,16 @@
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ui:TitleBar Grid.Row="0" UseSnapLayout="True" Title="Фонд"/>
+        <ui:TitleBar Grid.Row="0" UseSnapLayout="True" Title="Опись"/>
         <Grid Grid.Row="1">
-            <ui:Button Content="Протокол" Icon="History24" IconFilled="True" Margin="117,0,0,0"/>
-            <ui:Button Content="Сведения" Icon="Info24" IconFilled="True" Margin="231,0,0,0"/>
-            <ui:Button Content="Добавить" Icon="Add24" Margin="5" IconFilled="True"/>
+            <ui:Button Content="Сохранить" Command="{Binding Save}" Icon="Save24" Margin="5" IconFilled="True"/>
+            <ui:Button Content="Протокол" Command="{Binding ShowLog}" Icon="History24" IconFilled="True" Margin="236,0,0,0"/>
+            <ui:Button Content="Добавить" Command="{Binding Add}" Icon="Add24" Margin="124,0,0,0" IconFilled="True"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <ui:Button Margin="5" Height="30" Icon="Previous16" IconFilled="True"/>
-                <ui:Button Margin="0" Height="30" Icon="Play12" RenderTransformOrigin="0.5,0.5" IconFilled="True">
-                    <ui:Button.RenderTransform>
-                        <ScaleTransform ScaleX="-1" CenterX="0.5"/>
-                    </ui:Button.RenderTransform>
-                </ui:Button>
-                <ui:Button Margin="5" Height="30" Icon="Play12" IconFilled="True"/>
-                <ui:Button Margin="0" Height="30" Icon="Next16" IconFilled="True"/>
+                <ui:Button Icon="Previous24" IconFilled="{Binding IsFirst}" Command="{Binding First}" IsEnabled="{Binding IsFirst}"/>
+                <ui:Button Icon="Play24" IconFilled="{Binding IsFirst}" Command="{Binding Prev}" IsEnabled="{Binding IsFirst}"/>
+                <ui:Button Icon="Play24" IconFilled="{Binding IsLast}" Command="{Binding Next}" IsEnabled="{Binding IsLast}"/>
+                <ui:Button Icon="Next24" IconFilled="{Binding IsLast}" Command="{Binding Last}" IsEnabled="{Binding IsLast}"/>
             </StackPanel>
         </Grid>
         <TabControl Grid.Row="2">
@@ -57,7 +54,6 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="210"/>
-                            <ColumnDefinition Width="50"/>
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="75"/>
                             <ColumnDefinition Width="120"/>
@@ -65,11 +61,12 @@
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Номер*</TextBlock>
-                        <TextBox Grid.Column="1" Width="50" MaxLength="1"/>
-                        <ui:NumberBox Grid.Column="2" IntegersOnly="True" Margin="5,0" Text=" "/>
-                        <ui:TextBox Grid.Column="3" Width="70" MaxLength="3"/>
-                        <TextBlock Grid.Column="4" HorizontalAlignment="Right" Margin="5">Срок хранения</TextBlock>
-                        <ComboBox Grid.Column="5" ItemsSource="{Binding StorageTime}" DisplayMemberPath="TymeName"/>
+                        <ui:NumberBox Grid.Column="1" IntegersOnly="True" Min="1" Margin="5,0" Text="{Binding SelectedItem.InventoryNumber}"/>
+                        <ui:TextBox Grid.Column="2" Width="70" MaxLength="3" Text="{Binding SelectedItem.InventoryLiteral}"/>
+                        <TextBlock Grid.Column="3" HorizontalAlignment="Right" Margin="5">Срок хранения</TextBlock>
+                        <ComboBox ItemsSource="{Binding StorageTime}" SelectedValue="{Binding SelectedItem.StorageTime}"
+                                  SelectedValuePath="TimeId" DisplayMemberPath="TimeName" 
+                                  Grid.Column="4"/>
                     </Grid>
                     <Grid Grid.Row="1">
                         <TextBlock HorizontalAlignment="Left" Margin="105,0">Наименование</TextBlock>
@@ -87,9 +84,13 @@
                         <TextBlock HorizontalAlignment="Right" Margin="5">Носитель</TextBlock>
                         <ComboBox Grid.Column="1" Margin="5" IsEditable="True" ItemsSource="{Binding Carrier}"/>
                         <TextBlock Grid.Column="2" HorizontalAlignment="Right">Хар-ка секретности:</TextBlock>
-                        <ComboBox Grid.Column="3" Margin="5" ItemsSource="{Binding SecretChar}" DisplayMemberPath="CharName" IsEditable="True" SelectedIndex="0"/>
+                        <ComboBox ItemsSource="{Binding SecretChar}" SelectedValue="{Binding SelectedItem.SecretChar}"
+                                  DisplayMemberPath="CharName" SelectedValuePath="CharId"
+                                  Grid.Column="3" Margin="5" />
                         <TextBlock Grid.Column="4">Доступ:</TextBlock>
-                        <ComboBox Grid.Column="5" ItemsSource="{Binding Acess}" DisplayMemberPath="AcessName" Margin="5,0,30,0" IsEditable="True" SelectedIndex="0"/>
+                        <ComboBox Grid.Column="5" ItemsSource="{Binding Acess}" SelectedValue="{Binding SelectedItem.Acess}"
+                                  DisplayMemberPath="AcessName" SelectedValuePath="AcessId"
+                                  Margin="5,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
@@ -99,7 +100,9 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="2" Margin="5" > Причина ограничения доступа</TextBlock>
-                        <ComboBox Grid.Column="3"  Margin="0,0,30,0" ItemsSource="{Binding CharRestrict}" DisplayMemberPath="RestrictName"/>
+                        <ComboBox ItemsSource="{Binding CharRestrict}" SelectedValue="{Binding SelectedItem.CharRestrict}"
+                                  DisplayMemberPath="RestrictName" SelectedValuePath="RestrictId"
+                            Grid.Column="3"  Margin="0,0,30,0" />
                     </Grid>
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
@@ -109,9 +112,12 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Тип описи</TextBlock>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding FondType}" DisplayMemberPath="TypeName" SelectedItem="{Binding SelectedItem.Type}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding FondType}" SelectedValue="{Binding SelectedItem.Type}"
+                                  DisplayMemberPath="TypeName" SelectedValuePath="TypeId"/>
                         <TextBlock HorizontalAlignment="Right" Margin="3" Grid.Column="2">Тип документов</TextBlock>
-                        <ComboBox Grid.Column="3" ItemsSource="{Binding DocType}" DisplayMemberPath="TypeName" Margin="0,0,30,0"/>
+                        <ComboBox ItemsSource="{Binding DocType}" SelectedValue="{Binding SelectedItem.DocType}"
+                                  DisplayMemberPath="TypeName" SelectedValuePath="TypeId"
+                                  Grid.Column="3" Margin="0,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="5">
                         <Grid.ColumnDefinitions>
@@ -121,9 +127,13 @@
                             <ColumnDefinition Width="170"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Источник поступления</TextBlock>
-                        <ComboBox Grid.Column="1" Margin="0,0,5,0" ItemsSource="{Binding IncomeSource}" DisplayMemberPath="SourceName"/>
+                        <ComboBox ItemsSource="{Binding IncomeSource}" SelectedValue="{Binding SelectedItem.IncomeSource}"
+                                  DisplayMemberPath="SourceName" SelectedValuePath="SourceId"
+                                  Grid.Column="1" Margin="0,0,5,0" />
                         <TextBlock Grid.Column="2" Margin="5">Категория</TextBlock>
-                        <ComboBox Grid.Column="3" ItemsSource="{Binding Category}" DisplayMemberPath="CategoryName" Margin="0,0,30,0"/>
+                        <ComboBox Grid.Column="3" ItemsSource="{Binding Categories}" SelectedValue="{Binding SelectedItem.Category}"
+                                  DisplayMemberPath="CategoryName" SelectedValuePath="CategoryId"
+                                  Margin="0,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="6">
                         <Grid.ColumnDefinitions>
@@ -134,65 +144,70 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Движение</TextBlock>
-                        <ComboBox x:Name="frstMov" Grid.Column="1" ItemsSource="{Binding Movement}" DisplayMemberPath="MovementName"/>
-                        <ComboBox Grid.Column="2" Margin="5" IsEnabled="False"/>
+                        <ComboBox ItemsSource="{Binding Movements}" SelectedValue="{Binding SelectedItem.Movement}"
+                                  DisplayMemberPath="MovementName" SelectedValuePath="MovementId"
+                                  Grid.Column="1"/>
+                        <ComboBox SelectedValue="{Binding SelectedItem.MovementType}" ItemsSource="{Binding MovementTypes}"
+                                  DisplayMemberPath="TypeName" SelectedValuePath="TypeId" 
+                                  IsEnabled="{Binding SelectedItem.Movement, Converter={StaticResource BooleanToBool}, ConverterParameter=1}"
+                                  Grid.Column="2" Margin="5">
+                            <ComboBox.Style>
+                                <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="SelectedIndex" Value="-1" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ComboBox.Style>
+                        </ComboBox>
                         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Margin="5">Основание поступления</TextBlock>
                         <ComboBox Grid.Column="4" Margin="0,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="7" Margin="-27,0,27,0">
                         <TextBlock Margin="55,0,0,0">Справка по движению</TextBlock>
-                        <TextBox Margin="235,5,0,5" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
+                        <TextBox Margin="235,5,0,5" Text="{Binding SelectedItem.MovementNote}" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
                     </Grid>
                     <Grid Grid.Row="8">
                         <TextBlock Margin="100,0,0,0" HorizontalAlignment="Left">Примечание</TextBlock>
-                        <TextBox Margin="210,10,30,20" VerticalAlignment="Stretch"/>
+                        <TextBox Margin="210,10,30,20" VerticalAlignment="Stretch" Text="{Binding SelectedItem.Note}"/>
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="НСА" Width="75"/>
+            <TabItem Header="НСА" Width="75">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock FontSize="16" Grid.Column="1" FontWeight="DemiBold">Аннотация</TextBlock>
+                    <!--<TextBox Text="{Binding SelectedItem.InventoryId}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" MaxLength="350" />-->
+                </Grid>
+            </TabItem>
             <TabItem Header="Доп. инф." Width="150">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Border CornerRadius="6" BorderThickness="3" BorderBrush="Gray" Height="250" Margin="30,20">
-                        <Grid>
-                            <TextBlock VerticalAlignment="Top" Width="auto" Margin="10,-13,786,0" Background="Gray">Переименования фонда</TextBlock>
-                            <ui:Button Icon="Add24" VerticalAlignment="Top" Margin="5">Добавить</ui:Button>
-                            <ui:DataGrid Margin="5,42,5,5">
-                                <ui:DataGrid.Columns>
-                                    <DataGridTextColumn Header="Сокращенное наименование"/>
-                                    <DataGridTextColumn Header="Дата начала"/>
-                                    <DataGridTextColumn Header="Дата окончания"/>
-                                    <DataGridTextColumn Header="Примечание" Width="*"/>
-                                </ui:DataGrid.Columns>
-                            </ui:DataGrid>
-                        </Grid>
-                    </Border>
+                    <Border CornerRadius="6" BorderThickness="3" BorderBrush="Gray" Height="250" Margin="30,20"/>
                     <Border Grid.Row="1" CornerRadius="6" BorderThickness="3" BorderBrush="Gray" Height="250" Margin="30,10">
                         <Grid>
                             <TextBlock VerticalAlignment="Top" Width="auto" Margin="10,-13,726,0" Background="Gray"><Run Text="Незадокументированные периоды"/></TextBlock>
-                            <ui:Button Icon="Add24" VerticalAlignment="Top" Margin="5">Добавить</ui:Button>
-                            <ui:DataGrid Margin="5,42,5,5">
-                                <ui:DataGrid.Columns>
-                                    <DataGridTextColumn Header="Год начала периода"/>
-                                    <DataGridTextColumn Header="Год окончания периода"/>
-                                    <DataGridTextColumn Header="Причина отсутсвия информации"/>
-                                    <DataGridTextColumn Header="Местонахождение документа"/>
-                                    <DataGridTextColumn Header="Примечание" Width="*"/>
-                                </ui:DataGrid.Columns>
-                            </ui:DataGrid>
                         </Grid>
                     </Border>
                 </Grid>
             </TabItem>
             <TabItem Header="Физ. состояние" Width="150"/>
-            <TabItem Header="Особенности" Width="150" IsSelected="True" >
-                <Grid>
-
-                </Grid>
-            </TabItem>
         </TabControl>
     </Grid>
     </ui:UiWindow>

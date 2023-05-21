@@ -21,8 +21,8 @@
         </Grid.ColumnDefinitions>
         <ui:NavigationFluent x:Name="Nav" Width="250" HorizontalAlignment="Left" Frame="{Binding ElementName=AdminFrame, Mode=OneWay}">
             <ui:NavigationFluent.Items>
-                <ui:NavigationItem Content="Исторические периоды" HorizontalAlignment="Left" Icon="History24" Width="{Binding ElementName=Nav, Path=Width}" PageTag="d" PageType="{x:Type local:HistoricalPeriodPage}"/>
-                <ui:NavigationItem Content="Источники поступления" HorizontalAlignment="Left" Icon="ScreenSearch24" Width="{Binding ElementName=Nav, Path=Width}" PageTag="d" PageType="{x:Type local:HistoricalPeriodPage}"/>
+                <ui:NavigationItem Content="Исторические периоды" HorizontalAlignment="Left" Icon="History24" Width="{Binding ElementName=Nav, Path=Width}" PageTag="hisPer" PageType="{x:Type local:HistoricalPeriodPage}"/>
+                <ui:NavigationItem Content="Источники поступления" HorizontalAlignment="Left" Icon="ScreenSearch24" Width="{Binding ElementName=Nav, Path=Width}" PageTag="IncSource" PageType="{x:Type local:HistoricalPeriodPage}"/>
             </ui:NavigationFluent.Items>
         </ui:NavigationFluent>
         <Frame Grid.Column="1" x:Name="AdminFrame"/>

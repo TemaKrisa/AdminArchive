@@ -8,10 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AdminArchive
-{
-
-
+namespace AdminArchive {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.4.0.0")]
     internal sealed partial class AppSettings : global::System.Configuration.ApplicationSettingsBase {
@@ -33,6 +32,18 @@ namespace AdminArchive
             }
             set {
                 this["Theme"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ConString {
+            get {
+                return ((string)(this["ConString"]));
+            }
+            set {
+                this["ConString"] = value;
             }
         }
     }

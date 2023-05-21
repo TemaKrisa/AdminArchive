@@ -35,11 +35,11 @@ public partial class Fond
 
     public int? Volume { get; set; }
 
-    public int? Movement { get; set; }
+    public int Movement { get; set; }
 
     public int? MovementType { get; set; }
 
-    public int? FondNumber { get; set; }
+    public int FondNumber { get; set; }
 
     public int? HistoricalPeriod { get; set; }
 
@@ -47,7 +47,7 @@ public partial class Fond
 
     public int? IncomeSource { get; set; }
 
-    public short? ReceiptDate { get; set; }
+    public DateTime? ReceiptDate { get; set; }
 
     public short? LastReconcilation { get; set; }
 
@@ -81,7 +81,7 @@ public partial class Fond
 
     public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
 
-    public virtual Movement? MovementNavigation { get; set; }
+    public virtual Movement MovementNavigation { get; set; } = null!;
 
     public virtual MovementType? MovementTypeNavigation { get; set; }
 

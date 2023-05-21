@@ -45,6 +45,8 @@ public partial class Inventory
 
     public string? MovementNote { get; set; }
 
+    public string? InventoryLiteral { get; set; }
+
     public virtual Acess? AcessNavigation { get; set; }
 
     public virtual Carrier? CarrierNavigation { get; set; }

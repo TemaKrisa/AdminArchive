@@ -2,14 +2,25 @@
 using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 
 namespace AdminArchive.ViewModel
 {
     partial class InventoryPageVM : PageBaseVM
     {
-        public ObservableCollection<Inventory>? Inventories { get; set; }
-        
+
+        private ObservableCollection<Inventory> _inventories;
+        public ObservableCollection<Inventory> Inventories
+        {
+            get { return _inventories; }
+            set
+            {
+                _inventories = value;
+                OnPropertyChanged();
+            }
+        } // Define an ObservableCollection of Fonds
+
         private ArchiveBdContext dc;
 
         private Inventory _selectedItem;
@@ -29,20 +40,13 @@ namespace AdminArchive.ViewModel
 
         public void UpdateData()
         {
-            Inventories = new ObservableCollection<Inventory>(dc.Inventories.Where(u=>u.Fond == curFond.FondId));
+            dc = new ArchiveBdContext();
+            Inventories = new ObservableCollection<Inventory>(dc.Inventories.Where(u => u.Fond == curFond.FondId).OrderBy(u => u.InventoryNumber).ThenBy(u => u.InventoryLiteral));
         }
 
         protected override void GoBack() { FrameManager.mainFrame.Navigate(new FundPage()); }
 
 
-        protected override void EditItem()
-        {
-            InventoryWindow Editor = new();
-            InventoryWindowVM EditorVM = Editor.DataContext as InventoryWindowVM;
-            EditorVM.SelectedItem = (SelectedItem as Inventory);
-            EditorVM.pageVM = this;
-            Editor.Show();
-        }
 
         protected override void OpenItem()
         {
@@ -55,10 +59,18 @@ namespace AdminArchive.ViewModel
         }
 
 
-        protected override void AddItem()
+        protected override void AddItem()// Define function that is called when a user clicks on the "Add" button
         {
-            InventoryWindowVM vm = new();
-            var newWindow = new InventoryWindow { DataContext = vm };
+            InventoryWindowVM viewModel = new(this, Inventories);
+            InventoryWindow newWindow = new() { DataContext = viewModel };
+            newWindow.ShowDialog();
+        }
+        protected override void EditItem() // Define function that is called when a user clicks on the "Edit" button
+        {
+            int index = Inventories.IndexOf(SelectedItem);
+            InventoryWindow newWindow = new();
+            InventoryWindowVM viewModel = new((SelectedItem as Inventory), this, index, Inventories);
+            newWindow.DataContext = viewModel;
             newWindow.ShowDialog();
         }
     }

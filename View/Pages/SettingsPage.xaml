@@ -7,6 +7,7 @@
            xmlns:vm="clr-namespace:AdminArchive.ViewModel"
            mc:Ignorable="d"  Title="Настройки"
       d:DesignHeight="450" d:DesignWidth="800"
+      Background="{DynamicResource SecondaryBackgroundBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}">
     <Page.DataContext>
         <vm:SettingVM/>

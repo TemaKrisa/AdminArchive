@@ -4,6 +4,8 @@ using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Controls;
 
 namespace AdminArchive.ViewModel
 {
@@ -53,10 +55,9 @@ namespace AdminArchive.ViewModel
 
         protected override void AddItem() // Define function that is called when a user clicks on the "Add" button
         {
-            ShowMessage("d","fg");
-            //FundWindowVM viewModel = new(this,Fonds);
-            //FundWindow newWindow = new() { DataContext = viewModel };
-            //newWindow.ShowDialog();
+            FundWindowVM viewModel = new(this, Fonds);
+            FundWindow newWindow = new() { DataContext = viewModel };
+            newWindow.ShowDialog();
         }
     
         protected override void EditItem() // Define function that is called when a user clicks on the "Edit" button

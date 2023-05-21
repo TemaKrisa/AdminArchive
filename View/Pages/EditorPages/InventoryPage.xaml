@@ -25,7 +25,7 @@
         </Grid>
         <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Inventories}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0">
             <ui:DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding InventoryNumber}"></DataGridTextColumn>
+                <DataGridTextColumn Header="№" Binding="{Binding FullNumber}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Название" Binding="{Binding Name}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Тип" Width="*" Binding="{Binding Type}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Начальная дата" Width="*" Binding="{Binding StartDate,Mode=OneWay}"></DataGridTextColumn>

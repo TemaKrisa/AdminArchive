@@ -6,10 +6,14 @@
         public int? StartDate
         { 
             get 
-            { 
+            {
                 dc = new();
-                //return dc.StorageUnits.Where(u => u.Inventory == InventoryId).Max(u => u.StartDate);
-                return 0;
+                int? q = dc.StorageUnits
+                    .Where(u => u.Inventory == InventoryId)
+                    .Select(u => (int?)u.StartDate)
+                    .DefaultIfEmpty()
+                    .Max(); if (q != null) return q;
+                else return 0;
             } 
         }
 
@@ -18,9 +22,21 @@
             get  
             { 
                 dc = new();
-                //return dc.StorageUnits.Where(u => u.Inventory == InventoryId).Max(u => u.EndDate); 
-                return 0;
+                int? q = dc.StorageUnits
+                    .Where(u => u.Inventory == InventoryId)
+                    .Select(u => (int?)u.EndDate)
+                    .DefaultIfEmpty()
+                    .Max(); if (q != null) return q;
+                else return 0;
             } 
+        }
+
+        public string FullNumber
+        {
+            get
+            {
+                return InventoryNumber + "" + InventoryLiteral;
+            }
         }
     }
 }

@@ -33,33 +33,33 @@ public partial class StorageUnit
 
     public int EndDate { get; set; }
 
-    public bool? IsWanted { get; set; }
+    public bool IsWanted { get; set; }
 
-    public bool? IsRetired { get; set; }
+    public bool IsRetired { get; set; }
 
-    public bool? IsSf { get; set; }
+    public bool IsSf { get; set; }
 
-    public bool? IsFm { get; set; }
+    public bool IsFm { get; set; }
 
-    public bool? IsFault { get; set; }
+    public bool IsFault { get; set; }
 
-    public bool? IsRolled { get; set; }
+    public bool IsRolled { get; set; }
 
-    public bool? IsPhotocopied { get; set; }
+    public bool IsPhotocopied { get; set; }
 
-    public bool? HasGemstones { get; set; }
+    public bool HasGemstones { get; set; }
 
-    public bool? IsMuseumObject { get; set; }
+    public bool IsMuseumObject { get; set; }
 
     public string? Note { get; set; }
 
-    public int? Category { get; set; }
+    public int Category { get; set; }
 
     public virtual Acess? AcessNavigation { get; set; }
 
     public virtual Carrier? CarrierNavigation { get; set; }
 
-    public virtual UnitCategory? CategoryNavigation { get; set; }
+    public virtual UnitCategory CategoryNavigation { get; set; } = null!;
 
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 

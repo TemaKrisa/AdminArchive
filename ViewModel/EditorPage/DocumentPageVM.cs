@@ -37,14 +37,13 @@ namespace AdminArchive.ViewModel
         protected override void GoBack()
         {
             StorageUnitPageVM vm = new(curInv,curFond);
-            StorageUnitPage v = new() { DataContext = vm };
-            FrameManager.mainFrame.Navigate(v);
+            FrameManager.mainFrame.Navigate(new StorageUnitPage{ DataContext = vm });
         }
 
         protected override void EditItem()
         {
             DocumentWindow Editor = new();
-            DocumentWindowVM EditorVM = Editor.DataContext as DocumentWindowVM;
+            DocumentWindowVM? EditorVM = Editor.DataContext as DocumentWindowVM;
             EditorVM.SelectedItem = (SelectedItem as Document);
             EditorVM.pageVM = this;
             Editor.Show();
