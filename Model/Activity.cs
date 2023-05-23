@@ -5,9 +5,11 @@ namespace AdminArchive.Model;
 
 public partial class Activity
 {
-    public int ActivityId { get; set; }
+    public int Id { get; set; }
 
-    public string ActivityName { get; set; } = null!;
+    public string Name { get; set; } = null!;
+
+    public virtual ICollection<DocumentLog> DocumentLogs { get; set; } = new List<DocumentLog>();
 
     public virtual ICollection<FondLog> FondLogs { get; set; } = new List<FondLog>();
 

@@ -5,9 +5,9 @@ namespace AdminArchive.Model;
 
 public partial class Document
 {
-    public int DocumentId { get; set; }
+    public int Id { get; set; }
 
-    public string DocumentName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public DateTime Date { get; set; }
 
@@ -38,6 +38,8 @@ public partial class Document
     public virtual DocType DocTypeNavigation { get; set; } = null!;
 
     public virtual ICollection<DocumentFile> DocumentFiles { get; set; } = new List<DocumentFile>();
+
+    public virtual ICollection<DocumentLog> DocumentLogs { get; set; } = new List<DocumentLog>();
 
     public virtual Reproduction? ReproductionNavigation { get; set; }
 

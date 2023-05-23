@@ -17,6 +17,11 @@
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="IsEditable" Value="True"/>
+            <Setter Property="SelectedValuePath" Value="Id"/>
+            <Setter Property="DisplayMemberPath" Value="Name"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -66,9 +71,9 @@
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
                             <TextBlock Margin="160,15,10,15">Номер*</TextBlock>
-                            <ui:NumberBox IntegersOnly="True" Text="{Binding SelectedItem.UnitNumber}"
+                            <ui:NumberBox IntegersOnly="True" Text="{Binding SelectedItem.Number}"
                                            Margin="5,0" Grid.Column="1"/>
-                            <TextBox Text="{Binding SelectedItem.UnitLiteral}" MaxLength="2"
+                            <TextBox Text="{Binding SelectedItem.Literal}" MaxLength="2"
                                  Width="70" Grid.Column="2"/>
                         <TextBlock Grid.Column="4">Том</TextBlock>
                         <ui:NumberBox Text="{Binding SelectedItem.Vol}" IntegersOnly="True"  Min="0"
@@ -79,7 +84,7 @@
                     </Grid>
                     <Grid Grid.Row="1">
                         <TextBlock HorizontalAlignment="Left" Margin="105,0">Заголовок</TextBlock>
-                        <TextBox Text="{Binding SelectedItem.UnitName}"  
+                        <TextBox Text="{Binding SelectedItem.Name}"  
                                  Margin="210,0,30,0" />
                     </Grid>
                     <Grid Grid.Row="2">
@@ -93,10 +98,9 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right">Характеристика секретности</TextBlock>
                         <ComboBox SelectedValue="{Binding SelectedItem.SecretChar}" ItemsSource="{Binding SecretChars}"
-                                  DisplayMemberPath="CharName" SelectedValuePath="CharId" Grid.Column="1" />
+                                  Grid.Column="1" />
                         <TextBlock HorizontalAlignment="Center" Grid.Column="2">Доступ</TextBlock>
                         <ComboBox SelectedValue="{Binding SelectedItem.Acess}" ItemsSource="{Binding Acesses}"
-                                  SelectedValuePath="AcessId" DisplayMemberPath="AcessName"
                             Grid.Column="3" ></ComboBox>
                     </Grid>
                     <Grid Grid.Row="3">
@@ -106,8 +110,7 @@
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="10">Носитель</TextBlock>
-                        <ComboBox ItemsSource="{Binding Carrier}" SelectedValue="{Binding SelectedItem.Carrier}"
-                                  SelectedValuePath="ViewId" DisplayMemberPath="ViewName"
+                        <ComboBox ItemsSource="{Binding Carriers}" SelectedValue="{Binding SelectedItem.Carrier}"
                                   Grid.Column="1" />
                     </Grid>
                     <Grid Grid.Row="4">
@@ -119,7 +122,6 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="10">Категория</TextBlock>
                         <ComboBox ItemsSource="{Binding Categories}" SelectedValue="{Binding SelectedItem.Category}"
-                            SelectedValuePath="CategoryId" DisplayMemberPath="CategoryName"
                             Grid.Column="1"/>
                         <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="10">Точные даты</TextBlock>
                         <TextBox Grid.Column="3" Margin="0,0,30,0" Text="{Binding SelectedItem.Date}"/>
@@ -144,8 +146,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Center">Причина ограничения доступа</TextBlock>
-                        <ComboBox SelectedValue="{Binding SelectedItem.CharRestrict}" ItemsSource="{Binding CharRestrict}"
-                                  SelectedValuePath="RestrictId" DisplayMemberPath="RestrictName" 
+                        <ComboBox SelectedValue="{Binding SelectedItem.CharRestrict}" ItemsSource="{Binding CharRestricts}"
                                   Grid.Column="1"/>
                         <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="5">Конечная дата</TextBlock>
                         <ui:NumberBox Grid.Column="3" Margin="0,0,30,0" IntegersOnly="True" Min="1000" Text="{Binding SelectedItem.EndDate}"/>

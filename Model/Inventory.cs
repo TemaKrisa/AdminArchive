@@ -5,7 +5,7 @@ namespace AdminArchive.Model;
 
 public partial class Inventory
 {
-    public int InventoryId { get; set; }
+    public int Id { get; set; }
 
     public int? Fond { get; set; }
 
@@ -13,7 +13,7 @@ public partial class Inventory
 
     public int? Type { get; set; }
 
-    public string? InventoryNumber { get; set; }
+    public string? Number { get; set; }
 
     public int? Volume { get; set; }
 
@@ -45,7 +45,7 @@ public partial class Inventory
 
     public string? MovementNote { get; set; }
 
-    public string? InventoryLiteral { get; set; }
+    public string? Literal { get; set; }
 
     public virtual Acess? AcessNavigation { get; set; }
 

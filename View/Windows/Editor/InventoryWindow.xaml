@@ -17,6 +17,11 @@
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="IsEditable" Value="True"/>
+            <Setter Property="SelectedValuePath" Value="Id"/>
+            <Setter Property="DisplayMemberPath" Value="Name"/>
+        </Style>
         <local:BooleanConverter x:Key="BooleanToBool" />
     </Window.Resources>
     <Grid>
@@ -32,7 +37,11 @@
             <ui:Button Content="Добавить" Command="{Binding Add}" Icon="Add24" Margin="124,0,0,0" IconFilled="True"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <ui:Button Icon="Previous24" IconFilled="{Binding IsFirst}" Command="{Binding First}" IsEnabled="{Binding IsFirst}"/>
-                <ui:Button Icon="Play24" IconFilled="{Binding IsFirst}" Command="{Binding Prev}" IsEnabled="{Binding IsFirst}"/>
+                <ui:Button Icon="Play24" IconFilled="{Binding IsFirst}" Command="{Binding Prev}" IsEnabled="{Binding IsFirst}" RenderTransformOrigin="0.5,0.5">
+                    <ui:Button.RenderTransform>
+                        <ScaleTransform ScaleX="-1" CenterX="0.5"/>
+                    </ui:Button.RenderTransform>
+                </ui:Button>
                 <ui:Button Icon="Play24" IconFilled="{Binding IsLast}" Command="{Binding Next}" IsEnabled="{Binding IsLast}"/>
                 <ui:Button Icon="Next24" IconFilled="{Binding IsLast}" Command="{Binding Last}" IsEnabled="{Binding IsLast}"/>
             </StackPanel>
@@ -61,11 +70,10 @@
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Номер*</TextBlock>
-                        <ui:NumberBox Grid.Column="1" IntegersOnly="True" Min="1" Margin="5,0" Text="{Binding SelectedItem.InventoryNumber}"/>
-                        <ui:TextBox Grid.Column="2" Width="70" MaxLength="3" Text="{Binding SelectedItem.InventoryLiteral}"/>
+                        <ui:NumberBox Grid.Column="1" IntegersOnly="True" Min="1" Margin="5,0" Text="{Binding SelectedItem.Number}"/>
+                        <ui:TextBox Grid.Column="2" Width="70" MaxLength="3" Text="{Binding SelectedItem.Literal}"/>
                         <TextBlock Grid.Column="3" HorizontalAlignment="Right" Margin="5">Срок хранения</TextBlock>
                         <ComboBox ItemsSource="{Binding StorageTime}" SelectedValue="{Binding SelectedItem.StorageTime}"
-                                  SelectedValuePath="TimeId" DisplayMemberPath="TimeName" 
                                   Grid.Column="4"/>
                     </Grid>
                     <Grid Grid.Row="1">
@@ -82,14 +90,13 @@
                             <ColumnDefinition Width="180"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Носитель</TextBlock>
-                        <ComboBox Grid.Column="1" Margin="5" IsEditable="True" ItemsSource="{Binding Carrier}"/>
+                        <ComboBox ItemsSource="{Binding Carriers}" SelectedValue="{Binding SelectedItem.Carrier}"
+                                  Grid.Column="1" Margin="5" />
                         <TextBlock Grid.Column="2" HorizontalAlignment="Right">Хар-ка секретности:</TextBlock>
                         <ComboBox ItemsSource="{Binding SecretChar}" SelectedValue="{Binding SelectedItem.SecretChar}"
-                                  DisplayMemberPath="CharName" SelectedValuePath="CharId"
                                   Grid.Column="3" Margin="5" />
                         <TextBlock Grid.Column="4">Доступ:</TextBlock>
                         <ComboBox Grid.Column="5" ItemsSource="{Binding Acess}" SelectedValue="{Binding SelectedItem.Acess}"
-                                  DisplayMemberPath="AcessName" SelectedValuePath="AcessId"
                                   Margin="5,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="3">
@@ -101,7 +108,6 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="2" Margin="5" > Причина ограничения доступа</TextBlock>
                         <ComboBox ItemsSource="{Binding CharRestrict}" SelectedValue="{Binding SelectedItem.CharRestrict}"
-                                  DisplayMemberPath="RestrictName" SelectedValuePath="RestrictId"
                             Grid.Column="3"  Margin="0,0,30,0" />
                     </Grid>
                     <Grid Grid.Row="4">
@@ -112,11 +118,9 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Тип описи</TextBlock>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding FondType}" SelectedValue="{Binding SelectedItem.Type}"
-                                  DisplayMemberPath="TypeName" SelectedValuePath="TypeId"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Types}" SelectedValue="{Binding SelectedItem.Type}"/>
                         <TextBlock HorizontalAlignment="Right" Margin="3" Grid.Column="2">Тип документов</TextBlock>
                         <ComboBox ItemsSource="{Binding DocType}" SelectedValue="{Binding SelectedItem.DocType}"
-                                  DisplayMemberPath="TypeName" SelectedValuePath="TypeId"
                                   Grid.Column="3" Margin="0,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="5">
@@ -128,11 +132,9 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Источник поступления</TextBlock>
                         <ComboBox ItemsSource="{Binding IncomeSource}" SelectedValue="{Binding SelectedItem.IncomeSource}"
-                                  DisplayMemberPath="SourceName" SelectedValuePath="SourceId"
                                   Grid.Column="1" Margin="0,0,5,0" />
                         <TextBlock Grid.Column="2" Margin="5">Категория</TextBlock>
                         <ComboBox Grid.Column="3" ItemsSource="{Binding Categories}" SelectedValue="{Binding SelectedItem.Category}"
-                                  DisplayMemberPath="CategoryName" SelectedValuePath="CategoryId"
                                   Margin="0,0,30,0"/>
                     </Grid>
                     <Grid Grid.Row="6">
@@ -145,10 +147,8 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Движение</TextBlock>
                         <ComboBox ItemsSource="{Binding Movements}" SelectedValue="{Binding SelectedItem.Movement}"
-                                  DisplayMemberPath="MovementName" SelectedValuePath="MovementId"
                                   Grid.Column="1"/>
                         <ComboBox SelectedValue="{Binding SelectedItem.MovementType}" ItemsSource="{Binding MovementTypes}"
-                                  DisplayMemberPath="TypeName" SelectedValuePath="TypeId" 
                                   IsEnabled="{Binding SelectedItem.Movement, Converter={StaticResource BooleanToBool}, ConverterParameter=1}"
                                   Grid.Column="2" Margin="5">
                             <ComboBox.Style>
@@ -162,7 +162,8 @@
                             </ComboBox.Style>
                         </ComboBox>
                         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Margin="5">Основание поступления</TextBlock>
-                        <ComboBox Grid.Column="4" Margin="0,0,30,0"/>
+                        <ComboBox ItemsSource="{Binding ReceiptReasons}" SelectedValue="{Binding SelectedItem.ReceiptReason}"
+                            Grid.Column="4" Margin="0,0,30,0" />
                     </Grid>
                     <Grid Grid.Row="7" Margin="-27,0,27,0">
                         <TextBlock Margin="55,0,0,0">Справка по движению</TextBlock>

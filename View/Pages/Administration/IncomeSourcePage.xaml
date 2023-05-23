@@ -11,7 +11,7 @@
     </Page.DataContext>
     <DataGrid ItemsSource="{Binding DataList}" CanUserDeleteRows="False" RowHeaderWidth="0" IsReadOnly="False" AutoGenerateColumns="False" Margin="30,0,30,30">
         <DataGrid.Columns>
-            <DataGridTextColumn Header="Наименование"  Binding="{Binding SourceName}" Width="*" />
+            <DataGridTextColumn Header="Наименование"  Binding="{Binding Name}" Width="*" />
         </DataGrid.Columns>
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="CellEditEnding">

@@ -5,9 +5,9 @@ namespace AdminArchive.Model;
 
 public partial class HistoricalPeriod
 {
-    public int PeriodId { get; set; }
+    public int Id { get; set; }
 
-    public string PeriodName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public virtual ICollection<Fond> Fonds { get; set; } = new List<Fond>();
 }

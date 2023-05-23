@@ -5,7 +5,7 @@ namespace AdminArchive.Model;
 
 public partial class FondName
 {
-    public int NamesId { get; set; }
+    public int Id { get; set; }
 
     public int Fond { get; set; }
 

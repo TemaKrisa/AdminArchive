@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdminArchive.Model;
 
@@ -31,6 +32,8 @@ public partial class ArchiveBdContext : DbContext
     public virtual DbSet<Document> Documents { get; set; }
 
     public virtual DbSet<DocumentFile> DocumentFiles { get; set; }
+
+    public virtual DbSet<DocumentLog> DocumentLogs { get; set; }
 
     public virtual DbSet<Feature> Features { get; set; }
 
@@ -72,8 +75,6 @@ public partial class ArchiveBdContext : DbContext
 
     public virtual DbSet<StorageUnit> StorageUnits { get; set; }
 
-    public virtual DbSet<StorageUnitFeature> StorageUnitFeatures { get; set; }
-
     public virtual DbSet<UndocumentPeriod> UndocumentPeriods { get; set; }
 
     public virtual DbSet<UnitCategory> UnitCategories { get; set; }
@@ -83,6 +84,7 @@ public partial class ArchiveBdContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -91,73 +93,69 @@ public partial class ArchiveBdContext : DbContext
         {
             entity.ToTable("Acess");
 
-            entity.Property(e => e.AcessId).HasColumnName("AcessID");
-            entity.Property(e => e.AcessName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Activity>(entity =>
         {
-            entity.HasKey(e => e.ActivityId).HasName("PK_UnitActivity");
+            entity.HasKey(e => e.Id).HasName("PK_UnitActivity");
 
             entity.ToTable("Activity");
 
-            entity.Property(e => e.ActivityId).HasColumnName("ActivityID");
-            entity.Property(e => e.ActivityName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Authenticity>(entity =>
         {
             entity.ToTable("Authenticity");
 
-            entity.Property(e => e.AuthenticityId).HasColumnName("AuthenticityID");
-            entity.Property(e => e.AuthenticityName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Carrier>(entity =>
         {
             entity.ToTable("Carrier");
 
-            entity.Property(e => e.CarrierId).HasColumnName("CarrierID");
-            entity.Property(e => e.CarrierName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Category>(entity =>
         {
             entity.ToTable("Category");
 
-            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
-            entity.Property(e => e.CategoryName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<CharRestrict>(entity =>
         {
-            entity.HasKey(e => e.RestrictId);
-
             entity.ToTable("CharRestrict");
 
-            entity.Property(e => e.RestrictId).HasColumnName("RestrictID");
-            entity.Property(e => e.RestrictName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<DocType>(entity =>
         {
-            entity.HasKey(e => e.TypeId);
-
             entity.ToTable("DocType");
 
-            entity.Property(e => e.TypeId).HasColumnName("TypeID");
-            entity.Property(e => e.TypeName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Document>(entity =>
         {
             entity.ToTable("Document");
 
-            entity.Property(e => e.DocumentId).HasColumnName("DocumentID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Annotation).HasMaxLength(350);
             entity.Property(e => e.Applications).HasMaxLength(50);
             entity.Property(e => e.Date).HasColumnType("date");
-            entity.Property(e => e.DocumentName).HasMaxLength(50);
+            entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Note).HasMaxLength(50);
 
             entity.HasOne(d => d.AuthenticityNavigation).WithMany(p => p.Documents)
@@ -198,10 +196,9 @@ public partial class ArchiveBdContext : DbContext
 
         modelBuilder.Entity<DocumentFile>(entity =>
         {
-            entity.HasKey(e => e.FileId);
-
-            entity.Property(e => e.FileId).HasColumnName("FileID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Description).HasMaxLength(150);
+            entity.Property(e => e.Extension).HasMaxLength(5);
             entity.Property(e => e.FileName).HasMaxLength(50);
 
             entity.HasOne(d => d.DocumentNavigation).WithMany(p => p.DocumentFiles)
@@ -209,27 +206,45 @@ public partial class ArchiveBdContext : DbContext
                 .HasConstraintName("FK_DocumentFiles_Document");
         });
 
+        modelBuilder.Entity<DocumentLog>(entity =>
+        {
+            entity.ToTable("DocumentLog");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Date).HasColumnType("datetime");
+
+            entity.HasOne(d => d.ActivityNavigation).WithMany(p => p.DocumentLogs)
+                .HasForeignKey(d => d.Activity)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DocumentLog_Activity");
+
+            entity.HasOne(d => d.DocumentNavigation).WithMany(p => p.DocumentLogs)
+                .HasForeignKey(d => d.Document)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DocumentLog_Document");
+        });
+
         modelBuilder.Entity<Feature>(entity =>
         {
             entity.ToTable("Feature");
 
-            entity.Property(e => e.FeatureId).HasColumnName("FeatureID");
-            entity.Property(e => e.FeatureName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Fond>(entity =>
         {
             entity.ToTable("Fond");
 
-            entity.Property(e => e.FondId).HasColumnName("FondID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Annotation).HasMaxLength(350);
-            entity.Property(e => e.FondIndex).HasMaxLength(1);
-            entity.Property(e => e.FondLiteral).HasMaxLength(2);
-            entity.Property(e => e.FondName).HasMaxLength(150);
-            entity.Property(e => e.FondShortName).HasMaxLength(76);
             entity.Property(e => e.HistoricalOverview).HasMaxLength(350);
+            entity.Property(e => e.Index).HasMaxLength(1);
+            entity.Property(e => e.Literal).HasMaxLength(2);
             entity.Property(e => e.MovementNote).HasMaxLength(350);
+            entity.Property(e => e.Name).HasMaxLength(150);
             entity.Property(e => e.ReceiptDate).HasColumnType("datetime");
+            entity.Property(e => e.ShortName).HasMaxLength(76);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.Acess)
@@ -291,11 +306,9 @@ public partial class ArchiveBdContext : DbContext
 
         modelBuilder.Entity<FondLog>(entity =>
         {
-            entity.HasKey(e => e.LogId);
-
             entity.ToTable("FondLog");
 
-            entity.Property(e => e.LogId).HasColumnName("LogID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Date).HasColumnType("datetime");
 
             entity.HasOne(d => d.ActivityNavigation).WithMany(p => p.FondLogs)
@@ -316,9 +329,7 @@ public partial class ArchiveBdContext : DbContext
 
         modelBuilder.Entity<FondName>(entity =>
         {
-            entity.HasKey(e => e.NamesId);
-
-            entity.Property(e => e.NamesId).HasColumnName("NamesID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.EndDate).HasColumnType("date");
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Note).HasMaxLength(50);
@@ -332,54 +343,46 @@ public partial class ArchiveBdContext : DbContext
 
         modelBuilder.Entity<FondType>(entity =>
         {
-            entity.HasKey(e => e.TypeId);
-
             entity.ToTable("FondType");
 
-            entity.Property(e => e.TypeId).HasColumnName("TypeID");
-            entity.Property(e => e.TypeName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<FondView>(entity =>
         {
-            entity.HasKey(e => e.ViewId);
-
             entity.ToTable("FondView");
 
-            entity.Property(e => e.ViewId).HasColumnName("ViewID");
-            entity.Property(e => e.ViewName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<HistoricalPeriod>(entity =>
         {
-            entity.HasKey(e => e.PeriodId);
-
-            entity.Property(e => e.PeriodId).HasColumnName("PeriodID");
-            entity.Property(e => e.PeriodName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<IncomeSource>(entity =>
         {
-            entity.HasKey(e => e.SourceId);
-
             entity.ToTable("IncomeSource");
 
-            entity.Property(e => e.SourceId).HasColumnName("SourceID");
-            entity.Property(e => e.SourceName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Inventory>(entity =>
         {
             entity.ToTable("Inventory");
 
-            entity.Property(e => e.InventoryId).HasColumnName("InventoryID");
-            entity.Property(e => e.InventoryLiteral)
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Literal)
                 .HasMaxLength(10)
                 .IsFixedLength();
-            entity.Property(e => e.InventoryNumber).HasMaxLength(50);
             entity.Property(e => e.MovementNote).HasMaxLength(350);
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Note).HasMaxLength(350);
+            entity.Property(e => e.Number).HasMaxLength(50);
             entity.Property(e => e.Title).HasMaxLength(50);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.Inventories)
@@ -429,11 +432,9 @@ public partial class ArchiveBdContext : DbContext
 
         modelBuilder.Entity<InventoryLog>(entity =>
         {
-            entity.HasKey(e => e.LogId);
-
             entity.ToTable("InventoryLog");
 
-            entity.Property(e => e.LogId).HasColumnName("LogID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Date).HasColumnType("datetime");
 
             entity.HasOne(d => d.ActivityNavigation).WithMany(p => p.InventoryLogs)
@@ -454,102 +455,92 @@ public partial class ArchiveBdContext : DbContext
 
         modelBuilder.Entity<InventoryType>(entity =>
         {
-            entity.HasKey(e => e.TypeId);
-
             entity.ToTable("InventoryType");
 
-            entity.Property(e => e.TypeId).HasColumnName("TypeID");
-            entity.Property(e => e.TypeName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Movement>(entity =>
         {
             entity.ToTable("Movement");
 
-            entity.Property(e => e.MovementId).HasColumnName("MovementID");
-            entity.Property(e => e.MovementName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<MovementType>(entity =>
         {
-            entity.HasKey(e => e.TypeId);
-
             entity.ToTable("MovementType");
 
-            entity.Property(e => e.TypeId).HasColumnName("TypeID");
-            entity.Property(e => e.TypeName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Ownership>(entity =>
         {
             entity.ToTable("Ownership");
 
-            entity.Property(e => e.OwnershipId).HasColumnName("OwnershipID");
-            entity.Property(e => e.OwershipName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<ReceiptReason>(entity =>
         {
-            entity.HasKey(e => e.ReasonId);
-
             entity.ToTable("ReceiptReason");
 
-            entity.Property(e => e.ReasonId).HasColumnName("ReasonID");
-            entity.Property(e => e.ReasonName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Reproduction>(entity =>
         {
             entity.ToTable("Reproduction");
 
-            entity.Property(e => e.ReproductionId).HasColumnName("ReproductionID");
-            entity.Property(e => e.ReproductionName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
             entity.ToTable("Role");
 
-            entity.Property(e => e.RoleId).HasColumnName("RoleID");
-            entity.Property(e => e.RoleName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<SecretChar>(entity =>
         {
-            entity.HasKey(e => e.CharId);
-
             entity.ToTable("SecretChar");
 
-            entity.Property(e => e.CharId).HasColumnName("CharID");
-            entity.Property(e => e.CharName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<StorageTime>(entity =>
         {
-            entity.HasKey(e => e.TimeId);
-
             entity.ToTable("StorageTime");
 
-            entity.Property(e => e.TimeId).HasColumnName("TimeID");
-            entity.Property(e => e.TimeName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<StorageUnit>(entity =>
         {
-            entity.HasKey(e => e.UnitId).HasName("PK_StorageUnit1");
+            entity.HasKey(e => e.Id).HasName("PK_StorageUnit1");
 
             entity.ToTable("StorageUnit");
 
-            entity.Property(e => e.UnitId).HasColumnName("UnitID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.AccessRestrictionNote).HasMaxLength(50);
             entity.Property(e => e.Date).HasMaxLength(50);
             entity.Property(e => e.Index).HasMaxLength(15);
             entity.Property(e => e.IsFm).HasColumnName("IsFM");
             entity.Property(e => e.IsSf).HasColumnName("IsSF");
+            entity.Property(e => e.Literal).HasMaxLength(2);
+            entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Note).HasMaxLength(150);
             entity.Property(e => e.Tite).HasMaxLength(50);
-            entity.Property(e => e.UnitLiteral).HasMaxLength(2);
-            entity.Property(e => e.UnitName).HasMaxLength(50);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.StorageUnits)
                 .HasForeignKey(d => d.Acess)
@@ -572,28 +563,28 @@ public partial class ArchiveBdContext : DbContext
             entity.HasOne(d => d.SecretCharNavigation).WithMany(p => p.StorageUnits)
                 .HasForeignKey(d => d.SecretChar)
                 .HasConstraintName("FK_StorageUnit_SecretChar");
-        });
 
-        modelBuilder.Entity<StorageUnitFeature>(entity =>
-        {
-            entity.HasNoKey();
-
-            entity.HasOne(d => d.FeatureNavigation).WithMany()
-                .HasForeignKey(d => d.Feature)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_StorageUnitFeatures_Feature");
-
-            entity.HasOne(d => d.UnitNavigation).WithMany()
-                .HasForeignKey(d => d.Unit)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_StorageUnitFeatures_StorageUnit");
+            entity.HasMany(d => d.Features).WithMany(p => p.Units)
+                .UsingEntity<Dictionary<string, object>>(
+                    "StorageUnitFeature",
+                    r => r.HasOne<Feature>().WithMany()
+                        .HasForeignKey("Feature")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_StorageUnitFeatures_Feature"),
+                    l => l.HasOne<StorageUnit>().WithMany()
+                        .HasForeignKey("Unit")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_StorageUnitFeatures_StorageUnit"),
+                    j =>
+                    {
+                        j.HasKey("Unit", "Feature");
+                        j.ToTable("StorageUnitFeatures");
+                    });
         });
 
         modelBuilder.Entity<UndocumentPeriod>(entity =>
         {
-            entity.HasKey(e => e.PeriodId);
-
-            entity.Property(e => e.PeriodId).HasColumnName("PeriodID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.DocumentLocation).HasMaxLength(50);
             entity.Property(e => e.EndDate).HasColumnType("date");
             entity.Property(e => e.Note).HasMaxLength(150);
@@ -608,21 +599,19 @@ public partial class ArchiveBdContext : DbContext
 
         modelBuilder.Entity<UnitCategory>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK_Category_1");
+            entity.HasKey(e => e.Id).HasName("PK_Category_1");
 
             entity.ToTable("UnitCategory");
 
-            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
-            entity.Property(e => e.CategoryName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<UnitLog>(entity =>
         {
-            entity.HasKey(e => e.LogId);
-
             entity.ToTable("UnitLog");
 
-            entity.Property(e => e.LogId).HasColumnName("LogID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Date).HasColumnType("datetime");
 
             entity.HasOne(d => d.ActivityNavigation).WithMany(p => p.UnitLogs)
@@ -642,7 +631,7 @@ public partial class ArchiveBdContext : DbContext
         {
             entity.ToTable("User");
 
-            entity.Property(e => e.UserId).HasColumnName("UserID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Login).HasMaxLength(50);
             entity.Property(e => e.Midname).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);

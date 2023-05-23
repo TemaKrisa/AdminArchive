@@ -8,7 +8,7 @@ namespace AdminArchive.View.Pages
         public MainPage()
         {
             InitializeComponent();
-            FrameManager.mainFrame = RootFrame;
+            Setting.mainFrame = RootFrame;
             DataContext = new MainPageVM();
         }
     }

@@ -23,7 +23,7 @@
         </Grid>
         <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Documents}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0">
             <ui:DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding DocumentId}"></DataGridTextColumn>
+                <DataGridTextColumn Header="№" Binding="{Binding Id}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding DocumentName}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Дата документа" Width="*" Binding="{Binding Date}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Кол-во листов"  Binding="{Binding Vol}"></DataGridTextColumn>

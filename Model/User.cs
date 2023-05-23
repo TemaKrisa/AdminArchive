@@ -5,7 +5,7 @@ namespace AdminArchive.Model;
 
 public partial class User
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
 
     public string Login { get; set; } = null!;
 

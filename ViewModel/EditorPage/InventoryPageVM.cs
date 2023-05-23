@@ -41,10 +41,10 @@ namespace AdminArchive.ViewModel
         public void UpdateData()
         {
             dc = new ArchiveBdContext();
-            Inventories = new ObservableCollection<Inventory>(dc.Inventories.Where(u => u.Fond == curFond.FondId).OrderBy(u => u.InventoryNumber).ThenBy(u => u.InventoryLiteral));
+            Inventories = new ObservableCollection<Inventory>(dc.Inventories.Where(u => u.Fond == curFond.Id).OrderBy(u => u.Number).ThenBy(u => u.Literal));
         }
 
-        protected override void GoBack() { FrameManager.mainFrame.Navigate(new FundPage()); }
+        protected override void GoBack() { Setting.mainFrame.Navigate(new FundPage()); }
 
 
 
@@ -54,7 +54,7 @@ namespace AdminArchive.ViewModel
             {
                 StorageUnitPageVM vm = new(SelectedItem,curFond);
                 StorageUnitPage v = new() { DataContext = vm };
-                FrameManager.mainFrame.Navigate(v);
+                Setting.mainFrame.Navigate(v);
             }
         }
 
@@ -72,6 +72,26 @@ namespace AdminArchive.ViewModel
             InventoryWindowVM viewModel = new((SelectedItem as Inventory), this, index, Inventories);
             newWindow.DataContext = viewModel;
             newWindow.ShowDialog();
+        }
+
+        protected override void SearchCommand()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void ResetSearch()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void CloseSearchCommand()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void OpenSearchCommand()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace AdminArchive.ViewModel
         private int currentIndex;
 
         public ObservableCollection<Movement> Movements { get; set; }
-        
+
         private ObservableCollection<MovementType> movementTypes;
 
         public ObservableCollection<MovementType> MovementTypes
@@ -29,30 +29,13 @@ namespace AdminArchive.ViewModel
         private bool typeEnabled;
 
         public bool TypeEnabled
-        {
-            get => typeEnabled;
-            set
-            {
-                typeEnabled = value;
-                OnPropertyChanged();
-            }
-        }
+        { get => typeEnabled; set { typeEnabled = value; OnPropertyChanged(); } }
+
         public ObservableCollection<MovementType> MovementTypesEmpty { get; set; }
-        
-        private ObservableCollection<UndocumentPeriod> _undocumentPeriods;
-        public ObservableCollection<UndocumentPeriod> UndocumentPeriods
-        {
-            get => _undocumentPeriods;
-            set
-            {
-                _undocumentPeriods = value;
-                OnPropertyChanged();
-            }
-        }
+
         private ObservableCollection<Fond> itemList = new();
         public ObservableCollection<Fond> ItemList { get => itemList; set { itemList = value; OnPropertyChanged(); } }
 
-        private ObservableCollection<FondLog> _Log;
 
         public ObservableCollection<Acess> Acess { get; set; }
 
@@ -77,40 +60,14 @@ namespace AdminArchive.ViewModel
         public ObservableCollection<StorageTime> StorageTime { get; set; }
         public ObservableCollection<ReceiptReason> ReceiptReasons { get; set; }
 
-        private ObservableCollection<FondName> fondNames;
-
-        public ObservableCollection<FondName> FondNames 
-        {
-            get => fondNames;
-            set { fondNames = value; OnPropertyChanged(); }
-        }        
-        private ObservableCollection<FondName> fondNamesDelete;
-
-        public ObservableCollection<FondName> FondNamesDelete 
-        { 
-            get => fondNamesDelete;
-            set { fondNamesDelete = value; OnPropertyChanged(); }
-        }        
-        private ObservableCollection<UndocumentPeriod> undocPeriodDelete;
-
-        public ObservableCollection<UndocumentPeriod> UndocumentPeriodsDelete 
-        { 
-            get => undocPeriodDelete; 
-            set { undocPeriodDelete = value; OnPropertyChanged(); }
-        }
-
-
-        public ObservableCollection<FondLog> Log
-        {
-            get => _Log; 
-            set { _Log = value; OnPropertyChanged(); }
-        }
+        private ObservableCollection<FondLog> _Log;
+        public ObservableCollection<FondLog> Log { get => _Log; set { _Log = value; OnPropertyChanged(); } }
 
         public Fond _selectedItem = new();
 
         public Fond SelectedItem
         {
-            get => _selectedItem; 
+            get => _selectedItem;
             set
             {
                 _selectedItem = value;
@@ -130,33 +87,12 @@ namespace AdminArchive.ViewModel
         {
             get => _selectedName;
             set { _selectedName = value; OnPropertyChanged(); }
-        }        
+        }
         private UndocumentPeriod _selectedPeriod;
         public UndocumentPeriod SelectedPeriod
         {
             get => _selectedPeriod;
             set { _selectedPeriod = value; OnPropertyChanged(); }
-        }
-
-        public ICommand RemoveName => new RelayCommand(RemoveNameCommand);
-
-        private void RemoveNameCommand()
-        {
-            if (SelectedName != null)
-            {
-                FondNamesDelete.Add(SelectedName);
-                FondNames.Remove(SelectedName);
-            }
-        }        
-        public ICommand RemovePeriod => new RelayCommand(RemovePeriodCommand);
-
-        private void RemovePeriodCommand()
-        {
-            if (SelectedPeriod != null)
-            {
-                UndocumentPeriodsDelete.Add(SelectedPeriod);
-                UndocumentPeriods.Remove(SelectedPeriod);
-            }
         }
 
         #endregion
@@ -248,7 +184,7 @@ namespace AdminArchive.ViewModel
                 MovementTypesEmpty = new ObservableCollection<MovementType>();
                 ReceiptReasons = new ObservableCollection<ReceiptReason>(dc.ReceiptReasons);
                 FillTables();
-                if (SelectedItem.FondNumber != null)
+                if (SelectedItem.Number != null)
                 {
                     CheckNav(currentIndex);
                 }
@@ -263,11 +199,11 @@ namespace AdminArchive.ViewModel
             }
         }
 
-        private void FillTables() 
+        private void FillTables()
         {
             using ArchiveBdContext dc = new();
-            FondNames = new ObservableCollection<FondName>(dc.FondNames.Where(u => u.Fond == SelectedItem.FondId));
-            UndocumentPeriods = new ObservableCollection<UndocumentPeriod>(dc.UndocumentPeriods.Where(u => u.Fond == SelectedItem.FondId));
+            FondNames = new ObservableCollection<FondName>(dc.FondNames.Where(u => u.Fond == SelectedItem.Id));
+            UndocumentPeriods = new ObservableCollection<UndocumentPeriod>(dc.UndocumentPeriods.Where(u => u.Fond == SelectedItem.Id));
             FondNamesDelete = new ObservableCollection<FondName>();
             UndocumentPeriodsDelete = new ObservableCollection<UndocumentPeriod>();
         }
@@ -286,29 +222,29 @@ namespace AdminArchive.ViewModel
             {
                 FondLog Log;
                 using ArchiveBdContext dc = new();
-                if (SelectedItem.Movement == 2 && SelectedItem.MovementType == null) { ShowMessage("При выборе движения выбыл, также должен быть выбран тип движения!"); }
-                else if (string.IsNullOrWhiteSpace(SelectedItem.FondName)) { ShowMessage("Введите наименование фонда!"); }
-                else if (string.IsNullOrWhiteSpace(SelectedItem.FondShortName)) { ShowMessage("Введите сокращенное наименование фонда!"); }
+                if (SelectedItem.Movement == 1 && SelectedItem.MovementType == null) { ShowMessage("При выборе движения выбыл, также должен быть выбран тип движения!"); }
+                else if (string.IsNullOrWhiteSpace(SelectedItem.Name)) { ShowMessage("Введите наименование фонда!"); }
+                else if (string.IsNullOrWhiteSpace(SelectedItem.ShortName)) { ShowMessage("Введите сокращенное наименование фонда!"); }
                 else if (string.IsNullOrWhiteSpace(SelectedItem.ReceiptDate.ToString())) { ShowMessage("Введите дату поступления!"); }
                 else
                 {
 
                     if (!dc.Fonds.Contains(SelectedItem))
                     {
-                        if (dc.Fonds.Any(u => u.FondNumber == SelectedItem.FondNumber && u.FondLiteral == SelectedItem.FondLiteral && u.FondIndex == SelectedItem.FondIndex))
+                        if (dc.Fonds.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal && u.Index == SelectedItem.Index))
                         {
                             ShowMessage("Добавление фонда", "Фонд с таким номером уже существует");
                             return;
                         }
                         dc.Fonds.Add(SelectedItem);
                         dc.SaveChanges();
-                        Log = new() { Activity = 1, Date = DateTime.Now, Fond = SelectedItem.FondId, User = 1 };
+                        Log = new() { Activity = 1, Date = DateTime.Now, Fond = SelectedItem.Id, User = 1 };
                     }
                     else
                     {
                         dc.Update(SelectedItem);
                         dc.SaveChanges();
-                        Log = new() { Activity = 2, Date = DateTime.Now, Fond = SelectedItem.FondId, User = 1 };
+                        Log = new() { Activity = 2, Date = DateTime.Now, Fond = SelectedItem.Id, User = 1 };
                     }
                     dc.FondLogs.Add(Log);
 
@@ -325,19 +261,19 @@ namespace AdminArchive.ViewModel
                             ShowMessage("Отсутсвует наименование у переименования фонда!");
                             return;
                         }
-                        
-                        if (dc.FondNames.Any(u=>u.NamesId == fn.NamesId)) //Проверка на существование в базе данных
+
+                        if (dc.FondNames.Any(u => u.Id == fn.Id)) //Проверка на существование в базе данных
                         {
                             dc.FondNames.Update(fn); //Изменение в базе данных
                         }
                         else
                         {
-                            fn.Fond = SelectedItem.FondId; 
+                            fn.Fond = SelectedItem.Id;
                             dc.FondNames.Add(fn); //Добавление изменений в базу данных 
                         }
                     }
                     foreach (var fnd in FondNamesDelete)
-                        if (dc.FondNames.Any(u => u.NamesId == fnd.NamesId)) dc.Remove(fnd); //Удаление изменений в базе данных
+                        if (dc.FondNames.Any(u => u.Id == fnd.Id)) dc.Remove(fnd); //Удаление изменений в базе данных
                     dc.SaveChanges();
                     //Сохранение незадокументированных периодов
                     foreach (var up in UndocumentPeriods)
@@ -351,25 +287,25 @@ namespace AdminArchive.ViewModel
                         {
                             ShowMessage("Отсутсвует причина у незадокументированного периода!");
                             return;
-                        }                        
+                        }
                         if (string.IsNullOrEmpty(up.DocumentLocation))
                         {
                             ShowMessage("Отсутсвует местонахождение у незадокументированного периода!");
                             return;
                         }
-                        if (dc.UndocumentPeriods.Any(u => u.PeriodId == up.PeriodId))
+                        if (dc.UndocumentPeriods.Any(u => u.Id == up.Id))
                         {
                             dc.UndocumentPeriods.Update(up);
                         }
                         else
                         {
-                            up.Fond = SelectedItem.FondId;
+                            up.Fond = SelectedItem.Id;
                             dc.UndocumentPeriods.Add(up);
                         }
                     }
                     foreach (var upd in UndocumentPeriodsDelete)
                     {
-                        if (dc.UndocumentPeriods.Any(u=> u.PeriodId == upd.PeriodId))
+                        if (dc.UndocumentPeriods.Any(u => u.Id == upd.Id))
                             dc.Remove(upd);
                     }
                     dc.SaveChanges();
@@ -384,10 +320,116 @@ namespace AdminArchive.ViewModel
         {
             using ArchiveBdContext dc = new();
             UCVisibility = Visibility.Visible;
-            Log = new ObservableCollection<FondLog>(dc.FondLogs.Where(u => u.Fond == SelectedItem.FondId).Include(w => w.UserNavigation).Include(b => b.ActivityNavigation));
+            Log = new ObservableCollection<FondLog>(dc.FondLogs.Where(u => u.Fond == SelectedItem.Id).Include(w => w.UserNavigation).Include(b => b.ActivityNavigation));
         }
 
         protected override void CloseLog() { UCVisibility = Visibility.Collapsed; }
+        #endregion
+
+        #region Переименования фондов
+
+        private ObservableCollection<FondName> fondNames, fondNamesDelete;
+
+        public ObservableCollection<FondName> FondNames
+        {
+            get => fondNames;
+            set { fondNames = value; OnPropertyChanged(); }
+        }
+
+        public ObservableCollection<FondName> FondNamesDelete
+        {
+            get => fondNamesDelete;
+            set { fondNamesDelete = value; OnPropertyChanged(); }
+        }
+
+        public ICommand RemoveName => new RelayCommand(RemoveNameCommand);
+        public ICommand SaveName => new RelayCommand(SaveRenameCommand);
+        public ICommand EditRename => new RelayCommand(EditRenameCommand);
+        public ICommand CreateRename => new RelayCommand(CreateRenameCommand);
+        public ICommand CloseRename => new RelayCommand(CloseRenameCommand);
+
+        private Visibility _renameVisibility = Visibility.Collapsed;
+        public Visibility RenameVisibility
+        {
+            get => _renameVisibility;
+            set { _renameVisibility = value; OnPropertyChanged(); }
+        }
+
+        private void RemoveNameCommand()
+        {
+            if (SelectedName != null)
+            {
+                FondNamesDelete.Add(SelectedName);
+                FondNames.Remove(SelectedName);
+                CloseRenameCommand();
+            }
+        }        
+        private void CreateRenameCommand()
+        {
+            SelectedName = new FondName();
+            EditRenameCommand();
+        }
+        
+        private void SaveRenameCommand()
+        {
+            if (SelectedName != null)
+            {
+                if (SelectedName.StartDate > SelectedName.EndDate) ShowMessage("Начальная дата превышает конечную!");
+                FondNames.Add(SelectedName);
+                CloseRenameCommand();
+            }
+        }
+
+        private void EditRenameCommand() => RenameVisibility = Visibility.Visible;
+        private void CloseRenameCommand() => RenameVisibility = Visibility.Collapsed;
+        #endregion
+
+        #region Незадокументированные периоды
+
+        private ObservableCollection<UndocumentPeriod> undocPeriodDelete, _undocumentPeriods;
+
+        public ObservableCollection<UndocumentPeriod> UndocumentPeriodsDelete
+        { get => undocPeriodDelete; set { undocPeriodDelete = value; OnPropertyChanged(); } }
+        public ObservableCollection<UndocumentPeriod> UndocumentPeriods
+        { get => _undocumentPeriods; set { _undocumentPeriods = value; OnPropertyChanged(); } }
+
+        public ICommand RemovePeriod => new RelayCommand(RemovePeriodCommand);
+        public ICommand SavePeriod => new RelayCommand(SavePeriodCommand);
+        public ICommand EditPeriod => new RelayCommand(EditPeriodCommand);
+        public ICommand CreatePeriod => new RelayCommand(CreatePeriodCommand);
+        public ICommand ClosePeriod => new RelayCommand(ClosePeriodCommand);
+
+        private Visibility _periodVisibility = Visibility.Collapsed;
+        public Visibility PeriodVisibility
+        { get => _periodVisibility; set { _periodVisibility = value; OnPropertyChanged(); } }
+
+        private void RemovePeriodCommand()
+        {
+            if (SelectedPeriod != null)
+            {
+                UndocumentPeriodsDelete.Add(SelectedPeriod);
+                UndocumentPeriods.Remove(SelectedPeriod);
+                ClosePeriodCommand();
+            }
+        }
+        private void CreatePeriodCommand()
+        {
+            SelectedPeriod = new UndocumentPeriod();
+            EditPeriodCommand();
+        }
+
+        private void SavePeriodCommand()
+        {
+            if (SelectedPeriod != null)
+            {
+                if (SelectedPeriod.StartDate > SelectedPeriod.EndDate) ShowMessage("Начальная дата превышает конечную!");
+                FondNames.Add(SelectedName);
+                ClosePeriodCommand();
+            }
+        }
+
+        private void EditPeriodCommand() => PeriodVisibility = Visibility.Visible;
+        private void ClosePeriodCommand() => PeriodVisibility = Visibility.Collapsed;
         #endregion
     }
 }

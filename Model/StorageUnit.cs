@@ -5,9 +5,9 @@ namespace AdminArchive.Model;
 
 public partial class StorageUnit
 {
-    public int UnitId { get; set; }
+    public int Id { get; set; }
 
-    public string UnitName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public int Vol { get; set; }
 
@@ -25,7 +25,7 @@ public partial class StorageUnit
 
     public int Inventory { get; set; }
 
-    public int UnitNumber { get; set; }
+    public int Number { get; set; }
 
     public string Date { get; set; } = null!;
 
@@ -59,7 +59,7 @@ public partial class StorageUnit
 
     public int? CharRestrict { get; set; }
 
-    public string? UnitLiteral { get; set; }
+    public string? Literal { get; set; }
 
     public string? Index { get; set; }
 
@@ -76,4 +76,6 @@ public partial class StorageUnit
     public virtual SecretChar? SecretCharNavigation { get; set; }
 
     public virtual ICollection<UnitLog> UnitLogs { get; set; } = new List<UnitLog>();
+
+    public virtual ICollection<Feature> Features { get; set; } = new List<Feature>();
 }

@@ -8,9 +8,8 @@ namespace AdminArchive.Model
         {
             get
             {
-                return FondIndex + "" + FondNumber + "" + FondLiteral;
+                return Index + "" + Number + "" + Literal;
             }
-        }
-        
+        }      
     }
 }

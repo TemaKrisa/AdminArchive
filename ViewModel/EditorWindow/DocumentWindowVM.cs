@@ -16,9 +16,6 @@ namespace AdminArchive.ViewModel
         public DocumentPageVM pageVM = new();
         
         private int currentIndex;
-
-        private ArchiveBdContext dc;
-
         public ObservableCollection<SecretChar> SecretChar { get; set; }
         public ObservableCollection<DocType> DocType { get; set; }
         public ObservableCollection<Reproduction> Reproductions { get; set; }
@@ -29,6 +26,8 @@ namespace AdminArchive.ViewModel
         private ObservableCollection<Document> itemList = new();
         public ObservableCollection<Document> ItemList { get => itemList; set { itemList = value; OnPropertyChanged(); } }
 
+        public ObservableCollection<Authenticity> Authenticities { get; set; }
+
         private StorageUnit storageUnit { get; set; }
         public ObservableCollection<DocumentFile> DocFiles { get => docFiles;  set { docFiles = value; OnPropertyChanged(); } }
 
@@ -37,7 +36,22 @@ namespace AdminArchive.ViewModel
 
         public DocumentFile _selFile = new();
 
-        public DocumentFile SelFile { get => _selFile; set { _selFile = value; OnPropertyChanged(); } }
+        public DocumentFile SelFile { get => _selFile; set 
+            { 
+                _selFile = value;
+                OnPropertyChanged();
+
+                //var fileExtension = Path.GetExtension(SelFile.FileName).ToLowerInvariant();
+
+                //if (fileExtension == ".mp3" || fileExtension == ".wav" || fileExtension == ".mp4" || fileExtension == ".avi" || fileExtension == ".wmv")
+                //{
+                //    var base64String = System.Convert.ToBase64String(SelFile.File);
+                //    var uriString = $"data:video/{fileExtension};base64,{base64String}";
+                //    MediaPlayer pl = new();
+                //    pl.Open(new Uri(uriString));
+                //}
+            } 
+        }
 
         #endregion
 
@@ -110,6 +124,7 @@ namespace AdminArchive.ViewModel
 
         private void FillTables()
         {
+            using ArchiveBdContext dc = new();
             AddedFl.File = dc.DocumentFiles.First().File;
         }
 
@@ -119,10 +134,12 @@ namespace AdminArchive.ViewModel
         {
             try
             {
+                using ArchiveBdContext dc = new();
                 DocType = new ObservableCollection<DocType>(dc.DocTypes);
                 SecretChar = new ObservableCollection<SecretChar>(dc.SecretChars);
                 DocFiles = new ObservableCollection<DocumentFile>(dc.DocumentFiles);
                 DocType = new ObservableCollection<DocType>(dc.DocTypes);
+                Authenticities = new ObservableCollection<Authenticity>(dc.Authenticities);
                 FillTables();
             }
             catch (Exception e)
@@ -141,7 +158,9 @@ namespace AdminArchive.ViewModel
         {
             try
             {
-                if (!dc.Documents.Any(u => u.DocumentId == SelectedItem.DocumentId))
+                using ArchiveBdContext dc = new();
+                SelectedItem.StorageUnit = storageUnit.Id;
+                if (!dc.Documents.Any(u => u.Id == SelectedItem.Id))
                     dc.Documents.Add(SelectedItem);
                 dc.SaveChanges();
                 pageVM.UpdateData();
@@ -174,6 +193,7 @@ namespace AdminArchive.ViewModel
             }
         }
         public ICommand ChooseFile => new RelayCommand(ChooseFiles);
+        public ICommand SaveFile => new RelayCommand(SaveFiles);
 
         private void ChooseFiles()
         {
@@ -187,13 +207,33 @@ namespace AdminArchive.ViewModel
                 if (openFileDialog.ShowDialog() == true)
                 {
                     SelFile.File = File.ReadAllBytes(openFileDialog.FileName);
-                    //SelFile.Document = SelectedItem.DocumentId;
-                    SelFile.FileName = openFileDialog.FileName;
+                    SelFile.FileName = Path.GetFileNameWithoutExtension( openFileDialog.FileName);
+                    SelFile.Extension = Path.GetExtension(openFileDialog.FileName);
+                    if(!dc.DocumentFiles.Any(u=> u.Id == SelFile.Id))
                     dc.Add(SelFile);
                     dc.SaveChanges();
                     DocFiles = new ObservableCollection<DocumentFile>(dc.DocumentFiles);
+                }     
+            }
+        }
+
+        private void SaveFiles()
+        {
+            ArchiveBdContext dc = new();
+            if (SelFile.File != null)
+            {
+                SaveFileDialog saveFileDialog = new()
+                {
+                    Title = SelFile.FileName,
+                    FileName = SelFile.FileName + "" + SelFile.Extension,
+                    Filter = "All files (*.*)|*.*|" + SelFile.Extension.ToUpper() + " files (*" + SelFile.Extension + ")|*" + SelFile.Extension
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    System.IO.File.WriteAllBytes(saveFileDialog.FileName, SelFile.File);
                 }
             }
         }
     }
 }
+

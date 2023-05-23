@@ -29,6 +29,9 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
+    <PackageReference Include="NAudio" Version="2.1.0" />
+    <PackageReference Include="Vlc.DotNet.Core" Version="3.1.0" />
+    <PackageReference Include="Vlc.DotNet.Wpf" Version="3.1.0" />
     <PackageReference Include="WPF-UI" Version="2.0.3" />
   </ItemGroup>
 
@@ -79,12 +82,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
     </None>
-    <None Update="Resources\a.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\b.mp4">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -93,6 +90,30 @@
 
   <ItemGroup>
     <Folder Include="ViewModel\UserControls\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\A S\.nuget\packages\wpfmediakit\2.2.0\build\DirectShowLib-2005.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\A S\.nuget\packages\wpfmediakit\2.2.0\build\EVRPresenter32.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\A S\.nuget\packages\wpfmediakit\2.2.0\build\EVRPresenter64.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\A S\.nuget\packages\wpfmediakit\2.2.0\build\DirectShowLib-2005.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\A S\.nuget\packages\wpfmediakit\2.2.0\build\EVRPresenter32.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\A S\.nuget\packages\wpfmediakit\2.2.0\build\EVRPresenter64.dll" />
   </ItemGroup>
 
 </Project>

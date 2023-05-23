@@ -19,7 +19,6 @@
         <Grid Margin="5">
             <StackPanel Orientation="Horizontal">
                 <ui:Button Content="Добавить новую запись" Icon="Add24" Appearance="Info" Command="{Binding Add}"/>
-                <ui:Button Content="Отчёт" Appearance="Success" Icon="Document24" Command="{Binding ReportAdd}"/>
                 <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
             </StackPanel>
         </Grid>

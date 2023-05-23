@@ -5,7 +5,7 @@ namespace AdminArchive.Model;
 
 public partial class FondLog
 {
-    public int LogId { get; set; }
+    public int Id { get; set; }
 
     public int User { get; set; }
 

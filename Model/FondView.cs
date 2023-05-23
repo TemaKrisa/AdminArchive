@@ -5,9 +5,9 @@ namespace AdminArchive.Model;
 
 public partial class FondView
 {
-    public int ViewId { get; set; }
+    public int Id { get; set; }
 
-    public string ViewName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public virtual ICollection<Fond> Fonds { get; set; } = new List<Fond>();
 }

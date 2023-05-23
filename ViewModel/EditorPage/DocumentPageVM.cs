@@ -33,12 +33,12 @@ namespace AdminArchive.ViewModel
         }
 
         public void UpdateData() =>
-         Documents = new ObservableCollection<Document>(dc.Documents.Where(u => u.StorageUnit == curUnit.UnitId));
+         Documents = new ObservableCollection<Document>(dc.Documents.Where(u => u.StorageUnit == curUnit.Id));
 
         protected override void GoBack()
         {
             StorageUnitPageVM vm = new(curInv,curFond);
-            FrameManager.mainFrame.Navigate(new StorageUnitPage{ DataContext = vm });
+            Setting.mainFrame?.Navigate(new StorageUnitPage{ DataContext = vm });
         }
 
         protected override void EditItem()
@@ -58,6 +58,27 @@ namespace AdminArchive.ViewModel
         }
 
         protected override void OpenItem() {}
+
+        protected override void SearchCommand()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void ResetSearch()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void CloseSearchCommand()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void OpenSearchCommand()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public DocumentPageVM() { }
     }
 }

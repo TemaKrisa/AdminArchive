@@ -61,7 +61,7 @@ namespace AdminArchive.ViewModel
             flowDoc.Blocks.Add(new Paragraph());
             foreach (var item in Fonds)
             {
-                flowDoc.Blocks.Add(new Paragraph(new Run($"{"Фонд №" + item.FullNumber +" " + item.FondName}"))
+                flowDoc.Blocks.Add(new Paragraph(new Run($"{"Фонд №" + item.FullNumber +" " + item.Name}"))
                 { TextAlignment = TextAlignment.Left, FontWeight = FontWeights.Bold, FontFamily = font, FontSize = 20 });
                  TableRowGroup dataGroup = new();
                 Table table = new() { BorderBrush = Brushes.Black, BorderThickness = new Thickness(1), FontSize = 14 };
@@ -77,21 +77,20 @@ namespace AdminArchive.ViewModel
                 };
                 table.RowGroups.Add(new TableRowGroup { Rows = { headerRow } });
 
-                foreach (var invent in dc.Inventories.Where(u=>u.Fond == item.FondId).Include(u=>u.TypeNavigation))
+                foreach (var invent in dc.Inventories.Where(u=>u.Fond == item.Id).Include(u=>u.TypeNavigation))
                 {
                         TableRow dataRow = new();
-                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.InventoryNumber))));
-                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.Title))));
-                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.TypeNavigation?.TypeName))));
+                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.FullNumber))));
+                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.Name))));
+                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.TypeNavigation?.Name))));
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.StartDate.ToString()))));
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.EndDate.ToString()))));
                         dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.Volume.ToString()))));
-
                         dataGroup.Rows.Add(dataRow);
                 }
                 TableRow finalRow = new();
-                finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Описей всего: {dc.Inventories.Where(u => u.Fond == item.FondId).Count()}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
-                finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Обьём всего: {dc.Inventories.Where(u => u.Fond == item.FondId).Sum(u => u.Volume)}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
+                finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Описей всего: {dc.Inventories.Where(u => u.Fond == item.Id).Count()}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
+                finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Обьём всего: {dc.Inventories.Where(u => u.Fond == item.Id).Sum(u => u.Volume)}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
                 dataGroup.Rows.Add(finalRow);
                 table.RowGroups.Add(dataGroup); 
                 flowDoc.Blocks.Add(table);
@@ -136,8 +135,8 @@ namespace AdminArchive.ViewModel
             {
                 TableRow dataRow = new();
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.FullNumber))));
-                dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.FondShortName))));
-                dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.CategoryNavigation?.CategoryName))));
+                dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.ShortName))));
+                dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.CategoryNavigation?.Name))));
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.StartDate.ToString()))));
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.EndDate.ToString()))));
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.Volume.ToString()))));

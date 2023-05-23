@@ -5,9 +5,9 @@ namespace AdminArchive.Model;
 
 public partial class MovementType
 {
-    public int TypeId { get; set; }
+    public int Id { get; set; }
 
-    public string TypeName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public virtual ICollection<Fond> Fonds { get; set; } = new List<Fond>();
 

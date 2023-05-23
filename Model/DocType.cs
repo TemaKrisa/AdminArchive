@@ -5,9 +5,9 @@ namespace AdminArchive.Model;
 
 public partial class DocType
 {
-    public int TypeId { get; set; }
+    public int Id { get; set; }
 
-    public string TypeName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 

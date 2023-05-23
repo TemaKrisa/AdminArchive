@@ -11,7 +11,7 @@ namespace AdminArchive.Model
             {
                 dc = new();
                 int? q = dc.StorageUnits
-                    .Where(u => u.Inventory == InventoryId)
+                    .Where(u => u.Inventory == Id)
                     .Select(u => (int?)u.StartDate)
                     .DefaultIfEmpty()
                     .Max(); if (q != null) return q;
@@ -25,7 +25,7 @@ namespace AdminArchive.Model
             { 
                 dc = new();
                 int? q = dc.StorageUnits
-                    .Where(u => u.Inventory == InventoryId)
+                    .Where(u => u.Inventory == Id)
                     .Select(u => (int?)u.EndDate)
                     .DefaultIfEmpty()
                     .Max(); if (q != null) return q;
@@ -37,7 +37,7 @@ namespace AdminArchive.Model
         {
             get
             {
-                return InventoryNumber + "" + InventoryLiteral;
+                return Number + "" + Literal;
             }
         }
     }

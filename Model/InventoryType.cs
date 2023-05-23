@@ -5,9 +5,9 @@ namespace AdminArchive.Model;
 
 public partial class InventoryType
 {
-    public int TypeId { get; set; }
+    public int Id { get; set; }
 
-    public string TypeName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
 }

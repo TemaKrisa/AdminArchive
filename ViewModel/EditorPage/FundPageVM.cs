@@ -3,6 +3,7 @@ using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -10,62 +11,87 @@ namespace AdminArchive.ViewModel
 {
     internal class FundPageVM : PageBaseVM
     {
-        private ObservableCollection<Fond> _fonds;
-        public ObservableCollection<Fond> Fonds 
-        { 
-            get => _fonds; 
-            set 
-            {
-                _fonds = value;
-                OnPropertyChanged();
-            } 
-        } // Define an ObservableCollection of Fonds
-        private ArchiveBdContext dc;        
-        private Fond _selectedItem;
+        #region Переменные
+        private ObservableCollection<Fond> _fonds; // коллекция фондов
+        private string _name, _shortName, _startDate, _endDate; // названия и даты фондов
+        private int _category; // категория фонда
+        private Fond _selectedItem; // выбранный фонд
+        public ObservableCollection<Category> Categories { get; set; } // коллекция категорий
+        public ObservableCollection<Fond> Fonds // коллекция фондов
+
+        { get => _fonds; set { _fonds = value; OnPropertyChanged(); } }
         public Fond SelectedItem
-        {
-            get => _selectedItem;
-            set => _selectedItem = value;
-        }
+        { get => _selectedItem; set { _selectedItem = value; } }
+        public string? Name
+        { get => _name; set { _name = value; OnPropertyChanged(); } }
+        public string? ShortName
+        { get => _shortName; set { _shortName = value; OnPropertyChanged(); } }
+        public string? StartDate
+        { get => _startDate; set { _startDate = value; OnPropertyChanged(); } }
+        public string? EndDate
+        { get => _endDate; set { _endDate = value; OnPropertyChanged(); } }
+        public int Category
+        { get => _category; set { _category = value; OnPropertyChanged(); } }
+        #endregion
 
         public FundPageVM()
         {
-            UpdateData();
+            Category = -1; // устанавливаем значение категории по умолчанию
+            UpdateData(); // обновляем данные
         }
 
-        public void UpdateData() // Define function to retrieve data from the database and update the view
+        public void UpdateData() // функция для получения данных из базы данных и обновления представления
         {
-            dc = new ArchiveBdContext();
-            Fonds = new ObservableCollection<Fond>(dc.Fonds.Include(u => u.CategoryNavigation).OrderBy(u => u.FondIndex).ThenBy(u => u.FondNumber).ThenBy(u => u.FondLiteral));
+            using ArchiveBdContext dc = new(); // создаем контекст базы данных
+            Fonds = new ObservableCollection<Fond>(dc.Fonds.Include(u => u.CategoryNavigation).OrderBy(u => u.Index).ThenBy(u => u.Number).ThenBy(u => u.Literal)); // получаем фонды из базы данных и сортируем их
+            Categories = new ObservableCollection<Category>(dc.Categories); // получаем категории из базы данных
+            Categories.Insert(0, new Category { Name = "Все категории", Id = -1 }); // добавляем категорию "Все категории" в начало списка
         }
 
-
-        protected override void OpenItem() // Define function that is called when a user clicks on an item to open it
+        protected override void OpenItem() // функция, которая вызывается при щелчке на элементе, чтобы открыть его
         {
-            if(SelectedItem!= null)
+            if (SelectedItem != null) // если выбран элемент
             {
-                InventoryPageVM vm = new(SelectedItem);
-                InventoryPage v = new() { DataContext = vm };
-                FrameManager.mainFrame.Navigate(v);
+                InventoryPageVM vm = new(SelectedItem); // создаем ViewModel для окна редактирования описи
+                InventoryPage v = new() { DataContext = vm }; // создаем окно редактирования описи
+                Setting.mainFrame?.Navigate(v); // переходим в окно редактирования описи
             }
         }
-
-        protected override void GoBack() { } // Define function that is called when a user clicks on the "Go Back" button
-
-        protected override void AddItem() // Define function that is called when a user clicks on the "Add" button
+        protected override void AddItem() // функция, которая вызывается при нажатии на кнопку "Добавить"
         {
-            FundWindowVM viewModel = new(this, Fonds);
-            FundWindow newWindow = new() { DataContext = viewModel };
-            newWindow.ShowDialog();
+            FundWindowVM viewModel = new(this, Fonds); // создаем ViewModel для окна добавления фонда
+            FundWindow newWindow = new() { DataContext = viewModel }; // создаем окно добавления фонда
+            newWindow.ShowDialog(); // открываем окно добавления фонда
         }
-    
-        protected override void EditItem() // Define function that is called when a user clicks on the "Edit" button
+
+        protected override void EditItem() // функция, которая вызывается при нажатии на кнопку "Редактировать"
         {
-            int index = Fonds.IndexOf(SelectedItem);
-            FundWindow newWindow = new();
-            FundWindowVM viewModel = new((SelectedItem as Fond), this, index, Fonds);
-            newWindow.DataContext = viewModel;
-            newWindow.ShowDialog();
+            int index = Fonds.IndexOf(SelectedItem); // получаем индекс выбранного фонда
+            FundWindow newWindow = new(); // создаем окно редактирования фонда
+            FundWindowVM viewModel = new((SelectedItem as Fond), this, index, Fonds); // создаем ViewModel для окна редактирования фонда
+            newWindow.DataContext = viewModel; // устанавливаем ViewModel для окна редактирования фонда
+            newWindow.ShowDialog(); // открываем окно редактирования фонда
         }
+
+        #region Поиск
+        protected override void SearchCommand() // функция, которая вызывается при нажатии на кнопку "Поиск"
+        {
+            using ArchiveBdContext dc = new(); // создаем контекст базы данных
+            Fonds = new ObservableCollection<Fond>(dc.Fonds.Include(u => u.CategoryNavigation).OrderBy(u => u.Index).ThenBy(u => u.Number).ThenBy(u => u.Literal)); // получаем фонды из базы данных и сортируем их
+            var filteredFonds = Fonds.Where(u =>
+                (string.IsNullOrWhiteSpace(Name) || u.Name.Contains(Name)) // фильтруем фонды по названию
+                && (string.IsNullOrWhiteSpace(ShortName) || u.ShortName.Contains(ShortName)) // фильтруем фонды по короткому названию
+                && (string.IsNullOrWhiteSpace(StartDate) || u.StartDate >= Convert.ToInt32(StartDate)) // фильтруем фонды по дате начала
+                && (string.IsNullOrWhiteSpace(EndDate) || u.EndDate <= Convert.ToInt32(EndDate)) // фильтруем фонды по дате окончания
+                && (Category == -1 || u.Category == Category)); // фируем фонды по категории
+            Fonds = new ObservableCollection<Fond>(filteredFonds); // обновляем коллекцию фондов
+        }
+        protected override void ResetSearch() // функция, которая вызывается при нажатии на кнопку "Сбросить" и сбрасывает фильтры поиска
+        { Name = null; ShortName = null; StartDate = null; EndDate = null; Category = -1; UpdateData(); }
+
+        protected override void CloseSearchCommand() => UCVisibility = System.Windows.Visibility.Collapsed; // функция, которая вызывается при нажатии на кнопку "Закрыть поиск"
+        protected override void OpenSearchCommand() => UCVisibility = System.Windows.Visibility.Visible; // функция, которая вызывается при нажатии на кнопку "Открыть поиск"
+        #endregion
+        protected override void GoBack() { } 
     }
 }

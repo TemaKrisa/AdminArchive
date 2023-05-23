@@ -5,9 +5,11 @@ namespace AdminArchive.Model;
 
 public partial class Feature
 {
-    public int FeatureId { get; set; }
+    public int Id { get; set; }
 
-    public string FeatureName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
+
+    public virtual ICollection<StorageUnit> Units { get; set; } = new List<StorageUnit>();
 }

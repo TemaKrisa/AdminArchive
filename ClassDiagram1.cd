@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Class Name="AdminArchive.Classes.FrameManager">
+  <Class Name="AdminArchive.Classes.Setting">
     <Position X="38.5" Y="19.25" Width="2" />
     <TypeIdentifier>
       <HashCode>ABAAAAAAAAAACAAAAEAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Classes\FrameManager.cs</FileName>
+      <FileName>Classes\Setting.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.Model.Acess">

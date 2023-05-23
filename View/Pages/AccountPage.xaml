@@ -47,7 +47,7 @@
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding RoleNavigation.RoleName}" Header="Тип пользователя"/>
+                <DataGridTextColumn Binding="{Binding RoleNavigation.Name}" Header="Тип пользователя"/>
             </DataGrid.Columns>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">

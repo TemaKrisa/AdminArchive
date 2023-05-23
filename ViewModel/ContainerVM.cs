@@ -14,13 +14,13 @@ namespace AdminArchive.ViewModel
                 case "Dark": Wpf.Ui.Appearance.Theme.Apply(Wpf.Ui.Appearance.ThemeType.Dark); break;
                 case "Light": Wpf.Ui.Appearance.Theme.Apply(Wpf.Ui.Appearance.ThemeType.Light); break;
             }
-            FrameManager.containerFrame.Navigate(new MainPage());
+            Setting.containerFrame?.Navigate(new MainPage());
         }
 
-        public ICommand SetLightTheme => new RelayCommand(LightTheme);
-        public ICommand SetDarkTheme => new RelayCommand(DarkTheme);
+        //public ICommand SetLightTheme => new RelayCommand(LightTheme);
+        //public ICommand SetDarkTheme => new RelayCommand(DarkTheme);
 
-        private void LightTheme() { Wpf.Ui.Appearance.Theme.Apply(Wpf.Ui.Appearance.ThemeType.Light); }
-        private void DarkTheme() { Wpf.Ui.Appearance.Theme.Apply(Wpf.Ui.Appearance.ThemeType.Dark); }
+        //private void LightTheme() { Wpf.Ui.Appearance.Theme.Apply(Wpf.Ui.Appearance.ThemeType.Light); }
+        //private void DarkTheme() { Wpf.Ui.Appearance.Theme.Apply(Wpf.Ui.Appearance.ThemeType.Dark); }
     }
 }

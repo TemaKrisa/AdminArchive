@@ -5,11 +5,11 @@ namespace AdminArchive.Model;
 
 public partial class Fond
 {
-    public int FondId { get; set; }
+    public int Id { get; set; }
 
-    public string? FondName { get; set; }
+    public string? Name { get; set; }
 
-    public string? FondShortName { get; set; }
+    public string? ShortName { get; set; }
 
     public int? View { get; set; }
 
@@ -39,7 +39,7 @@ public partial class Fond
 
     public int? MovementType { get; set; }
 
-    public int FondNumber { get; set; }
+    public int Number { get; set; }
 
     public int? HistoricalPeriod { get; set; }
 
@@ -59,9 +59,9 @@ public partial class Fond
 
     public string? HistoricalOverview { get; set; }
 
-    public string? FondIndex { get; set; }
+    public string? Index { get; set; }
 
-    public string? FondLiteral { get; set; }
+    public string? Literal { get; set; }
 
     public virtual Acess? AcessNavigation { get; set; }
 

@@ -31,10 +31,14 @@ namespace AdminArchive.ViewModel
         public ObservableCollection<FondView> FondView { get; set; }
 
         public ObservableCollection<CharRestrict> CharRestrict { get; set; }
+        
+        public ObservableCollection<Carrier> Carriers { get; set; }
 
         public ObservableCollection<HistoricalPeriod> HistoricalPeriod { get; set; }
 
-        public ObservableCollection<FondType> FondType { get; set; }
+        public ObservableCollection<InventoryType> Types { get; set; }
+
+        public ObservableCollection<ReceiptReason> ReceiptReasons { get; set; }
 
         public ObservableCollection<DocType> DocType { get; set; }
 
@@ -43,8 +47,6 @@ namespace AdminArchive.ViewModel
         public ObservableCollection<SecretChar> SecretChar { get; set; }
 
         public ObservableCollection<IncomeSource> IncomeSource { get; set; }
-
-        public ObservableCollection<Ownership> Ownership { get; set; }
 
         public ObservableCollection<StorageTime> StorageTime { get; set; }
 
@@ -144,16 +146,17 @@ namespace AdminArchive.ViewModel
                 FondView = new ObservableCollection<FondView>(dc.FondViews);
                 CharRestrict = new ObservableCollection<CharRestrict>(dc.CharRestricts);
                 HistoricalPeriod = new ObservableCollection<HistoricalPeriod>(dc.HistoricalPeriods);
-                FondType = new ObservableCollection<FondType>(dc.FondTypes);
                 DocType = new ObservableCollection<DocType>(dc.DocTypes);
                 Categories = new ObservableCollection<Category>(dc.Categories);
                 SecretChar = new ObservableCollection<SecretChar>(dc.SecretChars);
                 IncomeSource = new ObservableCollection<IncomeSource>(dc.IncomeSources);
-                Ownership = new ObservableCollection<Ownership>(dc.Ownerships);
                 StorageTime = new ObservableCollection<StorageTime>(dc.StorageTimes);
                 Movements = new ObservableCollection<Movement>(dc.Movements);
+                ReceiptReasons = new ObservableCollection<ReceiptReason>(dc.ReceiptReasons);
                 MovementTypes = new ObservableCollection<MovementType>(dc.MovementTypes);
-                if (SelectedItem.InventoryNumber != null)
+                Carriers = new ObservableCollection<Carrier>(dc.Carriers);
+                Types = new ObservableCollection<InventoryType>(dc.InventoryTypes);
+                if (SelectedItem.Number != null)
                 {
                     CheckNav(currentIndex);
                 }
@@ -184,26 +187,26 @@ namespace AdminArchive.ViewModel
                 using ArchiveBdContext dc = new();
                 if (SelectedItem.Movement == 2 && SelectedItem.MovementType == null) { ShowMessage("При выборе движения выбыл, также должен быть выбран тип движения!"); }
                 else if (string.IsNullOrWhiteSpace(SelectedItem.Name)) { ShowMessage("Введите наименование описи!"); }
-                else if (string.IsNullOrWhiteSpace(SelectedItem.InventoryNumber)) { ShowMessage("Введите номер фонда!"); }
+                else if (string.IsNullOrWhiteSpace(SelectedItem.Number)) { ShowMessage("Введите номер фонда!"); }
                 else
                 {
 
                     if (!dc.Inventories.Contains(SelectedItem))
                     {
-                        if (dc.Inventories.Any(u => u.InventoryNumber == SelectedItem.InventoryNumber && u.InventoryLiteral == SelectedItem.InventoryLiteral))
+                        if (dc.Inventories.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal))
                         {
                             ShowMessage("Добавление описи", "Опись с таким номером уже существует");
                             return;
                         }
                         dc.Inventories.Add(SelectedItem);
                         dc.SaveChanges();
-                        Log = new() { Activity = 1, Date = DateTime.Now, Inventory = SelectedItem.InventoryId, User = 1 };
+                        Log = new() { Activity = 1, Date = DateTime.Now, Inventory = SelectedItem.Id, User = 1 };
                     }
                     else
                     {
                         dc.Update(SelectedItem);
                         dc.SaveChanges();
-                        Log = new() { Activity = 2, Date = DateTime.Now, Inventory = SelectedItem.InventoryId, User = 1 };
+                        Log = new() { Activity = 2, Date = DateTime.Now, Inventory = SelectedItem.Id, User = 1 };
                     }
                     dc.InventoryLogs.Add(Log);
                 }
@@ -221,7 +224,7 @@ namespace AdminArchive.ViewModel
         {
             using ArchiveBdContext dc = new();
             UCVisibility = Visibility.Visible;
-            Log = new ObservableCollection<InventoryLog>(dc.InventoryLogs.Where(u => u.Inventory == SelectedItem.InventoryId).Include(w => w.UserNavigation).Include(b => b.ActivityNavigation));
+            Log = new ObservableCollection<InventoryLog>(dc.InventoryLogs.Where(u => u.Inventory == SelectedItem.Id).Include(w => w.UserNavigation).Include(b => b.ActivityNavigation));
         }
 
         protected override void CloseLog() { UCVisibility = Visibility.Collapsed; }
