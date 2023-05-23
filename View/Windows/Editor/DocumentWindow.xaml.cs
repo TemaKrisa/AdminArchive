@@ -1,11 +1,5 @@
 ﻿namespace AdminArchive.View.Windows
 {
     public partial class DocumentWindow 
-    {
-        public DocumentWindow()
-        {
-            InitializeComponent();
-            
-        }
-    }
+    { public DocumentWindow() => InitializeComponent(); }
 }

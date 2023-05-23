@@ -15,7 +15,7 @@ public partial class FondName
 
     public DateTime EndDate { get; set; }
 
-    public string Note { get; set; } = null!;
+    public string? Note { get; set; }
 
     public virtual Fond FondNavigation { get; set; } = null!;
 }

@@ -63,6 +63,8 @@ public partial class StorageUnit
 
     public string? Index { get; set; }
 
+    public string? Annotation { get; set; }
+
     public virtual Acess? AcessNavigation { get; set; }
 
     public virtual Carrier? CarrierNavigation { get; set; }
@@ -75,7 +77,13 @@ public partial class StorageUnit
 
     public virtual SecretChar? SecretCharNavigation { get; set; }
 
+    public virtual ICollection<UnitCompletedWork> UnitCompletedWorks { get; set; } = new List<UnitCompletedWork>();
+
+    public virtual ICollection<UnitCondition> UnitConditions { get; set; } = new List<UnitCondition>();
+
     public virtual ICollection<UnitLog> UnitLogs { get; set; } = new List<UnitLog>();
+
+    public virtual ICollection<UnitRequiredWork> UnitRequiredWorks { get; set; } = new List<UnitRequiredWork>();
 
     public virtual ICollection<Feature> Features { get; set; } = new List<Feature>();
 }

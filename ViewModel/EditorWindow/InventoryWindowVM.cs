@@ -64,7 +64,7 @@ namespace AdminArchive.ViewModel
         }
         private ObservableCollection<Inventory> itemList = new();
         public ObservableCollection<Inventory> ItemList { get => itemList; set { itemList = value; OnPropertyChanged(); } }
-
+        private Fond curFond;
         #endregion
 
         #region Навигация
@@ -114,16 +114,18 @@ namespace AdminArchive.ViewModel
         #endregion
 
         #region Инициализация
-        public InventoryWindowVM(Inventory selFond, InventoryPageVM vm, int selIndex, ObservableCollection<Inventory> items)
+        public InventoryWindowVM(Inventory selInv, InventoryPageVM vm, int selIndex, ObservableCollection<Inventory> items, Fond fond)
         {
-            SelectedItem = selFond;
+            SelectedItem = selInv;
             pageVM = vm;
+            curFond = fond;
             currentIndex = selIndex;
             ItemList = items;
             FillCollections();
         }
-        public InventoryWindowVM(InventoryPageVM vm, ObservableCollection<Inventory> items)
+        public InventoryWindowVM(InventoryPageVM vm, ObservableCollection<Inventory> items, Fond fond)
         {
+            curFond = fond;
             ItemList = items;
             pageVM = vm;
             FillCollections();
@@ -175,7 +177,12 @@ namespace AdminArchive.ViewModel
 
         protected override void AddItem()
         {
-            SelectedItem = new Inventory() { Acess = 1, Category = 4, Movement = 2, SecretChar = 1 };
+            SelectedItem = new Inventory()
+            {   Acess = curFond?.Acess ?? null, Category = curFond?.Category ?? null,
+                Movement = curFond?.Movement ?? null, SecretChar = curFond?.SecretChar ?? null,
+                DocType = curFond?.DocType ?? null, IncomeSource = curFond?.IncomeSource ?? null,
+                MovementType = curFond?.MovementType ?? null, ReceiptReason = curFond?.ReceiptReason ?? null,
+                StorageTime = curFond?.StorageTime ?? null, CharRestrict = curFond?.CharRestrict ?? null };
             CheckNav();
         }
 
@@ -187,10 +194,9 @@ namespace AdminArchive.ViewModel
                 using ArchiveBdContext dc = new();
                 if (SelectedItem.Movement == 2 && SelectedItem.MovementType == null) { ShowMessage("При выборе движения выбыл, также должен быть выбран тип движения!"); }
                 else if (string.IsNullOrWhiteSpace(SelectedItem.Name)) { ShowMessage("Введите наименование описи!"); }
-                else if (string.IsNullOrWhiteSpace(SelectedItem.Number)) { ShowMessage("Введите номер фонда!"); }
+                else if (string.IsNullOrWhiteSpace(SelectedItem.Number)) { ShowMessage("Введите номер описи!"); }
                 else
                 {
-
                     if (!dc.Inventories.Contains(SelectedItem))
                     {
                         if (dc.Inventories.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal))

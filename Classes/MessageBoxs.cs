@@ -4,46 +4,45 @@ using System.Windows.Media.Effects;
 
 namespace AdminArchive.Classes
 {
-    public class MessageBoxs
+    public partial class MessageBoxs
     {
+        // Перечисления для типов кнопок и иконок в MessageBox
         public enum Buttons { YesNo, OK }
-
         public enum Icon { Error, Info, Default }
 
-        public static string Show(string Text) { return Show(Text, "", Buttons.OK, Icon.Default); }
-
-        public static string Show(string text, string Title) { return Show(text, Title, Buttons.OK, Icon.Default); }
-
-        public static string Show(string Text, string Title, Buttons buttons, Icon icon)
+        // Метод для отображения MessageBox
+        public static string Show(string text, string title = "", Buttons buttons = Buttons.OK, Icon icon = Icon.Default)
         {
-            MessageBoxW messageBox = new(Text, Title, buttons, icon);
-            messageBox.Show();
-            return messageBox.ReturnString;
+            var messageBox = new MessageBoxW(text, title, buttons, icon); // Создание нового MessageBox
+            messageBox.Show(); // Отображение MessageBox
+            return messageBox.ReturnString; // Возврат результата
         }
 
-        public static string ShowDialog(string Text) { return ShowDialog(Text, "", Buttons.OK, Icon.Default); }
-
-        public static string ShowDialog(string Text, string Title) { return ShowDialog(Text, Title, Buttons.OK, Icon.Default); }
-
-        public static string ShowDialog(string Text, string Title, Buttons buttons) { return ShowDialog(Text, Title, buttons, Icon.Default); }
-
-        public static string ShowDialog(string Text, string Title, Buttons buttons, Icon icon)
+        // Метод для отображения модального MessageBox
+        public static string ShowDialog(string text, string title = "", Buttons buttons = Buttons.OK, Icon icon = Icon.Default)
         {
-            ShowBlurEffectAllWindow();
-            MessageBoxW messageBox = new(Text, Title, buttons, icon);
-            messageBox.ShowDialog();
-            StopBlurEffectAllWindow();
-            return messageBox.ReturnString;
+            ShowBlurEffectAllWindow(); // Включение эффекта размытия
+            var messageBox = new MessageBoxW(text, title, buttons, icon); // Создание нового MessageBox
+            messageBox.ShowDialog(); // Отображение модального MessageBox
+            StopBlurEffectAllWindow(); // Отключение эффекта размытия
+            return messageBox.ReturnString; // Возврат результата
         }
 
-        static readonly BlurEffect MyBlur = new();
+        // Эффект размытия для окон
+        static readonly BlurEffect MyBlur = new BlurEffect { Radius = 15 };
 
-        public static void ShowBlurEffectAllWindow() //Данный метод отвечает за включение эффекта размытия при отображении message box
+        // Метод для включения эффекта размытия отображении MessageBox
+        public static void ShowBlurEffectAllWindow()
         {
-            MyBlur.Radius = 15;
             foreach (Window window in Application.Current.Windows)
-                window.Effect = MyBlur;
+                window.Effect = MyBlur; // Применение эффекта размытия к каждому окну
         }
-        public static void StopBlurEffectAllWindow() => MyBlur.Radius = 0; //Данный метод отвечает за отключение эффекта размытия
+
+        // Метод для отключения эффекта размытия
+        public static void StopBlurEffectAllWindow()
+        {
+            foreach (Window window in Application.Current.Windows)
+                window.Effect = null; // Отключение эффекта размытия у каждого окна
+        }
     }
 }

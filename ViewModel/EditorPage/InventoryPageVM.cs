@@ -15,10 +15,7 @@ namespace AdminArchive.ViewModel
         {
             get => _inventories; 
             set
-            {
-                _inventories = value;
-                OnPropertyChanged();
-            }
+            { _inventories = value; OnPropertyChanged(); }
         } // Define an ObservableCollection of Fonds
 
         private ArchiveBdContext dc;
@@ -46,8 +43,6 @@ namespace AdminArchive.ViewModel
 
         protected override void GoBack() { Setting.mainFrame.Navigate(new FundPage()); }
 
-
-
         protected override void OpenItem()
         {
             if (SelectedItem != null)
@@ -58,10 +53,9 @@ namespace AdminArchive.ViewModel
             }
         }
 
-
         protected override void AddItem()// Define function that is called when a user clicks on the "Add" button
         {
-            InventoryWindowVM viewModel = new(this, Inventories);
+            InventoryWindowVM viewModel = new(this, Inventories, curFond);
             InventoryWindow newWindow = new() { DataContext = viewModel };
             newWindow.ShowDialog();
         }
@@ -69,7 +63,7 @@ namespace AdminArchive.ViewModel
         {
             int index = Inventories.IndexOf(SelectedItem);
             InventoryWindow newWindow = new();
-            InventoryWindowVM viewModel = new((SelectedItem as Inventory), this, index, Inventories);
+            InventoryWindowVM viewModel = new((SelectedItem as Inventory), this, index, Inventories, curFond);
             newWindow.DataContext = viewModel;
             newWindow.ShowDialog();
         }

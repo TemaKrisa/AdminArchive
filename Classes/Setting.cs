@@ -9,5 +9,6 @@ namespace AdminArchive.Classes
         public static Frame? adminFrame;
         public static int Usertype;
         public static int UserID;
+        public static string AdminType;
     }
 }

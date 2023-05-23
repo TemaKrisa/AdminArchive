@@ -6,6 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace AdminArchive.ViewModel
 {
@@ -92,7 +93,8 @@ namespace AdminArchive.ViewModel
 
         private void FillTables()
         {
-
+            using ArchiveBdContext dc = new();
+            UnitFeatures = new ObservableCollection<StorageUnit>(dc.StorageUnits.Include(u=>u.Features));
         }
         protected override void FillCollections()
         {
@@ -104,6 +106,7 @@ namespace AdminArchive.ViewModel
                 Carriers = new ObservableCollection<Carrier>(dc.Carriers);
                 Categories = new ObservableCollection<UnitCategory>(dc.UnitCategories);
                 CharRestricts = new ObservableCollection<CharRestrict>(dc.CharRestricts);
+                Features = new ObservableCollection<Feature>(dc.Features);
             }
             catch (Exception e)
             {
@@ -138,6 +141,30 @@ namespace AdminArchive.ViewModel
         }
 
         protected override void CloseLog() { UCVisibility = Visibility.Collapsed; }
+
+        #region особенности
+        private ObservableCollection<StorageUnit> _unitFeatures;
+        private StorageUnitFeature _selectedFeature;
+        public ObservableCollection<StorageUnit> UnitFeatures
+        {
+            get { return _unitFeatures; }
+            set
+            {
+                _unitFeatures = value;
+                OnPropertyChanged();
+            }
+        }        
+        private ObservableCollection<Feature> _features;
+        public ObservableCollection<Feature> Features
+        { get { return _features; } set { _features = value; OnPropertyChanged(); } }
+
+        public StorageUnitFeature SelectedFeature
+        {
+            get { return _selectedFeature; }
+            set { _selectedFeature = value; OnPropertyChanged(); }
+        }
+
+        #endregion
 
     }
 }

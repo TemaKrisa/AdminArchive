@@ -6,7 +6,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:AdminArchive.Classes"
-    xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
+    xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
+    xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"        
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
@@ -65,9 +66,17 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="160,15,10,15">Номер*</TextBlock>
-                        <TextBox Width="50" MaxLength="1" Text="{Binding  SelectedItem.Index}"/>
+                        <TextBox Width="50" MaxLength="1" Text="{Binding  SelectedItem.Index}">
+                            <i:Interaction.Behaviors>
+                                <local:RussianLettersOnlyBehavior/>
+                            </i:Interaction.Behaviors>
+                        </TextBox>
                         <ui:NumberBox Min="1" IntegersOnly="True" Margin="5,0" Text="{Binding SelectedItem.Number}"/>
-                        <TextBox Width="70" MaxLength="2" Text="{Binding SelectedItem.Literal}"/>
+                        <TextBox Width="70" MaxLength="2" Text="{Binding SelectedItem.Literal}">
+                            <i:Interaction.Behaviors>
+                                <local:RussianLettersOnlyBehavior/>
+                            </i:Interaction.Behaviors>
+                        </TextBox>
                     </StackPanel>
                     <Grid Grid.Row="1">
                         <TextBlock HorizontalAlignment="Left" Margin="105,0">Наименование</TextBlock>
@@ -165,17 +174,7 @@
                         </ComboBox>
                         <ComboBox SelectedValue="{Binding SelectedItem.MovementType}" ItemsSource="{Binding MovementTypes}"
                                   IsEnabled="{Binding SelectedItem.Movement, Converter={StaticResource BooleanToBool}, ConverterParameter=1}"
-                                  Grid.Column="2" Margin="5">
-                            <ComboBox.Style>
-                                <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsEnabled" Value="False">
-                                            <Setter Property="SelectedIndex" Value="-1" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ComboBox.Style>
-                        </ComboBox>
+                                  SelectedValuePath="Id" Grid.Column="2" Margin="5"/>
                         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Margin="5">Основание поступления</TextBlock>
                         <ComboBox ItemsSource="{Binding ReceiptReasons}" SelectedValue="{Binding SelectedItem.ReceiptReason}"
                             Grid.Column="4" Margin="0,0,30,0"/>
@@ -226,9 +225,17 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <TextBlock HorizontalAlignment="Right" Margin="0,0,15,0">Поседняя выверка учетных документов</TextBlock>
-                            <TextBox Grid.Column="1" Margin="0,0,30,0" Text="{Binding SelectedItem.LastCheck}" />
+                            <TextBox Grid.Column="1" Margin="0,0,30,0" Text="{Binding SelectedItem.LastCheck}">
+                                <i:Interaction.Behaviors>
+                                    <local:NumericOnlyBehavior/>
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                             <TextBlock Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,15,0">Поседняя проверка наличия</TextBlock>
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="0,0,30,0" Text="{Binding SelectedItem.LastReconcilation}"/>
+                            <TextBox Grid.Column="1" Grid.Row="1" Margin="0,0,30,0" Text="{Binding SelectedItem.LastReconcilation}">
+                                <i:Interaction.Behaviors>
+                                    <local:NumericOnlyBehavior/>
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                         </Grid>
                     </Grid>
                 </Grid>

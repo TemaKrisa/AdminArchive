@@ -27,14 +27,14 @@
         </Border>
         <ui:NavigationStore Width="64" x:Name="RootNavigation" Margin="5,0" Frame="{Binding ElementName=RootFrame, Mode=OneWay}">
             <ui:NavigationStore.Items>
-                <ui:NavigationItem Width="64" Content="Ведение БД" PageType="{x:Type local:FundPage}" Icon="Database24" PageTag="db" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" Content="Аккаунты" Icon="InprivateAccount24" PageType="{x:Type local:AccountPage}" PageTag="acc" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" Content="Отчёты" Icon="Book24" PageTag="rep" PageType="{x:Type local:ReportPage}" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" Content="Управление" Icon="Person24" PageTag="dep1" PageType="{x:Type local:AdministrationPage}" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" Content="Поиск" Command="" Icon="Search24" PageTag="srch1" PageType="{x:Type local:SearchPage}" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" ToolTip="Ведение БД" Content="Ведение БД" PageType="{x:Type local:FundPage}" Icon="Database24" PageTag="db" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" ToolTip="Аккаунты" Content="Аккаунты" Icon="InprivateAccount24" PageType="{x:Type local:AccountPage}" PageTag="acc" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" ToolTip="Отчёты" Content="Отчёты" Icon="Book24" PageTag="rep" PageType="{x:Type local:ReportPage}" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" ToolTip="Управление" Content="Управление" Icon="Person24" PageTag="dep1" PageType="{x:Type local:AdministrationPage}" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" ToolTip="Поиск" Content="Поиск" Command="" Icon="Search24" PageTag="srch1" PageType="{x:Type local:SearchPage}" Cursor="Hand"/>
             </ui:NavigationStore.Items>
             <ui:NavigationStore.Footer>
-                <ui:NavigationItem Content="Настройки" Width="64" Icon="Settings24" PageTag="set" PageType="{x:Type local:SettingsPage}"/>
+                <ui:NavigationItem ToolTip="Настройки" Content="Настройки" Width="64" Icon="Settings24" PageTag="set" PageType="{x:Type local:SettingsPage}"/>
             </ui:NavigationStore.Footer>
         </ui:NavigationStore>
     </Grid>

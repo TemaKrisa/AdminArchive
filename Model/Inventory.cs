@@ -47,6 +47,8 @@ public partial class Inventory
 
     public string? Literal { get; set; }
 
+    public string? Annotation { get; set; }
+
     public virtual Acess? AcessNavigation { get; set; }
 
     public virtual Carrier? CarrierNavigation { get; set; }

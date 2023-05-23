@@ -228,7 +228,6 @@ namespace AdminArchive.ViewModel
                 else if (string.IsNullOrWhiteSpace(SelectedItem.ReceiptDate.ToString())) { ShowMessage("Введите дату поступления!"); }
                 else
                 {
-
                     if (!dc.Fonds.Contains(SelectedItem))
                     {
                         if (dc.Fonds.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal && u.Index == SelectedItem.Index))
@@ -279,24 +278,14 @@ namespace AdminArchive.ViewModel
                     foreach (var up in UndocumentPeriods)
                     {
                         if (up.StartDate > up.EndDate)
-                        {
-                            ShowMessage("У незадокументированного периода  начальная дата больше конечной!");
-                        }
-
+                        { ShowMessage("У незадокументированного периода  начальная дата больше конечной!"); return; }
                         if (string.IsNullOrEmpty(up.Reason))
-                        {
-                            ShowMessage("Отсутсвует причина у незадокументированного периода!");
-                            return;
-                        }
+                        { ShowMessage("Отсутсвует причина у незадокументированного периода!"); return; }
                         if (string.IsNullOrEmpty(up.DocumentLocation))
-                        {
-                            ShowMessage("Отсутсвует местонахождение у незадокументированного периода!");
-                            return;
+                        { ShowMessage("Отсутсвует местонахождение у незадокументированного периода!"); return;
                         }
                         if (dc.UndocumentPeriods.Any(u => u.Id == up.Id))
-                        {
                             dc.UndocumentPeriods.Update(up);
-                        }
                         else
                         {
                             up.Fond = SelectedItem.Id;

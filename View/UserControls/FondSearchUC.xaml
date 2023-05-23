@@ -5,7 +5,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+             xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:local="clr-namespace:AdminArchive.Classes"
              d:DataContext="{d:DesignInstance Type=vm:FundPageVM}"
              mc:Ignorable="d" Foreground="{DynamicResource TextFillColorPrimaryBrush}" Margin="-150">
     <UserControl.Resources>
@@ -52,9 +52,17 @@
                 <TextBlock Grid.Row="3" Margin="0"><Run Text="Категория"/></TextBlock>
                 <ComboBox ItemsSource="{Binding Categories}" SelectedValue="{Binding Category}" SelectedValuePath="Id" DisplayMemberPath="Name" Grid.Row="3" Grid.Column="2" Margin="10,0,30,0"/>
                 <TextBlock Grid.Row="4" Margin="0"><Run Text="Дата начала"/></TextBlock>
-                <ui:TextBox Text="{Binding StartDate}" MaxLength="4" Margin="0,0,50,0" Grid.Row="4" Grid.Column="1"/>
+                <ui:TextBox Text="{Binding StartDate}" MaxLength="4" Margin="10,0,30,0" Grid.Row="4" Grid.Column="1">
+                    <i:Interaction.Behaviors>
+                        <local:NumericOnlyBehavior/>
+                    </i:Interaction.Behaviors>
+                </ui:TextBox>
                 <TextBlock Grid.Row="5" Margin="0"><Run Text="Дата конца"/></TextBlock>
-                <ui:TextBox Text="{Binding EndDate}" Grid.Row="5" Grid.Column="1" MaxLength="4" Margin="10,0,30,0" />
+                <ui:TextBox Text="{Binding EndDate}" Grid.Row="5" Grid.Column="1" MaxLength="4" Margin="10,0,30,0">
+                    <i:Interaction.Behaviors>
+                        <local:NumericOnlyBehavior/>
+                    </i:Interaction.Behaviors>
+                </ui:TextBox>
                 <Grid Grid.Row="7" Grid.ColumnSpan="2" Margin="30,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>

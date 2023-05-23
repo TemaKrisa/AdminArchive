@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using AdminArchive.Classes;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminArchive.Model;
@@ -26,6 +28,8 @@ public partial class ArchiveBdContext : DbContext
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<CharRestrict> CharRestricts { get; set; }
+
+    public virtual DbSet<Condition> Conditions { get; set; }
 
     public virtual DbSet<DocType> DocTypes { get; set; }
 
@@ -79,13 +83,43 @@ public partial class ArchiveBdContext : DbContext
 
     public virtual DbSet<UnitCategory> UnitCategories { get; set; }
 
+    public virtual DbSet<UnitCompletedWork> UnitCompletedWorks { get; set; }
+
+    public virtual DbSet<UnitCondition> UnitConditions { get; set; }
+
     public virtual DbSet<UnitLog> UnitLogs { get; set; }
+
+    public virtual DbSet<UnitRequiredWork> UnitRequiredWorks { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<Work> Works { get; set; }
+
+    private string StringCon;
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True");
+    {
+        try
+        {
+            StringCon = AppSettings.Default.ConString;
+            if (string.IsNullOrWhiteSpace(StringCon))
+                StringCon = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ConnectionString.txt")) ?? "";
+            optionsBuilder.UseSqlServer(StringCon);
+            AppSettings.Default.ConString = StringCon;
+        }
+        catch
+        {
+            try
+            {
+                StringCon = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ConnectionString.txt")) ?? "";
+                optionsBuilder.UseSqlServer(StringCon);
+                AppSettings.Default.ConString = StringCon;
+            }
+            catch (Exception innerEx)
+            {
+                MessageBoxs.Show(innerEx.ToString(), "Ошибка подключения к базе данных", MessageBoxs.Buttons.OK, MessageBoxs.Icon.Error);
+            }
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -136,6 +170,13 @@ public partial class ArchiveBdContext : DbContext
             entity.ToTable("CharRestrict");
 
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Condition>(entity =>
+        {
+            entity.ToTable("Condition");
+
             entity.Property(e => e.Name).HasMaxLength(50);
         });
 
@@ -332,7 +373,7 @@ public partial class ArchiveBdContext : DbContext
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.EndDate).HasColumnType("date");
             entity.Property(e => e.Name).HasMaxLength(50);
-            entity.Property(e => e.Note).HasMaxLength(50);
+            entity.Property(e => e.Note).HasMaxLength(150);
             entity.Property(e => e.StartDate).HasColumnType("date");
 
             entity.HasOne(d => d.FondNavigation).WithMany(p => p.FondNames)
@@ -376,12 +417,11 @@ public partial class ArchiveBdContext : DbContext
             entity.ToTable("Inventory");
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Literal)
-                .HasMaxLength(10)
-                .IsFixedLength();
-            entity.Property(e => e.MovementNote).HasMaxLength(350);
+            entity.Property(e => e.Annotation).HasMaxLength(350);
+            entity.Property(e => e.Literal).HasMaxLength(5);
+            entity.Property(e => e.MovementNote).HasMaxLength(150);
             entity.Property(e => e.Name).HasMaxLength(50);
-            entity.Property(e => e.Note).HasMaxLength(350);
+            entity.Property(e => e.Note).HasMaxLength(150);
             entity.Property(e => e.Number).HasMaxLength(50);
             entity.Property(e => e.Title).HasMaxLength(50);
 
@@ -533,6 +573,7 @@ public partial class ArchiveBdContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.AccessRestrictionNote).HasMaxLength(50);
+            entity.Property(e => e.Annotation).HasMaxLength(350);
             entity.Property(e => e.Date).HasMaxLength(50);
             entity.Property(e => e.Index).HasMaxLength(15);
             entity.Property(e => e.IsFm).HasColumnName("IsFM");
@@ -607,6 +648,41 @@ public partial class ArchiveBdContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<UnitCompletedWork>(entity =>
+        {
+            entity.ToTable("UnitCompletedWork");
+
+            entity.Property(e => e.Date).HasColumnType("date");
+            entity.Property(e => e.Note).HasMaxLength(150);
+
+            entity.HasOne(d => d.UnitNavigation).WithMany(p => p.UnitCompletedWorks)
+                .HasForeignKey(d => d.Unit)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UnitCompletedWork_StorageUnit");
+
+            entity.HasOne(d => d.WorkNavigation).WithMany(p => p.UnitCompletedWorks)
+                .HasForeignKey(d => d.Work)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UnitCompletedWork_Work");
+        });
+
+        modelBuilder.Entity<UnitCondition>(entity =>
+        {
+            entity.ToTable("UnitCondition");
+
+            entity.Property(e => e.Note).HasMaxLength(150);
+
+            entity.HasOne(d => d.ConditionNavigation).WithMany(p => p.UnitConditions)
+                .HasForeignKey(d => d.Condition)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UnitCondition_Condition");
+
+            entity.HasOne(d => d.UnitNavigation).WithMany(p => p.UnitConditions)
+                .HasForeignKey(d => d.Unit)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UnitCondition_StorageUnit");
+        });
+
         modelBuilder.Entity<UnitLog>(entity =>
         {
             entity.ToTable("UnitLog");
@@ -627,6 +703,25 @@ public partial class ArchiveBdContext : DbContext
                 .HasConstraintName("FK_UnitLog_User");
         });
 
+        modelBuilder.Entity<UnitRequiredWork>(entity =>
+        {
+            entity.ToTable("UnitRequiredWork");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.CheckDate).HasColumnType("date");
+            entity.Property(e => e.Note).HasMaxLength(150);
+
+            entity.HasOne(d => d.UnitNavigation).WithMany(p => p.UnitRequiredWorks)
+                .HasForeignKey(d => d.Unit)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UnitRequiredWork_StorageUnit");
+
+            entity.HasOne(d => d.WorkNavigation).WithMany(p => p.UnitRequiredWorks)
+                .HasForeignKey(d => d.Work)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UnitRequiredWork_Work");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.ToTable("User");
@@ -642,6 +737,13 @@ public partial class ArchiveBdContext : DbContext
                 .HasForeignKey(d => d.Role)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Role");
+        });
+
+        modelBuilder.Entity<Work>(entity =>
+        {
+            entity.ToTable("Work");
+
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);

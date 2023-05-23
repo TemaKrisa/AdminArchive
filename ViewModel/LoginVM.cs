@@ -26,14 +26,19 @@ namespace AdminArchive.ViewModel
         {
             using (var dc = new ArchiveBdContext())
             {
-                var user = dc.Users.FirstOrDefault(u => u.Login == Login && u.Password == Password);
-                if (user != null)
+                if (string.IsNullOrWhiteSpace(Login)) { ShowMessage("Введите логин", "Авторизация"); }
+                else if (string.IsNullOrWhiteSpace(Password)) { ShowMessage("Введите пароль", "Авторизация"); }
+                else
                 {
-                    Setting.Usertype = user.Role;
-                    Setting.UserID = user.Id;
-                    Setting.containerFrame?.Navigate(new MainPage());
+                    var user = dc.Users.FirstOrDefault(u => u.Login == Login && u.Password == Password);
+                    if (user != null)
+                    {
+                        Setting.Usertype = user.Role;
+                        Setting.UserID = user.Id;
+                        Setting.containerFrame?.Navigate(new MainPage());
+                    }
+                    else ShowMessage("Неверный логин или пароль", "Авторизация");
                 }
-                else ShowMessage("Неверный логин или пароль", "Авторизация");
             }
         }
     }

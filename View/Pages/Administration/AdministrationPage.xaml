@@ -4,27 +4,36 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:local="clr-namespace:AdminArchive.View.Pages"
+      xmlns:local="clr-namespace:AdminArchive.View.Pages" xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:classes="clr-namespace:AdminArchive.Classes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Администрирование">
+    <Page.DataContext>
+        <vm:AdministrationVM/>
+    </Page.DataContext>
     <Page.Resources>
-        <Style TargetType="ui:NavigationItem">
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Width" Value="150"/>
-        </Style>
+        <classes:BooleanConverter x:Key="BoolConverter" />
     </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ui:NavigationFluent x:Name="Nav" Width="250" HorizontalAlignment="Left" Frame="{Binding ElementName=AdminFrame, Mode=OneWay}">
+        <ui:NavigationFluent x:Name="Nav" Margin="5" Width="250" HorizontalAlignment="Left">
             <ui:NavigationFluent.Items>
-                <ui:NavigationItem Content="Исторические периоды" HorizontalAlignment="Left" Icon="History24" Width="{Binding ElementName=Nav, Path=Width}" PageTag="hisPer" PageType="{x:Type local:HistoricalPeriodPage}"/>
-                <ui:NavigationItem Content="Источники поступления" HorizontalAlignment="Left" Icon="ScreenSearch24" Width="{Binding ElementName=Nav, Path=Width}" PageTag="IncSource" PageType="{x:Type local:HistoricalPeriodPage}"/>
+                <ui:NavigationItem Content="Категории" 
+                                   IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=1}" 
+                                   Command="{Binding Navigator}" CommandParameter="1"  
+                                   HorizontalAlignment="Left" Icon="ScreenSearch24"/>
+                <ui:NavigationItem Content="Источники поступления" 
+                                   IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=2}"
+                                   Command="{Binding Navigator}" CommandParameter="2" HorizontalAlignment="Left" Icon="ScreenSearch24"/>
+                <ui:NavigationItem Content="Исторические периоды" 
+                                   IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=3}" 
+                                   Command="{Binding Navigator}" CommandParameter="3" 
+                                   HorizontalAlignment="Left" Icon="ScreenSearch24"/>
             </ui:NavigationFluent.Items>
         </ui:NavigationFluent>
-        <Frame Grid.Column="1" x:Name="AdminFrame"/>
+        <Frame Grid.Column="1" x:Name="AdminFrame" Source="/View/Pages/Administration/AdministrationEditPage.xaml"/>
     </Grid>
 </Page>

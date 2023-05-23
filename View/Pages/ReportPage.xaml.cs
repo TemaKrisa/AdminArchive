@@ -3,7 +3,5 @@
 namespace AdminArchive.View.Pages
 {
     public partial class ReportPage : Page
-    {
-        public ReportPage() => InitializeComponent();
-    }
+    { public ReportPage() => InitializeComponent(); }
 }

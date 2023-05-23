@@ -4,7 +4,8 @@
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:local="clr-namespace:AdminArchive.Classes"
+               xmlns:local="clr-namespace:AdminArchive.Classes"
+               xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                mc:Ignorable="d"        
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
@@ -71,7 +72,11 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Номер*</TextBlock>
                         <ui:NumberBox Grid.Column="1" IntegersOnly="True" Min="1" Margin="5,0" Text="{Binding SelectedItem.Number}"/>
-                        <ui:TextBox Grid.Column="2" Width="70" MaxLength="3" Text="{Binding SelectedItem.Literal}"/>
+                        <ui:TextBox Grid.Column="2" Width="70" MaxLength="3" Text="{Binding SelectedItem.Literal}">
+                            <i:Interaction.Behaviors>
+                                <local:RussianLettersOnlyBehavior/>
+                            </i:Interaction.Behaviors>
+                        </ui:TextBox>
                         <TextBlock Grid.Column="3" HorizontalAlignment="Right" Margin="5">Срок хранения</TextBlock>
                         <ComboBox ItemsSource="{Binding StorageTime}" SelectedValue="{Binding SelectedItem.StorageTime}"
                                   Grid.Column="4"/>
@@ -167,11 +172,11 @@
                     </Grid>
                     <Grid Grid.Row="7" Margin="-27,0,27,0">
                         <TextBlock Margin="55,0,0,0">Справка по движению</TextBlock>
-                        <TextBox Margin="235,5,0,5" Text="{Binding SelectedItem.MovementNote}" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
+                        <TextBox Margin="235,5,0,5" Text="{Binding SelectedItem.MovementNote}" MaxLength="150" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
                     </Grid>
                     <Grid Grid.Row="8">
                         <TextBlock Margin="100,0,0,0" HorizontalAlignment="Left">Примечание</TextBlock>
-                        <TextBox Margin="210,10,30,20" VerticalAlignment="Stretch" Text="{Binding SelectedItem.Note}"/>
+                        <TextBox Margin="210,10,30,20" VerticalAlignment="Stretch" Text="{Binding SelectedItem.Note}" MaxLength="150"/>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -191,24 +196,9 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock FontSize="16" Grid.Column="1" FontWeight="DemiBold">Аннотация</TextBlock>
-                    <!--<TextBox Text="{Binding SelectedItem.InventoryId}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" MaxLength="350" />-->
+                    <TextBox Text="{Binding SelectedItem.Annotation}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" MaxLength="350" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Доп. инф." Width="150">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Border CornerRadius="6" BorderThickness="3" BorderBrush="Gray" Height="250" Margin="30,20"/>
-                    <Border Grid.Row="1" CornerRadius="6" BorderThickness="3" BorderBrush="Gray" Height="250" Margin="30,10">
-                        <Grid>
-                            <TextBlock VerticalAlignment="Top" Width="auto" Margin="10,-13,726,0" Background="Gray"><Run Text="Незадокументированные периоды"/></TextBlock>
-                        </Grid>
-                    </Border>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Физ. состояние" Width="150"/>
         </TabControl>
     </Grid>
     </ui:UiWindow>

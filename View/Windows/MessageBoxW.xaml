@@ -7,9 +7,6 @@
         xmlns:vm="clr-namespace:AdminArchive.ViewModel"
         mc:Ignorable="d"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" Height="200" Width="400" MaxHeight="500" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
-    <Window.DataContext>
-        <vm:MessageBoxVM/>
-    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>

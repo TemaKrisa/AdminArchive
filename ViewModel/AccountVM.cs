@@ -46,26 +46,47 @@ namespace AdminArchive.ViewModel
         protected void AddItem() //Открытие UserControl
         {
             UCVisibility = Visibility.Visible;
-            curUser = new User() { Role = 1 };
+            CurUser = new User() { Role = 1 };
         }
 
         private void UpdateData() => Users = new ObservableCollection<User>(dc.Users.Include(u => u.RoleNavigation));
 
+        private string CurLogin;
         protected void OpenItem() //Открытие UserControl и передача выбранного пользователя
         {
             if (SelectedUser != null)
             {
                 UCVisibility = Visibility.Visible;
                 CurUser = selectedUser;
+                CurLogin = CurUser.Login;
             }
         }        
 
         protected void SaveItem() //Сохранение элемента из UserControl
         {
-            if (!dc.Users.Contains(CurUser)) dc.Users.Add(CurUser);
-            else dc.Users.Update(CurUser);
-            dc.SaveChanges();
-            UpdateData();
+            if (string.IsNullOrWhiteSpace(CurUser.Surname)) ShowMessage("Введите фамилию!");
+            else if (string.IsNullOrWhiteSpace(CurUser.Name)) ShowMessage("Введите имя!");
+            else if (string.IsNullOrWhiteSpace(CurUser.Password)) ShowMessage("Введите пароль!");
+            else
+            {
+                if (!dc.Users.Contains(CurUser))
+                {
+                    if (!dc.Users.Any(u => u.Login == curUser.Login))
+                        dc.Users.Add(CurUser);
+                    else { ShowMessage("Аккаунт с таким логином уже существует!", "Добавление аккаунта"); return; }
+                }
+                else
+                {
+                    if (CurUser.Login != CurLogin)
+                    {
+                        if (dc.Users.Any(u => u.Login == curUser.Login))
+                        { ShowMessage("Аккаунт с таким логином уже существует!", "Изменение аккаунта"); return; }
+                    }
+                    dc.Users.Update(CurUser);
+                }
+                dc.SaveChanges();
+                UpdateData();
+            }
         }
 
         public AccountVM()
