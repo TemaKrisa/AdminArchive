@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using AdminArchive.Classes;
+﻿using AdminArchive.Classes;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace AdminArchive.Model;
 
@@ -100,10 +98,10 @@ public partial class ArchiveBdContext : DbContext
     {
         try
         {
-            StringCon = AppSettings.Default.ConString;
+            //StringCon = AppSettings.Default.ConString;
             if (string.IsNullOrWhiteSpace(StringCon))
                 StringCon = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ConnectionString.txt")) ?? "";
-            optionsBuilder.UseSqlServer(StringCon);
+            optionsBuilder.UseSqlServer(StringCon).EnableSensitiveDataLogging();
             AppSettings.Default.ConString = StringCon;
         }
         catch
@@ -579,16 +577,17 @@ public partial class ArchiveBdContext : DbContext
             entity.Property(e => e.IsFm).HasColumnName("IsFM");
             entity.Property(e => e.IsSf).HasColumnName("IsSF");
             entity.Property(e => e.Literal).HasMaxLength(2);
-            entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Note).HasMaxLength(150);
             entity.Property(e => e.Tite).HasMaxLength(50);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.StorageUnits)
                 .HasForeignKey(d => d.Acess)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_StorageUnit_Acess");
 
             entity.HasOne(d => d.CarrierNavigation).WithMany(p => p.StorageUnits)
                 .HasForeignKey(d => d.Carrier)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_StorageUnit1_Carrier");
 
             entity.HasOne(d => d.CategoryNavigation).WithMany(p => p.StorageUnits)

@@ -1,10 +1,8 @@
 ﻿using AdminArchive.Model;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
-using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Windows.Input;
 
 namespace AdminArchive.ViewModel
@@ -14,12 +12,12 @@ namespace AdminArchive.ViewModel
 
         #region Переменные
         public DocumentPageVM pageVM = new();
-        
+
         private int currentIndex;
         public ObservableCollection<SecretChar> SecretChar { get; set; }
         public ObservableCollection<DocType> DocType { get; set; }
         public ObservableCollection<Reproduction> Reproductions { get; set; }
-        
+
         private ObservableCollection<DocumentFile> docFiles;
 
 
@@ -29,15 +27,17 @@ namespace AdminArchive.ViewModel
         public ObservableCollection<Authenticity> Authenticities { get; set; }
 
         private StorageUnit storageUnit { get; set; }
-        public ObservableCollection<DocumentFile> DocFiles { get => docFiles;  set { docFiles = value; OnPropertyChanged(); } }
+        public ObservableCollection<DocumentFile> DocFiles { get => docFiles; set { docFiles = value; OnPropertyChanged(); } }
 
         public Document _selectedItem = new();
         public Document SelectedItem { get => _selectedItem; set { _selectedItem = value; OnPropertyChanged(); } }
 
         public DocumentFile _selFile = new();
 
-        public DocumentFile SelFile { get => _selFile; set 
-            { 
+        public DocumentFile SelFile
+        {
+            get => _selFile; set
+            {
                 _selFile = value;
                 OnPropertyChanged();
 
@@ -50,7 +50,7 @@ namespace AdminArchive.ViewModel
                 //    MediaPlayer pl = new();
                 //    pl.Open(new Uri(uriString));
                 //}
-            } 
+            }
         }
 
         #endregion
@@ -110,6 +110,7 @@ namespace AdminArchive.ViewModel
             pageVM = vm;
             currentIndex = selIndex;
             ItemList = items;
+            storageUnit = unit;
             FillCollections();
         }
 
@@ -119,6 +120,7 @@ namespace AdminArchive.ViewModel
             pageVM = vm;
             storageUnit = unit;
             FillCollections();
+            AddItem();
         }
         #endregion
 
@@ -149,7 +151,12 @@ namespace AdminArchive.ViewModel
         }
         protected override void AddItem()
         {
-            SelectedItem = new Document();
+            SelectedItem = new Document()
+            {
+                SecretChar = (int)storageUnit.SecretChar,
+                StorageUnit = storageUnit.Id,
+                DocType = (int)storageUnit.DocType
+            };
         }
 
 
@@ -171,7 +178,7 @@ namespace AdminArchive.ViewModel
             }
         }
 
-        protected override void OpenLog() 
+        protected override void OpenLog()
         {
 
         }
@@ -207,13 +214,13 @@ namespace AdminArchive.ViewModel
                 if (openFileDialog.ShowDialog() == true)
                 {
                     SelFile.File = File.ReadAllBytes(openFileDialog.FileName);
-                    SelFile.FileName = Path.GetFileNameWithoutExtension( openFileDialog.FileName);
+                    SelFile.FileName = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
                     SelFile.Extension = Path.GetExtension(openFileDialog.FileName);
-                    if(!dc.DocumentFiles.Any(u=> u.Id == SelFile.Id))
-                    dc.Add(SelFile);
+                    if (!dc.DocumentFiles.Any(u => u.Id == SelFile.Id))
+                        dc.Add(SelFile);
                     dc.SaveChanges();
                     DocFiles = new ObservableCollection<DocumentFile>(dc.DocumentFiles);
-                }     
+                }
             }
         }
 

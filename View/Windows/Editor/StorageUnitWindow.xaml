@@ -32,7 +32,8 @@
         <ui:TitleBar Grid.Row="0" UseSnapLayout="True" Title="Фонд"/>
         <Grid Grid.Row="1">
             <ui:Button Content="Сохранить" Command="{Binding Save}" Icon="Save24" Margin="5" IconFilled="True"/>
-            <ui:Button Content="Протокол" Icon="History24" IconFilled="True" Margin="124,0,0,0"/>
+            <ui:Button Content="Протокол" Command="{Binding ShowLog}" Icon="History24" IconFilled="True" Margin="236,0,0,0"/>
+            <ui:Button Content="Добавить" Command="{Binding Add}" Icon="Add24" Margin="124,0,0,0" IconFilled="True"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <ui:Button Margin="5" Height="30" Icon="Previous16" IconFilled="True"/>
                 <ui:Button Margin="0" Height="30" Icon="Play12" RenderTransformOrigin="0.5,0.5" IconFilled="True">
@@ -84,7 +85,7 @@
                     </Grid>
                     <Grid Grid.Row="1">
                         <TextBlock HorizontalAlignment="Left" Margin="105,0">Заголовок</TextBlock>
-                        <TextBox Text="{Binding SelectedItem.Name}"  
+                        <TextBox Text="{Binding SelectedItem.Tite}"  
                                  Margin="210,0,30,0" />
                     </Grid>
                     <Grid Grid.Row="2">
@@ -136,7 +137,7 @@
                         <TextBlock  Margin="10" HorizontalAlignment="Right">Индекс</TextBlock>
                         <TextBox Grid.Column="1" Text="{Binding SelectedItem.Index}"/>
                         <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="5">Начальная дата</TextBlock>
-                        <ui:NumberBox Grid.Column="3" Margin="0,0,30,0" IntegersOnly="True" Min="1000" Text="{Binding SelectedItem.StartDate}"/>
+                        <ui:NumberBox Grid.Column="3" Margin="0,0,30,0" IntegersOnly="True" Min="0" Text="{Binding SelectedItem.StartDate}"/>
                     </Grid>
                     <Grid Grid.Row="6">
                         <Grid.ColumnDefinitions>
@@ -149,7 +150,7 @@
                         <ComboBox SelectedValue="{Binding SelectedItem.CharRestrict}" ItemsSource="{Binding CharRestricts}"
                                   Grid.Column="1"/>
                         <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="5">Конечная дата</TextBlock>
-                        <ui:NumberBox Grid.Column="3" Margin="0,0,30,0" IntegersOnly="True" Min="1000" Text="{Binding SelectedItem.EndDate}"/>
+                        <ui:NumberBox Grid.Column="3" Margin="0,0,30,0" IntegersOnly="True" Min="0" Text="{Binding SelectedItem.EndDate}"/>
                         
                     </Grid>
                     <Grid Grid.Row="7">
@@ -250,6 +251,7 @@
             <TabItem Header="Особенности" Width="150">
                 <DataGrid ItemsSource="{Binding UnitFeatures}" SelectedItem="{Binding SelectedFeature}"
                     Margin="30" AutoGenerateColumns="True">
+                    
                     <!--<DataGrid.Columns>
                         <DataGridComboBoxColumn  ItemsSource="{Binding Features}"
                             DisplayMemberPath="Name" SelectedValuePath="Id" Header="Особенность" Width="*"/>

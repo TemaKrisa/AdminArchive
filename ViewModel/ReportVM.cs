@@ -2,10 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
-using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Documents;
@@ -20,7 +18,7 @@ namespace AdminArchive.ViewModel
     {
         private ArchiveBdContext dc;
         private FontFamily font = new("Times New Roman");
-
+        private List<Category> cat;
         public ICommand SaveRep => new RelayCommand(Report);
 
         private int _selectedType;
@@ -37,11 +35,12 @@ namespace AdminArchive.ViewModel
         public ReportVM()
         {
             dc = new ArchiveBdContext();
+            cat = new List<Category>(dc.Categories);
         }
 
         private void Report()
         {
-            switch (SelectedType) 
+            switch (SelectedType)
             {
                 case 0: FondListReport(); break;
                 case 1: InventoriesListReport(); break;
@@ -61,9 +60,9 @@ namespace AdminArchive.ViewModel
             flowDoc.Blocks.Add(new Paragraph());
             foreach (var item in Fonds)
             {
-                flowDoc.Blocks.Add(new Paragraph(new Run($"{"Фонд №" + item.FullNumber +" " + item.Name}"))
+                flowDoc.Blocks.Add(new Paragraph(new Run($"{"Фонд №" + item.FullNumber + " " + item.Name}"))
                 { TextAlignment = TextAlignment.Left, FontWeight = FontWeights.Bold, FontFamily = font, FontSize = 20 });
-                 TableRowGroup dataGroup = new();
+                TableRowGroup dataGroup = new();
                 Table table = new() { BorderBrush = Brushes.Black, BorderThickness = new Thickness(1), FontSize = 14 };
                 for (int i = 0; i < 6; i++) { table.Columns.Add(new TableColumn()); }
                 TableRow headerRow = new()
@@ -77,22 +76,22 @@ namespace AdminArchive.ViewModel
                 };
                 table.RowGroups.Add(new TableRowGroup { Rows = { headerRow } });
 
-                foreach (var invent in dc.Inventories.Where(u=>u.Fond == item.Id).Include(u=>u.TypeNavigation))
+                foreach (var invent in dc.Inventories.Where(u => u.Fond == item.Id).Include(u => u.TypeNavigation))
                 {
-                        TableRow dataRow = new();
-                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.FullNumber))));
-                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.Name))));
-                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.TypeNavigation?.Name))));
-                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.StartDate.ToString()))));
-                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.EndDate.ToString()))));
-                        dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.Volume.ToString()))));
-                        dataGroup.Rows.Add(dataRow);
+                    TableRow dataRow = new();
+                    dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.FullNumber))));
+                    dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.Name))));
+                    dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.TypeNavigation?.Name))));
+                    dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.StartDate.ToString()))));
+                    dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.EndDate.ToString()))));
+                    dataRow.Cells.Add(new TableCell(new Paragraph(new Run(invent.Volume.ToString()))));
+                    dataGroup.Rows.Add(dataRow);
                 }
                 TableRow finalRow = new();
                 finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Описей всего: {dc.Inventories.Where(u => u.Fond == item.Id).Count()}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
-                finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Обьём всего: {dc.Inventories.Where(u => u.Fond == item.Id).Sum(u => u.Volume)}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
+                finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Обьём всего: {dc.Fonds.Where(u => u.Id == item.Id).Select(u => u.Volume).First()}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
                 dataGroup.Rows.Add(finalRow);
-                table.RowGroups.Add(dataGroup); 
+                table.RowGroups.Add(dataGroup);
                 flowDoc.Blocks.Add(table);
             }
             FormDoc(flowDoc);
@@ -108,13 +107,13 @@ namespace AdminArchive.ViewModel
             // Установка заголовка таблицы
             TableRowGroup tableRowGroup = new();
             TableRow hR = new()
-            { FontWeight = FontWeights.Bold, Cells = { new TableCell(new Paragraph(new Run("Название критерия"))), new TableCell(new Paragraph(new Run("Дата")))}};
+            { FontWeight = FontWeights.Bold, Cells = { new TableCell(new Paragraph(new Run("Название критерия"))), new TableCell(new Paragraph(new Run("Дата"))) } };
             tableRowGroup.Rows.Add(hR);
             // Заполнение таблицы
-            TableRow dr = new() { Cells = { new TableCell(new Paragraph(new Run("Перечень фондов"))),  new TableCell(new Paragraph(new Run($"на {DateTime.Now.Date:d}")))}};
+            TableRow dr = new() { Cells = { new TableCell(new Paragraph(new Run("Перечень фондов"))), new TableCell(new Paragraph(new Run($"на {DateTime.Now.Date:d}"))) } };
             tableRowGroup.Rows.Add(dr);
             // Обьединение заголовка таблицы с данными
-            Table t1 = new() { Columns = { new TableColumn { Width = new GridLength(500) }, new TableColumn()}, RowGroups = { tableRowGroup }};
+            Table t1 = new() { Columns = { new TableColumn { Width = new GridLength(500) }, new TableColumn() }, RowGroups = { tableRowGroup } };
             flowDoc.Blocks.Add(t1);
             //Добавление таблицы со списком фондов
             Table table = new() { BorderBrush = Brushes.Black, BorderThickness = new Thickness(1), FontSize = 14 };
@@ -122,16 +121,20 @@ namespace AdminArchive.ViewModel
             {
                 table.Columns.Add(new TableColumn());
             }
-            TableRow headerRow = new() { FontWeight = FontWeights.Bold, FontFamily = font, FontSize = 22,
+            TableRow headerRow = new()
+            {
+                FontWeight = FontWeights.Bold,
+                FontFamily = font,
+                FontSize = 22,
                 Cells = { new TableCell(new Paragraph(new Run("№ фонда"))), new TableCell(new Paragraph(new Run("Название фонда"))),
-                    new TableCell(new Paragraph(new Run("Кат."))), new TableCell(new Paragraph(new Run("Дата нач."))), 
+                    new TableCell(new Paragraph(new Run("Кат."))), new TableCell(new Paragraph(new Run("Дата нач."))),
                     new TableCell(new Paragraph(new Run("Дата кон."))), new TableCell(new Paragraph(new Run("Объем ед. хр.")))}
             };
             table.RowGroups.Add(new TableRowGroup { Rows = { headerRow } });
 
             // Заполненние таблицы
             TableRowGroup dataGroup = new();
-            foreach (var item in dc.Fonds.Include(u=>u.CategoryNavigation))
+            foreach (var item in dc.Fonds.Include(u => u.CategoryNavigation))
             {
                 TableRow dataRow = new();
                 dataRow.Cells.Add(new TableCell(new Paragraph(new Run(item.FullNumber))));
@@ -146,7 +149,7 @@ namespace AdminArchive.ViewModel
             //Добавление последней строки таблицы
             TableRow finalRow = new();
             finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Фондов всего: {dc.Fonds.Count()}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
-            finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Обьём всего: {dc.Fonds.Sum(u => u.Volume)}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
+            finalRow.Cells.Add(new TableCell(new Paragraph(new Run($"Обьём всего: {dc.Fonds.AsEnumerable().Sum(u => u.Volume)}"))) { ColumnSpan = 3, FontWeight = FontWeights.Bold });
             dataGroup.Rows.Add(finalRow);
             flowDoc.Blocks.Add(table);
             FormDoc(flowDoc);
@@ -162,7 +165,11 @@ namespace AdminArchive.ViewModel
                 rtfText = Encoding.ASCII.GetString(ms.ToArray());
             }
             // Выбор расположение документа
-            SaveFileDialog saveDialog = new() { Filter = "Rich Text Format (*.rtf)|*.rtf" };
+            SaveFileDialog saveDialog = new()
+            {
+                Filter = "Rich Text Format (*.rtf)|*.rtf",
+                FileName = $"Отчёт на {DateTime.Now.ToString("dd MMMM yyyy")}"
+            };
             if (saveDialog.ShowDialog() == true)
             {
                 string fileName = saveDialog.FileName;

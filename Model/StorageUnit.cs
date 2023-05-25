@@ -7,19 +7,17 @@ public partial class StorageUnit
 {
     public int Id { get; set; }
 
-    public string Name { get; set; } = null!;
-
     public int Vol { get; set; }
 
     public int Volume { get; set; }
 
     public string Tite { get; set; } = null!;
 
-    public int? DocType { get; set; }
+    public int DocType { get; set; }
 
-    public int? Carrier { get; set; }
+    public int Carrier { get; set; }
 
-    public int? Acess { get; set; }
+    public int Acess { get; set; }
 
     public string? AccessRestrictionNote { get; set; }
 
@@ -65,9 +63,9 @@ public partial class StorageUnit
 
     public string? Annotation { get; set; }
 
-    public virtual Acess? AcessNavigation { get; set; }
+    public virtual Acess AcessNavigation { get; set; } = null!;
 
-    public virtual Carrier? CarrierNavigation { get; set; }
+    public virtual Carrier CarrierNavigation { get; set; } = null!;
 
     public virtual UnitCategory CategoryNavigation { get; set; } = null!;
 

@@ -24,7 +24,7 @@ namespace AdminArchive.ViewModel
         // Абстрактные методы, которые должны быть реализованы в производных классах
         protected abstract void AddItem();
         protected abstract void SaveItem();
-        protected abstract void OpenLog();       
+        protected abstract void OpenLog();
         protected abstract void CloseLog();
         protected abstract void GoNext();
         protected abstract void GoPrev();

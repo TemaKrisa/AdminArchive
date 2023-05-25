@@ -1,1 +1,1 @@
-﻿Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True
+﻿Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True;TrustServerCertificate=True;

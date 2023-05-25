@@ -15,8 +15,6 @@ public partial class Inventory
 
     public string? Number { get; set; }
 
-    public int? Volume { get; set; }
-
     public string? Title { get; set; }
 
     public int? DocType { get; set; }

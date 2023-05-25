@@ -1,11 +1,10 @@
 ﻿<UserControl x:Class="AdminArchive.View.UserControls.AccountUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" Foreground="{DynamicResource TextFillColorPrimaryBrush}" Margin="-150">
+             xmlns:Behaviors="clr-namespace:AdminArchive.Classes"
+             Foreground="{DynamicResource TextFillColorPrimaryBrush}" Margin="-150">
     <UserControl.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -57,7 +56,11 @@
                 <TextBlock Grid.Row="5"><Run Text="Отчество"/></TextBlock>
                 <TextBox Grid.Row="5" Grid.Column="1" Margin="10,0,30,0" Text="{Binding CurUser.Midname}"/>
                 <TextBlock Grid.Row="6"><Run Text="Пароль"/></TextBlock>
-                <ui:PasswordBox Grid.Row="6" Grid.Column="1" Margin="10,0,30,0" Password="{Binding CurUser.Password}"/>
+                <ui:PasswordBox Grid.Row="6" Grid.Column="1" Margin="10,0,30,0">
+                    <i:Interaction.Behaviors>
+                        <Behaviors:PasswordBehavior Password="{Binding CurUser.Password, Mode=TwoWay}" />
+                    </i:Interaction.Behaviors>
+                </ui:PasswordBox>
                 <ui:Button Grid.Row="7" Command="{Binding Save}"  FontWeight="Black" Margin="30,10" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Appearance="Info" Content="Сохранить"/>
             </Grid>
         </Border>

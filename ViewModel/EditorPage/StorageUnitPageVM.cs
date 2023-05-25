@@ -4,11 +4,10 @@ using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace AdminArchive.ViewModel
 {
-    class StorageUnitPageVM : PageBaseVM 
+    class StorageUnitPageVM : PageBaseVM
     {
         public ObservableCollection<StorageUnit> StorageUnits { get; set; }
 
@@ -32,7 +31,7 @@ namespace AdminArchive.ViewModel
         public StorageUnitPageVM() { }
 
 
-        protected override void GoBack() 
+        protected override void GoBack()
         {
             InventoryPageVM vm = new(curFond);
             InventoryPage v = new() { DataContext = vm };
@@ -41,20 +40,20 @@ namespace AdminArchive.ViewModel
 
         public void UpdateData()
         {
-            StorageUnits = new ObservableCollection<StorageUnit>(dc.StorageUnits.Where(u => u.Inventory == curInv.Id).OrderBy(u=>u.Number).ThenBy(u=>u.Literal).Include(u=>u.CategoryNavigation));
+            StorageUnits = new ObservableCollection<StorageUnit>(dc.StorageUnits.Where(u => u.Inventory == curInv.Id).OrderBy(u => u.Number).ThenBy(u => u.Literal).Include(u => u.CategoryNavigation));
         }
 
         protected override void EditItem()
         {
             int index = StorageUnits.IndexOf(SelectedItem);
             StorageUnitWindow Editor = new();
-            StorageUnitWindowVM vm = new(SelectedItem, this, index, StorageUnits,curFond);
+            StorageUnitWindowVM vm = new(SelectedItem, this, index, StorageUnits, curInv);
             Editor.DataContext = vm;
             Editor.ShowDialog();
         }
         protected override void AddItem()
         {
-            StorageUnitWindowVM vm = new(this, StorageUnits, curFond);
+            StorageUnitWindowVM vm = new(this, StorageUnits, curInv);
             var newWindow = new StorageUnitWindow { DataContext = vm };
             newWindow.ShowDialog();
         }
@@ -63,7 +62,7 @@ namespace AdminArchive.ViewModel
         {
             if (SelectedItem != null)
             {
-                DocumentPageVM vm = new(SelectedItem,curFond,curInv);
+                DocumentPageVM vm = new(SelectedItem, curFond, curInv);
                 DocumentPage v = new() { DataContext = vm };
                 Setting.mainFrame?.Navigate(v);
             }

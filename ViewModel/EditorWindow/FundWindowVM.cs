@@ -1,9 +1,7 @@
 ﻿using AdminArchive.Model;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -282,7 +280,8 @@ namespace AdminArchive.ViewModel
                         if (string.IsNullOrEmpty(up.Reason))
                         { ShowMessage("Отсутсвует причина у незадокументированного периода!"); return; }
                         if (string.IsNullOrEmpty(up.DocumentLocation))
-                        { ShowMessage("Отсутсвует местонахождение у незадокументированного периода!"); return;
+                        {
+                            ShowMessage("Отсутсвует местонахождение у незадокументированного периода!"); return;
                         }
                         if (dc.UndocumentPeriods.Any(u => u.Id == up.Id))
                             dc.UndocumentPeriods.Update(up);
@@ -352,13 +351,13 @@ namespace AdminArchive.ViewModel
                 FondNames.Remove(SelectedName);
                 CloseRenameCommand();
             }
-        }        
+        }
         private void CreateRenameCommand()
         {
             SelectedName = new FondName();
             EditRenameCommand();
         }
-        
+
         private void SaveRenameCommand()
         {
             if (SelectedName != null)
@@ -416,7 +415,6 @@ namespace AdminArchive.ViewModel
                 ClosePeriodCommand();
             }
         }
-
         private void EditPeriodCommand() => PeriodVisibility = Visibility.Visible;
         private void ClosePeriodCommand() => PeriodVisibility = Visibility.Collapsed;
         #endregion

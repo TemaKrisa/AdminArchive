@@ -3,9 +3,7 @@ using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace AdminArchive.ViewModel
 {
@@ -92,6 +90,6 @@ namespace AdminArchive.ViewModel
         protected override void CloseSearchCommand() => UCVisibility = System.Windows.Visibility.Collapsed; // функция, которая вызывается при нажатии на кнопку "Закрыть поиск"
         protected override void OpenSearchCommand() => UCVisibility = System.Windows.Visibility.Visible; // функция, которая вызывается при нажатии на кнопку "Открыть поиск"
         #endregion
-        protected override void GoBack() { } 
+        protected override void GoBack() { }
     }
 }

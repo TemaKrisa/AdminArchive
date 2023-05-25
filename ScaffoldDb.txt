@@ -1,15 +1,14 @@
 ﻿Scaffold-DbContext "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Model" -f
 
 
-private string StringCon;
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         try
         {
             StringCon = AppSettings.Default.ConString;
             if (string.IsNullOrWhiteSpace(StringCon))
                 StringCon = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ConnectionString.txt")) ?? "";
-            optionsBuilder.UseSqlServer(StringCon);
+            optionsBuilder.UseSqlServer(StringCon).EnableSensitiveDataLogging();
             AppSettings.Default.ConString = StringCon;
         }
         catch

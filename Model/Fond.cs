@@ -29,17 +29,11 @@ public partial class Fond
 
     public int? ReceiptReason { get; set; }
 
-    public short? StartDate { get; set; }
-
-    public short? EndDate { get; set; }
-
-    public int? Volume { get; set; }
-
     public int Movement { get; set; }
 
     public int? MovementType { get; set; }
 
-    public int Number { get; set; }
+    public int? Number { get; set; }
 
     public int? HistoricalPeriod { get; set; }
 

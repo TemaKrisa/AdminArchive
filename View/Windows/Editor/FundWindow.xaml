@@ -205,9 +205,9 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <TextBlock VerticalAlignment="Center">Начальная дата</TextBlock>
-                                    <TextBox Grid.Column="1" Margin="5" IsReadOnly="True" Text="{Binding SelectedItem.StartDate}"/>
+                                    <TextBox Grid.Column="1" Margin="5" IsReadOnly="True" Text="{Binding SelectedItem.StartDate, Mode=OneWay}"/>
                                     <TextBlock Grid.Row="1" VerticalAlignment="Center">Конечная дата</TextBlock>
-                                    <TextBox Grid.Column="1" Grid.Row="1" Margin="5" IsReadOnly="True" Text="{Binding SelectedItem.EndDate}"/>
+                                    <TextBox Grid.Column="1" Grid.Row="1" Margin="5" IsReadOnly="True" Text="{Binding SelectedItem.EndDate, Mode=OneWay}"/>
                                 </Grid>
                                 <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" Height="76">
                                     <TextBlock HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap">Дата поступления*</TextBlock>

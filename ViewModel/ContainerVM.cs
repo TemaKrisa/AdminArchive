@@ -1,7 +1,5 @@
 ﻿using AdminArchive.Classes;
 using AdminArchive.View.Pages;
-using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
 
 namespace AdminArchive.ViewModel
 {
@@ -14,7 +12,7 @@ namespace AdminArchive.ViewModel
                 case "Dark": Wpf.Ui.Appearance.Theme.Apply(Wpf.Ui.Appearance.ThemeType.Dark); break;
                 case "Light": Wpf.Ui.Appearance.Theme.Apply(Wpf.Ui.Appearance.ThemeType.Light); break;
             }
-            Setting.containerFrame?.Navigate(new MainPage());
+            Setting.containerFrame?.Navigate(new LoginPage());
         }
 
         //public ICommand SetLightTheme => new RelayCommand(LightTheme);

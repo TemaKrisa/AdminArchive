@@ -1,16 +1,17 @@
 ﻿<ui:UiPage x:Class="AdminArchive.View.Pages.MainPage"
            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
            xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:converters="clr-namespace:AdminArchive.Classes"
            xmlns:local="clr-namespace:AdminArchive.View.Pages"
-           mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
+           xmlns:vm="clr-namespace:AdminArchive.ViewModel">
+    <Page.DataContext>
+        <vm:MainPageVM/>
+    </Page.DataContext>
     <Page.Resources>
-        <converters:BooleanConverter x:Key="BooleanConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolConv"/>
     </Page.Resources>
-    <Grid x:Name="RootMainGrid">
+        <Grid x:Name="RootMainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition/>
@@ -27,11 +28,11 @@
         </Border>
         <ui:NavigationStore Width="64" x:Name="RootNavigation" Margin="5,0" Frame="{Binding ElementName=RootFrame, Mode=OneWay}">
             <ui:NavigationStore.Items>
-                <ui:NavigationItem Width="64" ToolTip="Ведение БД" Content="Ведение БД" PageType="{x:Type local:FundPage}" Icon="Database24" PageTag="db" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" ToolTip="Аккаунты" Content="Аккаунты" Icon="InprivateAccount24" PageType="{x:Type local:AccountPage}" PageTag="acc" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" ToolTip="Отчёты" Content="Отчёты" Icon="Book24" PageTag="rep" PageType="{x:Type local:ReportPage}" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" ToolTip="Управление" Content="Управление" Icon="Person24" PageTag="dep1" PageType="{x:Type local:AdministrationPage}" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" ToolTip="Поиск" Content="Поиск" Command="" Icon="Search24" PageTag="srch1" PageType="{x:Type local:SearchPage}" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" Visibility="{Binding IsWorker, Converter={StaticResource BoolConv}}" ToolTip="Ведение БД" Content="Ведение БД" PageType="{x:Type local:FundPage}" Icon="Database24" PageTag="db" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" Visibility="{Binding IsAdmin, Converter={StaticResource BoolConv}}" ToolTip="Аккаунты" Content="Аккаунты" Icon="InprivateAccount24" PageType="{x:Type local:AccountPage}" PageTag="acc" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" Visibility="{Binding IsHead, Converter={StaticResource BoolConv}}" ToolTip="Отчёты" Content="Отчёты" Icon="Book24" PageTag="rep" PageType="{x:Type local:ReportPage}" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" Visibility="{Binding IsWorker, Converter={StaticResource BoolConv}}" ToolTip="Управление" Content="Управление" Icon="Person24" PageTag="dep1" PageType="{x:Type local:AdministrationPage}" Cursor="Hand"/>
+                <ui:NavigationItem Width="64" Visibility="{Binding IsWorker, Converter={StaticResource BoolConv}}" ToolTip="Поиск" Content="Поиск" Icon="Search24" PageTag="srch1" PageType="{x:Type local:SearchPage}" Cursor="Hand"/>
             </ui:NavigationStore.Items>
             <ui:NavigationStore.Footer>
                 <ui:NavigationItem ToolTip="Настройки" Content="Настройки" Width="64" Icon="Settings24" PageTag="set" PageType="{x:Type local:SettingsPage}"/>

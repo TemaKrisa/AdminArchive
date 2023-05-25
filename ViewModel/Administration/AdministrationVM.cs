@@ -3,7 +3,6 @@ using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -17,25 +16,23 @@ namespace AdminArchive.ViewModel
         private ArchiveBdContext dc = new();
 
         private ObservableCollection<object> _items;
-
-
-
         private object _selectedItem;
+
         public object SelectedItem
         { get => _selectedItem; set { _selectedItem = value; OnPropertyChanged(); } }
         public ObservableCollection<object> Items
         { get => _items; set { _items = value; OnPropertyChanged(); } }
 
         private string type;
-        public string Type { get => type; set { type = value; OnPropertyChanged(); } }           
+        public string Type { get => type; set { type = value; OnPropertyChanged(); } }
         private string navType;
-        public string NavType { get => navType; set { navType = value; OnPropertyChanged(); } }         
+        public string NavType { get => navType; set { navType = value; OnPropertyChanged(); } }
 
-        public AdministrationVM() 
+        public AdministrationVM()
         {
             Type = AdminArchive.Classes.Setting.AdminType;
             if (type == null) Type = "Категории";
-            UpdateData(); 
+            UpdateData();
         }
 
 
@@ -59,7 +56,7 @@ namespace AdminArchive.ViewModel
                 case "2": AdminArchive.Classes.Setting.AdminType = "Источники поступления"; break;
                 case "3": AdminArchive.Classes.Setting.AdminType = "Исторические периоды"; break;
             }
-            
+
             Setting.adminFrame?.Navigate(new AdministrationEditPage());
         }
 
@@ -101,10 +98,10 @@ namespace AdminArchive.ViewModel
 
         private void OpenCommand()
         {
-            if (SelectedItem != null) 
+            if (SelectedItem != null)
                 UCVisibility = System.Windows.Visibility.Visible;
         }
-         
+
         private void RemoveCommand()
         {
             if (SelectedItem != null)

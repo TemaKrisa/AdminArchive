@@ -1,12 +1,7 @@
-﻿using AdminArchive.Classes;
-using AdminArchive.Model;
-using AdminArchive.View.Pages;
+﻿using AdminArchive.Model;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 
 namespace AdminArchive.ViewModel
 {
@@ -25,7 +20,7 @@ namespace AdminArchive.ViewModel
         private ObservableCollection<UnitLog> _Log;
         public ObservableCollection<UnitLog> Log { get => _Log; set { _Log = value; OnPropertyChanged(); } }
         public StorageUnit _selectedUnit = new();
-        public StorageUnit SelectedItem { get => _selectedUnit; set { _selectedUnit = value; OnPropertyChanged(); }}
+        public StorageUnit SelectedItem { get => _selectedUnit; set { _selectedUnit = value; OnPropertyChanged(); } }
         #endregion
         #region Навигация
         private void CheckNav(int index)
@@ -73,28 +68,39 @@ namespace AdminArchive.ViewModel
         }
         #endregion
         #region Инициализация
-
-        public StorageUnitWindowVM(StorageUnit selUnit, StorageUnitPageVM vm, int selIndex, ObservableCollection<StorageUnit> items, Fond fond)
+        private Inventory curInv;
+        public StorageUnitWindowVM(StorageUnit selUnit, StorageUnitPageVM vm, int selIndex, ObservableCollection<StorageUnit> items, Inventory inventory)
         {
             SelectedItem = selUnit;
             pageVM = vm;
             currentIndex = selIndex;
+            curInv = inventory;
             ItemList = items;
             FillCollections();
         }
-        public StorageUnitWindowVM(StorageUnitPageVM vm, ObservableCollection<StorageUnit> items,Fond fond)
+        public StorageUnitWindowVM(StorageUnitPageVM vm, ObservableCollection<StorageUnit> items, Inventory inventory)
         {
             ItemList = items;
             pageVM = vm;
+            curInv = inventory;
             FillCollections();
+            AddItem();
         }
         public StorageUnitWindowVM() { }
         #endregion
 
+
+        private ObservableCollection<StorageUnit> _unitFeatures;
+        public ObservableCollection<StorageUnit> UnitFeatures
+        {
+            get { return _unitFeatures; }
+            set { _unitFeatures = value; OnPropertyChanged(); }
+        }
+
         private void FillTables()
         {
             using ArchiveBdContext dc = new();
-            UnitFeatures = new ObservableCollection<StorageUnit>(dc.StorageUnits.Include(u=>u.Features));
+            UnitFeatures = new ObservableCollection<StorageUnit>(dc.StorageUnits.Include(u => u.Features).Where(u => u.Id == SelectedItem.Id));
         }
         protected override void FillCollections()
         {
@@ -115,7 +121,15 @@ namespace AdminArchive.ViewModel
         }
         protected override void AddItem()
         {
-            SelectedItem = new StorageUnit();
+            SelectedItem = new StorageUnit()
+            {
+                DocType = (int)curInv.DocType,
+                Carrier = (int)curInv.Carrier,
+                Acess = (int)curInv.Acess,
+                SecretChar = curInv.SecretChar,
+                CharRestrict = curInv.CharRestrict,
+                Inventory = curInv.Id
+            };
         }
 
         protected override void SaveItem()
@@ -143,26 +157,16 @@ namespace AdminArchive.ViewModel
         protected override void CloseLog() { UCVisibility = Visibility.Collapsed; }
 
         #region особенности
-        private ObservableCollection<StorageUnit> _unitFeatures;
-        private StorageUnitFeature _selectedFeature;
-        public ObservableCollection<StorageUnit> UnitFeatures
-        {
-            get { return _unitFeatures; }
-            set
-            {
-                _unitFeatures = value;
-                OnPropertyChanged();
-            }
-        }        
         private ObservableCollection<Feature> _features;
         public ObservableCollection<Feature> Features
         { get { return _features; } set { _features = value; OnPropertyChanged(); } }
 
-        public StorageUnitFeature SelectedFeature
-        {
-            get { return _selectedFeature; }
-            set { _selectedFeature = value; OnPropertyChanged(); }
-        }
+        //private StorageUnitFeature _selectedFeature;  
+        //public StorageUnitFeature SelectedFeature
+        //{
+        //    get { return _selectedFeature; }
+        //    set { _selectedFeature = value; OnPropertyChanged(); }
+        //}
 
         #endregion
 

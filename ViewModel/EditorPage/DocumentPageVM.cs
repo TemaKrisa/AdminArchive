@@ -3,7 +3,6 @@ using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace AdminArchive.ViewModel
 {
@@ -23,7 +22,7 @@ namespace AdminArchive.ViewModel
             get => _selectedItem;
             set => _selectedItem = value;
         }
-        public DocumentPageVM(StorageUnit unit,Fond fond, Inventory inventory)
+        public DocumentPageVM(StorageUnit unit, Fond fond, Inventory inventory)
         {
             dc = new ArchiveBdContext();
             curUnit = unit;
@@ -37,8 +36,8 @@ namespace AdminArchive.ViewModel
 
         protected override void GoBack()
         {
-            StorageUnitPageVM vm = new(curInv,curFond);
-            Setting.mainFrame?.Navigate(new StorageUnitPage{ DataContext = vm });
+            StorageUnitPageVM vm = new(curInv, curFond);
+            Setting.mainFrame?.Navigate(new StorageUnitPage { DataContext = vm });
         }
 
         protected override void EditItem()
@@ -52,12 +51,12 @@ namespace AdminArchive.ViewModel
 
         protected override void AddItem()
         {
-            DocumentWindowVM vm = new(this,Documents,curUnit);
+            DocumentWindowVM vm = new(this, Documents, curUnit);
             var newWindow = new DocumentWindow { DataContext = vm };
             newWindow.ShowDialog();
         }
 
-        protected override void OpenItem() {}
+        protected override void OpenItem() { }
 
         protected override void SearchCommand()
         {

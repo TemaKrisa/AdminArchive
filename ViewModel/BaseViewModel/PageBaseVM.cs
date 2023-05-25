@@ -5,10 +5,10 @@ namespace AdminArchive.ViewModel
     /// <summary>
     /// Базовая ViewModel для страниц фондов, документов, описей, ед.хранения 
     /// </summary>
-    internal abstract class PageBaseVM : BaseViewModel 
+    internal abstract class PageBaseVM : BaseViewModel
     {
         // Команды для добавления, редактирования, открытия, возврата, поиска, сброса поиска, открытия и закрытия окна поиска
-        private RelayCommand _add, _open, _edit,_back,_search,_reset,_openSearch, _closeSearch;
+        private RelayCommand _add, _open, _edit, _back, _search, _reset, _openSearch, _closeSearch;
         public RelayCommand Add { get { return _add ??= new RelayCommand(AddItem); } }
         public RelayCommand Edit { get { return _edit ??= new RelayCommand(EditItem); } }
         public RelayCommand Open { get { return _open ??= new RelayCommand(OpenItem); } }

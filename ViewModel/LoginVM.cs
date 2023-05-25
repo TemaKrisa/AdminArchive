@@ -2,44 +2,43 @@
 using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using CommunityToolkit.Mvvm.Input;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Windows.Input;
 
 namespace AdminArchive.ViewModel
 {
     partial class LoginVM : BaseViewModel
     {
-        private string _login;
-        private string _password;
-        public string Login
-        { get => _login;  set { _login = value; OnPropertyChanged(); } }
-
-        public string Password
-        {
-            get => _password;
-            set { _password = value; OnPropertyChanged(nameof(Password)); }
-        }
+        private string password, login;
+        public string Password { get => password; set { password = value; OnPropertyChanged(); } }
+        public string Login { get => login; set { login = value; OnPropertyChanged(); } }
 
         public ICommand LoginCommand => new RelayCommand(Logining);
 
-        private void Logining()
+        private async void Logining()
         {
-            using (var dc = new ArchiveBdContext())
+            if (Login == null) { ShowMessage("Введите логин", "Авторизация"); }
+            else if (Password == null) { ShowMessage("Введите логин", "Авторизация"); }
+            else
             {
-                if (string.IsNullOrWhiteSpace(Login)) { ShowMessage("Введите логин", "Авторизация"); }
-                else if (string.IsNullOrWhiteSpace(Password)) { ShowMessage("Введите пароль", "Авторизация"); }
-                else
+                try
                 {
-                    var user = dc.Users.FirstOrDefault(u => u.Login == Login && u.Password == Password);
+                    using ArchiveBdContext dc = new();
+                    var user = await dc.Users.FirstOrDefaultAsync(u => u.Login == Login && u.Password == Password);
                     if (user != null)
                     {
                         Setting.Usertype = user.Role;
                         Setting.UserID = user.Id;
                         Setting.containerFrame?.Navigate(new MainPage());
                     }
-                    else ShowMessage("Неверный логин или пароль", "Авторизация");
+                    else { ShowMessage("Неверный логин или пароль", "Авторизация"); }
+                }
+                catch (Exception ex)
+                {
+                    ShowMessage($"Ошибка авторизации: {ex.Message}", "Авторизация");
                 }
             }
+
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using AdminArchive.Model;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 
 namespace AdminArchive.ViewModel
@@ -25,13 +23,13 @@ namespace AdminArchive.ViewModel
             get => _Log;
             set { _Log = value; OnPropertyChanged(); }
         }
-            
+
         public ObservableCollection<Acess> Acess { get; set; }
 
         public ObservableCollection<FondView> FondView { get; set; }
 
         public ObservableCollection<CharRestrict> CharRestrict { get; set; }
-        
+
         public ObservableCollection<Carrier> Carriers { get; set; }
 
         public ObservableCollection<HistoricalPeriod> HistoricalPeriod { get; set; }
@@ -129,6 +127,7 @@ namespace AdminArchive.ViewModel
             ItemList = items;
             pageVM = vm;
             FillCollections();
+            AddItem();
         }
         public InventoryWindowVM() { }
 
@@ -178,11 +177,18 @@ namespace AdminArchive.ViewModel
         protected override void AddItem()
         {
             SelectedItem = new Inventory()
-            {   Acess = curFond?.Acess ?? null, Category = curFond?.Category ?? null,
-                Movement = curFond?.Movement ?? null, SecretChar = curFond?.SecretChar ?? null,
-                DocType = curFond?.DocType ?? null, IncomeSource = curFond?.IncomeSource ?? null,
-                MovementType = curFond?.MovementType ?? null, ReceiptReason = curFond?.ReceiptReason ?? null,
-                StorageTime = curFond?.StorageTime ?? null, CharRestrict = curFond?.CharRestrict ?? null };
+            {
+                Acess = curFond?.Acess ?? null,
+                Category = curFond?.Category ?? null,
+                Movement = curFond?.Movement ?? null,
+                SecretChar = curFond?.SecretChar ?? null,
+                DocType = curFond?.DocType ?? null,
+                IncomeSource = curFond?.IncomeSource ?? null,
+                MovementType = curFond?.MovementType ?? null,
+                ReceiptReason = curFond?.ReceiptReason ?? null,
+                StorageTime = curFond?.StorageTime ?? null,
+                CharRestrict = curFond?.CharRestrict ?? null
+            };
             CheckNav();
         }
 
@@ -226,7 +232,7 @@ namespace AdminArchive.ViewModel
         }
 
         #region Протокол
-        protected override void OpenLog() 
+        protected override void OpenLog()
         {
             using ArchiveBdContext dc = new();
             UCVisibility = Visibility.Visible;

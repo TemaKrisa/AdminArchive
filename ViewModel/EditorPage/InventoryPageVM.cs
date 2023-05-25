@@ -3,7 +3,6 @@ using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace AdminArchive.ViewModel
 {
@@ -13,7 +12,7 @@ namespace AdminArchive.ViewModel
         private ObservableCollection<Inventory> _inventories;
         public ObservableCollection<Inventory> Inventories
         {
-            get => _inventories; 
+            get => _inventories;
             set
             { _inventories = value; OnPropertyChanged(); }
         } // Define an ObservableCollection of Fonds
@@ -47,7 +46,7 @@ namespace AdminArchive.ViewModel
         {
             if (SelectedItem != null)
             {
-                StorageUnitPageVM vm = new(SelectedItem,curFond);
+                StorageUnitPageVM vm = new(SelectedItem, curFond);
                 StorageUnitPage v = new() { DataContext = vm };
                 Setting.mainFrame.Navigate(v);
             }
