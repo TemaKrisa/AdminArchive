@@ -2,7 +2,6 @@
 using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
 using System.Windows.Input;
 
 namespace AdminArchive.ViewModel
@@ -15,7 +14,12 @@ namespace AdminArchive.ViewModel
 
         public ICommand LoginCommand => new RelayCommand(Logining);
 
-        private async void Logining()
+        public LoginVM()
+        {
+            Login = "Worker";
+            Password = "123";
+        }
+        private void Logining()
         {
             if (Login == null) { ShowMessage("Введите логин", "Авторизация"); }
             else if (Password == null) { ShowMessage("Введите логин", "Авторизация"); }
@@ -24,7 +28,7 @@ namespace AdminArchive.ViewModel
                 try
                 {
                     using ArchiveBdContext dc = new();
-                    var user = await dc.Users.FirstOrDefaultAsync(u => u.Login == Login && u.Password == Password);
+                    var user = dc.Users.FirstOrDefault(u => u.Login == Login && u.Password == Password);
                     if (user != null)
                     {
                         Setting.Usertype = user.Role;
@@ -34,9 +38,7 @@ namespace AdminArchive.ViewModel
                     else { ShowMessage("Неверный логин или пароль", "Авторизация"); }
                 }
                 catch (Exception ex)
-                {
-                    ShowMessage($"Ошибка авторизации: {ex.Message}", "Авторизация");
-                }
+                { ShowMessage($"Ошибка авторизации: {ex.Message}", "Авторизация"); }
             }
 
         }

@@ -56,28 +56,15 @@ namespace AdminArchive.ViewModel
             newWindow.ShowDialog();
         }
 
-        protected override void OpenItem() { }
+
+        protected override void ResetSearch() { UpdateData(); }
 
         protected override void SearchCommand()
         {
-            throw new System.NotImplementedException();
+
         }
 
-        protected override void ResetSearch()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void CloseSearchCommand()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void OpenSearchCommand()
-        {
-            throw new System.NotImplementedException();
-        }
-
+        protected override void OpenItem() { }
         public DocumentPageVM() { }
     }
 }

@@ -5,7 +5,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
+      xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
+      xmlns:vm="clr-namespace:AdminArchive.ViewModel"
       Title="Фонды" x:Name="Page"
       mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
     <Page.DataContext>
@@ -44,6 +45,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </ui:DataGrid>
+        <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,-11" Text="{Binding Fonds.Count, StringFormat=Всего фондов: {0}}"></TextBlock>
     <uc:FondSearchUC DataContext="{Binding DataContext, ElementName=Page}"
  Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
     </Grid>

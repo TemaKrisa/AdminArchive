@@ -3,13 +3,11 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:wpfmediakit="http://schemas.microsoft.com/xps/2005/06"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:AdminArchive.Classes"
     xmlns:vm="clr-namespace:AdminArchive.ViewModel"
-    xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
-    x:Class="AdminArchive.View.Windows.DocumentWindow"
-               mc:Ignorable="d"
+    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
+    x:Class="AdminArchive.View.Windows.DocumentWindow" x:Name="Window" mc:Ignorable="d"
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
         WindowCornerPreference="Round" WindowStartupLocation="CenterScreen"
@@ -72,9 +70,9 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"><Run Text="Номер*"/></TextBlock>
-                        <ui:NumberBox IntegersOnly="True" Min="1"   Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding SelectedItem.Id}" Margin="10,0,110,0"/>
+                        <ui:NumberBox IntegersOnly="True" Min="1"   Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding SelectedItem.Number}" Margin="10,0,110,0"/>
                         <TextBlock Grid.Column="2"><Run Text="Дата документа"/></TextBlock>
-                        <DatePicker Grid.Column="3" SelectedDate="{Binding SelectedItem.Date}"/>
+                        <DatePicker Grid.Column="3" Text="{Binding SelectedItem.Date, TargetNullValue=null}" />
                     </Grid>
                     <Grid Grid.Row="1" >
                         <Grid.ColumnDefinitions>
@@ -120,7 +118,7 @@
                         <TextBlock><Run Text="Место события"/></TextBlock>
                         <TextBox Grid.Column="1" />
                         <TextBlock Grid.Column="2"><Run Text="Дата события"/></TextBlock>
-                        <DatePicker Grid.Column="3" SelectedDate="{Binding SelectedItem.Date}"/>
+                        <DatePicker Grid.Column="3" Text="{Binding SelectedItem.ReceiptDate, TargetNullValue=null}"/>
                     </Grid>
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
@@ -130,9 +128,9 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock><Run Text="Подлинность"/></TextBlock>
-                        <ComboBox Grid.Column="1" />
+                        <ComboBox Grid.Column="1" SelectedValue="{Binding SelectedItem.Authenticity}" ItemsSource="{Binding Authenticities  }"/>
                         <TextBlock Grid.Column="2"><Run Text="Способ воспроизведения"/></TextBlock>
-                        <ComboBox SelectedValue="{Binding SelectedItem.Authenticity}" ItemsSource="{Binding Authenticities}"
+                        <ComboBox SelectedValue="{Binding SelectedItem.Reproduction}" ItemsSource="{Binding Reproductions}"
                                   Grid.Column="3" />
                     </Grid>
                     <Grid Grid.Row="5">
@@ -168,19 +166,27 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Файлы">
-                <Grid Height="300">
+                <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
                         <RowDefinition Height="150"/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding DocFiles}" SelectedItem="{Binding SelFile}" AutoGenerateColumns="False" CanUserDeleteRows="False">
+                    <Button Command="{Binding AddEditFile}" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Content="Добавить"/>
+                    <ui:DataGrid Grid.Row="1" HorizontalAlignment="Stretch" Margin="10,47,10,10" ItemsSource="{Binding DocFiles}" SelectedItem="{Binding SelFile}" AutoGenerateColumns="False" CanUserDeleteRows="False" IsReadOnly="True">
                         <ui:DataGrid.Columns>
-                            <DataGridTextColumn Header="Файл" Width="100" Binding="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Описание" Width="*" Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Файл" Width="100" Binding="{Binding FileName}"/>
+                            <DataGridTextColumn Header="Описание" Width="*" Binding="{Binding Description}"/>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ui:Button Icon="Edit24" Width="50"  Command="{Binding DataContext.ChooseFile, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                        <ui:Button Icon="Edit24" Width="50"  Command="{Binding DataContext.OpenEditFile, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>  
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Icon="Delete24" Width="50"  Command="{Binding DataContext.DeleteFile, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>                       
@@ -193,10 +199,11 @@
                             </DataGridTemplateColumn>
                         </ui:DataGrid.Columns>
                     </ui:DataGrid>
-                    <Image Margin="15" Source="{Binding SelFile.File}" />
-                    <wpfmediakit:MediaElement Source="{Binding SelFile.File}" />
+                    <Image Margin="5" Source="{Binding SelFile.File}" />
                 </Grid>
             </TabItem>
         </TabControl>
+        <uc:DocumentFileUC DataContext="{Binding DataContext, ElementName=Window}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding FileVisibility}"/>
     </Grid>
 </ui:UiWindow>

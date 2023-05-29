@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AdminArchive.Model;
+﻿namespace AdminArchive.Model;
 
 public partial class StorageUnit
 {
@@ -11,7 +8,7 @@ public partial class StorageUnit
 
     public int Volume { get; set; }
 
-    public string Tite { get; set; } = null!;
+    public string Title { get; set; } = null!;
 
     public int DocType { get; set; }
 
@@ -68,6 +65,10 @@ public partial class StorageUnit
     public virtual Carrier CarrierNavigation { get; set; } = null!;
 
     public virtual UnitCategory CategoryNavigation { get; set; } = null!;
+
+    public virtual CharRestrict? CharRestrictNavigation { get; set; }
+
+    public virtual DocType DocTypeNavigation { get; set; } = null!;
 
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 

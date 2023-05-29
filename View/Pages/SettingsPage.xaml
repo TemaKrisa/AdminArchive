@@ -29,6 +29,9 @@
                         <ComboBoxItem Content="Тёмная"/>
                     </ComboBox>
                 </Grid>
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="2" Color="Black" Opacity="0.5"/>
+                </Border.Effect>
             </Border>
             <TextBlock Margin="0,24,0,0" FontSize="20" FontWeight="Medium" Text="О программе" />
             <Border CornerRadius="3" Height="130" Background="{DynamicResource ApplicationBackgroundBrush}">
@@ -51,6 +54,9 @@
                         <ui:Hyperlink Grid.Row="1" >Справка</ui:Hyperlink>
                     </StackPanel>
                 </Grid>
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="2" Color="Black" Opacity="0.5"/>
+                </Border.Effect>
             </Border>
         </StackPanel>
     </Grid>

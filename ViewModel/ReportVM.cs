@@ -25,13 +25,8 @@ namespace AdminArchive.ViewModel
         public int SelectedType
         {
             get { return _selectedType; }
-            set
-            {
-                _selectedType = value;
-                OnPropertyChanged();
-            }
+            set { _selectedType = value; OnPropertyChanged(); }
         }
-
         public ReportVM()
         {
             dc = new ArchiveBdContext();
@@ -45,7 +40,6 @@ namespace AdminArchive.ViewModel
                 case 0: FondListReport(); break;
                 case 1: InventoriesListReport(); break;
             }
-
         }
         private void InventoriesListReport()
         {

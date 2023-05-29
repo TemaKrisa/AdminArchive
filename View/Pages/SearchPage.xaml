@@ -3,48 +3,53 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewmodel="clr-namespace:AdminArchive.ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Поиск">
+    <Page.DataContext>
+        <viewmodel:SearchPageVM/>
+    </Page.DataContext>
     <Grid>
         <TabControl>
             <TabItem Header="Фонды">
-                <Grid>
-                    <Grid Margin="30,0,30,30">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid Margin="5">
-                            <StackPanel Orientation="Horizontal">
-                                <ui:Button Command="{Binding Add}" Content="Добавить новую запись" Icon="Add24" Appearance="Info"/>
-                                <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
-                            </StackPanel>
-                        </Grid>
-                        <ui:DataGrid CanUserSortColumns="False" Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding Fonds}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"  AutoGenerateColumns="False" RowHeaderWidth="0">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseDoubleClick">
-                                    <i:InvokeCommandAction Command="{Binding Open}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="№" Binding="{Binding FullNumber}"/>
-                                <DataGridTextColumn Header="Сокращенное наименование" Width="*" Binding="{Binding FondShortName}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Категория"  Binding="{Binding CategoryNavigation.CategoryName}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Дата нач." Binding="{Binding StartDate}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Дата кон." Binding="{Binding EndDate}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Объем ед. хр." Binding="{Binding Volume}"></DataGridTextColumn>
-                                <DataGridTemplateColumn Width="50">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.Edit, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </ui:DataGrid>
+                <Grid Margin="30,0,30,30">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <ui:Button Content="Поиск" Command="{Binding OpenSearch}" Icon="Search24" Appearance="Caution"/>
+                        </StackPanel>
                     </Grid>
+                    <ui:DataGrid CanUserSortColumns="False" Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding Fonds}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"  AutoGenerateColumns="False" RowHeaderWidth="0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding Open}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="№" Binding="{Binding FullNumber}"/>
+                            <DataGridTextColumn Header="Сокращенное наименование" Width="*" Binding="{Binding ShortName}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Категория"  Binding="{Binding CategoryNavigation.Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Дата нач." Binding="{Binding StartDate}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Дата кон." Binding="{Binding EndDate}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Объем ед. хр." Binding="{Binding Volume}"></DataGridTextColumn>
+                            <DataGridTemplateColumn Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.Edit, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </ui:DataGrid>
+                    <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,-11" Text="{Binding Fonds.Count, StringFormat=Всего фондов: {0}}"></TextBlock>
+                    <!--<uc:FondSearchUC DataContext="{Binding DataContext, ElementName=Page}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>-->
                 </Grid>
             </TabItem>
             <TabItem Header="Описи">
@@ -53,11 +58,8 @@
                         <RowDefinition Height="50"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <ui:Button Command="{Binding Back}" Content="Назад" HorizontalAlignment="Right" Icon="ArrowLeft24" Appearance="Info" Margin="0,-100,0,0"/>
                     <Grid Margin="5">
                         <StackPanel Orientation="Horizontal">
-                            <ui:Button Content="Добавить новую запись" Icon="Add24" Appearance="Info" Command="{Binding Add}"/>
-                            <ui:Button Content="Отчёт" Appearance="Success" Icon="Document24" Command="{Binding ReportAdd}"/>
                             <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
                         </StackPanel>
                     </Grid>
@@ -92,10 +94,8 @@
                             <RowDefinition Height="50"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <ui:Button Command="{Binding Back}" Content="Назад" HorizontalAlignment="Right" Icon="ArrowLeft24" Appearance="Info" Margin="0,-100,0,0"/>
                         <Grid Margin="5">
                             <StackPanel Orientation="Horizontal">
-                                <ui:Button Content="Добавить новую запись" Icon="Add24" Appearance="Info" Command="{Binding Add}"/>
                                 <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
                             </StackPanel>
                         </Grid>
@@ -131,10 +131,8 @@
                         <RowDefinition Height="50"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <ui:Button Command="{Binding Back}" Content="Назад" HorizontalAlignment="Right" Icon="ArrowLeft24" Appearance="Info" Margin="0,-100,0,0"/>
                     <Grid Margin="5">
                         <StackPanel Orientation="Horizontal">
-                            <ui:Button Content="Добавить новую запись" Icon="Add24" Appearance="Info" Command="{Binding  Add}"/>
                             <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
                         </StackPanel>
                     </Grid>

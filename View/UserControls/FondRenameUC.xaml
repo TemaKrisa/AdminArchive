@@ -24,7 +24,7 @@
         <Grid Background="#4C808080" IsHitTestVisible="true" Grid.ColumnSpan="2">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonDown">
-                    <i:InvokeCommandAction Command="{Binding CloseRename}" />
+                    <i:InvokeCommandAction Command="{Binding CloseUC}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Grid>
@@ -43,16 +43,16 @@
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="60"/>
                 </Grid.RowDefinitions>
-                <ui:Button Grid.Row="0" Icon="Dismiss24" Command="{Binding CloseRename}" Appearance="Transparent" HorizontalAlignment="Right" BorderThickness="0" Width="31" Height="25" VerticalAlignment="Top" Grid.Column="1" Margin="10"/>
+                <ui:Button Grid.Row="0" Icon="Dismiss24" Command="{Binding CloseUC}" Appearance="Transparent" HorizontalAlignment="Right" BorderThickness="0" Width="31" Height="25" VerticalAlignment="Top" Grid.Column="1" Margin="10"/>
                 <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0" FontWeight="Bold" FontSize="24"><Run Text="Переименование фонда"/></TextBlock>
                 <TextBlock Grid.Row="1" Margin="0"><Run Text="Наименование"/></TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding SelectedName.Name}" Margin="10,0,30,0"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding EditingName.Name}" Margin="10,0,30,0"/>
                 <TextBlock Grid.Row="2" Margin="0">Дата начала</TextBlock>
-                <DatePicker Grid.Row="2" Grid.Column="2" Margin="10,0,30,0" SelectedDate="{Binding SelectedName.StartDate}"/>
+                <DatePicker Grid.Row="2" Grid.Column="2" Margin="10,0,30,0" Text="{Binding EditingName.StartDate, TargetNullValue=Null}"/>
                 <TextBlock Grid.Row="3" Margin="0"><Run Text="Дата окончания"/></TextBlock>
-                <DatePicker Grid.Row="3" Grid.Column="2" SelectedDate="{Binding SelectedName.EndDate}"  Margin="10,0,30,0"/>
+                <DatePicker Grid.Row="3" Grid.Column="2" Text="{Binding EditingName.EndDate, TargetNullValue=Null}"  Margin="10,0,30,0"/>
                 <TextBlock Grid.Row="4" Margin="0"><Run Text="Примечание"/></TextBlock>
-                <ui:TextBox Text="{Binding SelectedName.Note}" MaxLength="350" Margin="10,10,30,10" Grid.Row="4" Grid.RowSpan="2" VerticalAlignment="Stretch"  Grid.Column="1"/>
+                <ui:TextBox Text="{Binding EditingName.Note}" MaxLength="350" Margin="10,10,30,10" Grid.Row="4" Grid.RowSpan="2" VerticalAlignment="Stretch"  Grid.Column="1"/>
                 <Grid Grid.Row="7" Grid.ColumnSpan="2" Margin="30,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>

@@ -4,12 +4,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+             xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
              mc:Ignorable="d"        
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
         WindowCornerPreference="Round" WindowStartupLocation="CenterScreen"
-        MinHeight="720" MinWidth="1000">
+        MinHeight="720" MinWidth="1000" x:Name="Window">
     <Window.DataContext>
         <vm:StorageUnitWindowVM/>
     </Window.DataContext>
@@ -29,20 +29,20 @@
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ui:TitleBar Grid.Row="0" UseSnapLayout="True" Title="Фонд"/>
+        <ui:TitleBar Grid.Row="0" UseSnapLayout="True" Title="Единица хранения"/>
         <Grid Grid.Row="1">
             <ui:Button Content="Сохранить" Command="{Binding Save}" Icon="Save24" Margin="5" IconFilled="True"/>
             <ui:Button Content="Протокол" Command="{Binding ShowLog}" Icon="History24" IconFilled="True" Margin="236,0,0,0"/>
             <ui:Button Content="Добавить" Command="{Binding Add}" Icon="Add24" Margin="124,0,0,0" IconFilled="True"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <ui:Button Margin="5" Height="30" Icon="Previous16" IconFilled="True"/>
-                <ui:Button Margin="0" Height="30" Icon="Play12" RenderTransformOrigin="0.5,0.5" IconFilled="True">
+                <ui:Button Icon="Previous24" IconFilled="{Binding IsFirst}" Command="{Binding First}" IsEnabled="{Binding IsFirst}"/>
+                <ui:Button Icon="Play24" IconFilled="{Binding IsFirst}" Command="{Binding Prev}" IsEnabled="{Binding IsFirst}" RenderTransformOrigin="0.5,0.5">
                     <ui:Button.RenderTransform>
                         <ScaleTransform ScaleX="-1" CenterX="0.5"/>
                     </ui:Button.RenderTransform>
                 </ui:Button>
-                <ui:Button Margin="5" Height="30" Icon="Play12" IconFilled="True"/>
-                <ui:Button Margin="0" Height="30" Icon="Next16" IconFilled="True"/>
+                <ui:Button Icon="Play24" IconFilled="{Binding IsLast}" Command="{Binding Next}" IsEnabled="{Binding IsLast}"/>
+                <ui:Button Icon="Next24" IconFilled="{Binding IsLast}" Command="{Binding Last}" IsEnabled="{Binding IsLast}"/>
             </StackPanel>
         </Grid>
         <TabControl Grid.Row="2">
@@ -85,7 +85,7 @@
                     </Grid>
                     <Grid Grid.Row="1">
                         <TextBlock HorizontalAlignment="Left" Margin="105,0">Заголовок</TextBlock>
-                        <TextBox Text="{Binding SelectedItem.Tite}"  
+                        <TextBox Text="{Binding SelectedItem.Title}"  
                                  Margin="210,0,30,0" />
                     </Grid>
                     <Grid Grid.Row="2">
@@ -249,15 +249,37 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Особенности" Width="150">
-                <DataGrid ItemsSource="{Binding UnitFeatures}" SelectedItem="{Binding SelectedFeature}"
-                    Margin="30" AutoGenerateColumns="True">
-                    
-                    <!--<DataGrid.Columns>
+                <Grid>
+
+                    <Button Command="{Binding AddFeature}"  VerticalAlignment="Top" Margin="30,12,0,0" Content="Добавить"/>
+                    <DataGrid ItemsSource="{Binding UnitFeatures}" IsReadOnly="True" AutoGenerateColumns="False"  SelectedItem="{Binding SelectedFeature}"
+                    Margin="30,49,30,30">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Особенность" Width="*"/>
+                            <DataGridTemplateColumn Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Icon="Edit24" Width="50"  Command="{Binding DataContext.EditFeature, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Icon="Delete24" Width="50"  Command="{Binding DataContext.RemoveFeature, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                        <!--<DataGrid.Columns>
                         <DataGridComboBoxColumn  ItemsSource="{Binding Features}"
                             DisplayMemberPath="Name" SelectedValuePath="Id" Header="Особенность" Width="*"/>
                     </DataGrid.Columns>-->
-                </DataGrid>
+                    </DataGrid>
+                </Grid>
             </TabItem>
         </TabControl>
+        <uc:FeatureUC DataContext="{Binding DataContext, ElementName=Window}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding FeatureVisibility}"/>
     </Grid>
-    </ui:UiWindow>
+</ui:UiWindow>

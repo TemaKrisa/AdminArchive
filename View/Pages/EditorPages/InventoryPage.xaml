@@ -3,8 +3,9 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:vm="clr-namespace:AdminArchive.ViewModel"
       mc:Ignorable="d"  Title="Описи"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.DataContext>
@@ -26,7 +27,7 @@
             <ui:DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding FullNumber}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Название" Binding="{Binding Name}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Тип" Width="*" Binding="{Binding Type}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Тип" Width="*" Binding="{Binding TypeNavigation.Name}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Начальная дата" Width="*" Binding="{Binding StartDate,Mode=OneWay}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Конечная дата" Width="*" Binding="{Binding EndDate,Mode=OneWay}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Объем ед. хр." Binding="{Binding Volume}"></DataGridTextColumn>
@@ -44,5 +45,6 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ui:DataGrid>
+        <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,-11" Text="{Binding Inventories.Count, StringFormat=Всего описей: {0}}"></TextBlock>
     </Grid>
 </Page>

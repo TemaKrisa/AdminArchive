@@ -3,7 +3,8 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vm="clr-namespace:AdminArchive.ViewModel"
       mc:Ignorable="d"  Title="Документы"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.DataContext>
@@ -23,9 +24,9 @@
         </Grid>
         <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Documents}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0">
             <ui:DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding Id}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding DocumentName}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Дата документа" Width="*" Binding="{Binding Date}"></DataGridTextColumn>
+                <DataGridTextColumn Header="№" Binding="{Binding Number}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding Name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Дата документа" Width="*" Binding="{Binding Date,StringFormat={}{0:dd.MM.yyyy}}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Кол-во листов"  Binding="{Binding Vol}"></DataGridTextColumn>
                 <DataGridTextColumn Header="С" Binding="{Binding VolStart}"></DataGridTextColumn>
                 <DataGridTextColumn Header="По" Binding="{Binding VolEnd}"></DataGridTextColumn>
@@ -39,5 +40,6 @@
                 </DataGridTemplateColumn>
             </ui:DataGrid.Columns>
         </ui:DataGrid>
+        <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,-11" Text="{Binding Documents.Count, StringFormat=Всего документов: {0}}"></TextBlock>
     </Grid>
 </Page>

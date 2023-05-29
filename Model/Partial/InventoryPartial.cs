@@ -1,66 +1,46 @@
-﻿namespace AdminArchive.Model
+﻿namespace AdminArchive.Model;
+partial class Inventory
 {
-    partial class Inventory
+    //Получение минимальной начальной даты, с исключением выбытых единиц хранения
+    public int? StartDate
     {
-        public int? StartDate
+        get
         {
-            get
-            {
-                using (var context = new ArchiveBdContext())
-                {
-                    int? maxYear = context.StorageUnits
-                        .AsEnumerable()
-                        .Where(i => i.Inventory == this.Id)
-                        .Select(i => i.StartDate) // Add this line
-                        .DefaultIfEmpty() // Add this line
-                        .Min();
-                    if (maxYear == 0) return null;
-                    return maxYear;
-                }
-            }
-        }
+            using ArchiveBdContext context = new();
+            int? maxYear = context.StorageUnits.AsEnumerable()
+                .Where(i => i.Inventory == this.Id && i.IsRetired == false).Select(i => i.StartDate)
+                .DefaultIfEmpty().Min();
+            if (maxYear == 0) return null;
+            return maxYear;
 
-        public int? EndDate
-        {
-            get
-            {
-                using (var context = new ArchiveBdContext())
-                {
-                    int? minYear = context.StorageUnits
-                        .AsEnumerable()
-                        .Where(i => i.Inventory == this.Id)
-                        .Select(i => i.EndDate) // Add this line
-                        .DefaultIfEmpty() // Add this line
-                        .Max();
-                    if (minYear == 0) return null;
-                    return minYear;
-                }
-            }
-        }
-
-        public int? Volume
-        {
-            get
-            {
-                using (var context = new ArchiveBdContext())
-                {
-                    int? volume = context.StorageUnits
-                        .AsEnumerable()
-                        .Where(i => i.Inventory == this.Id)
-                        .Select(i => i.Volume)
-                        .DefaultIfEmpty()
-                        .Sum();
-                    return volume;
-                }
-            }
-        }
-
-        public string FullNumber
-        {
-            get
-            {
-                return Number + "" + Literal;
-            }
         }
     }
+    //Получение максимальной конечной даты, с исключением выбытых единиц хранения
+    public int? EndDate
+    {
+        get
+        {
+            using ArchiveBdContext context = new();
+            int? minYear = context.StorageUnits.AsEnumerable()
+                .Where(i => i.Inventory == this.Id && i.IsRetired == false).Select(i => i.EndDate)
+                .DefaultIfEmpty().Max();
+            if (minYear == 0) return null;
+            return minYear;
+        }
+    }
+    //Получение обьема, с исключением выбытых единиц хранения
+    public int? Volume
+    {
+        get
+        {
+            using ArchiveBdContext context = new();
+            int? volume = context.StorageUnits.AsEnumerable().
+                Where(i => i.Inventory == this.Id && i.IsRetired == false).Select(i => i.Volume)
+                .DefaultIfEmpty().Sum();
+            return volume;
+        }
+    }
+    //Конвертация полного номера
+    public string FullNumber
+    { get { return Number + "" + Literal; } }
 }

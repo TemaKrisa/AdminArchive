@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AdminArchive.Model;
+﻿namespace AdminArchive.Model;
 
 public partial class DocumentLog
 {
@@ -18,4 +15,6 @@ public partial class DocumentLog
     public virtual Activity ActivityNavigation { get; set; } = null!;
 
     public virtual Document DocumentNavigation { get; set; } = null!;
+
+    public virtual User UserNavigation { get; set; } = null!;
 }

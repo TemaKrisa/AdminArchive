@@ -1,18 +1,12 @@
 ﻿using AdminArchive.Classes;
 using AdminArchive.ViewModel;
-
-namespace AdminArchive.View.Windows
+namespace AdminArchive.View.Windows;
+public partial class Container
 {
-    /// <summary>
-    /// Логика взаимодействия для Container.xaml
-    /// </summary>
-    public partial class Container
+    public Container()
     {
-        public Container()
-        {
-            InitializeComponent();
-            Setting.containerFrame = RootFrame;
-            DataContext = new ContainerVM();
-        }
+        InitializeComponent();
+        Setting.containerFrame = RootFrame;
+        DataContext = new ContainerVM();
     }
 }

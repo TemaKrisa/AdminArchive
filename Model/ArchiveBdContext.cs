@@ -98,7 +98,7 @@ public partial class ArchiveBdContext : DbContext
     {
         try
         {
-            //StringCon = AppSettings.Default.ConString;
+            StringCon = AppSettings.Default.ConString;
             if (string.IsNullOrWhiteSpace(StringCon))
                 StringCon = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ConnectionString.txt")) ?? "";
             optionsBuilder.UseSqlServer(StringCon).EnableSensitiveDataLogging();
@@ -210,6 +210,11 @@ public partial class ArchiveBdContext : DbContext
                 .HasForeignKey(d => d.Reproduction)
                 .HasConstraintName("FK_Document_Reproduction");
 
+            entity.HasOne(d => d.SecretCharNavigation).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.SecretChar)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Document");
+
             entity.HasOne(d => d.StorageUnitNavigation).WithMany(p => p.Documents)
                 .HasForeignKey(d => d.StorageUnit)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -242,6 +247,7 @@ public partial class ArchiveBdContext : DbContext
 
             entity.HasOne(d => d.DocumentNavigation).WithMany(p => p.DocumentFiles)
                 .HasForeignKey(d => d.Document)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_DocumentFiles_Document");
         });
 
@@ -261,6 +267,11 @@ public partial class ArchiveBdContext : DbContext
                 .HasForeignKey(d => d.Document)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_DocumentLog_Document");
+
+            entity.HasOne(d => d.UserNavigation).WithMany(p => p.DocumentLogs)
+                .HasForeignKey(d => d.User)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DocumentLog_User");
         });
 
         modelBuilder.Entity<Feature>(entity =>
@@ -273,7 +284,7 @@ public partial class ArchiveBdContext : DbContext
 
         modelBuilder.Entity<Fond>(entity =>
         {
-            entity.ToTable("Fond");
+            entity.ToTable("Fond", tb => tb.HasTrigger("CheckIndexLiteral"));
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Annotation).HasMaxLength(350);
@@ -281,16 +292,18 @@ public partial class ArchiveBdContext : DbContext
             entity.Property(e => e.Index).HasMaxLength(1);
             entity.Property(e => e.Literal).HasMaxLength(2);
             entity.Property(e => e.MovementNote).HasMaxLength(350);
-            entity.Property(e => e.Name).HasMaxLength(150);
+            entity.Property(e => e.Name).HasMaxLength(450);
             entity.Property(e => e.ReceiptDate).HasColumnType("datetime");
-            entity.Property(e => e.ShortName).HasMaxLength(76);
+            entity.Property(e => e.ShortName).HasMaxLength(350);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.Acess)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Fond_Acess");
 
             entity.HasOne(d => d.CategoryNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.Category)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Fond_Category");
 
             entity.HasOne(d => d.CharRestrictNavigation).WithMany(p => p.Fonds)
@@ -299,14 +312,17 @@ public partial class ArchiveBdContext : DbContext
 
             entity.HasOne(d => d.DocTypeNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.DocType)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Fond_DocType");
 
             entity.HasOne(d => d.HistoricalPeriodNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.HistoricalPeriod)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Fond_HistoricalPeriods");
 
             entity.HasOne(d => d.IncomeSourceNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.IncomeSource)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Fond_IncomeSource");
 
             entity.HasOne(d => d.MovementNavigation).WithMany(p => p.Fonds)
@@ -320,26 +336,32 @@ public partial class ArchiveBdContext : DbContext
 
             entity.HasOne(d => d.OwnerShipNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.OwnerShip)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Fond_Ownership");
 
             entity.HasOne(d => d.ReceiptReasonNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.ReceiptReason)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Fond_ReceiptReason");
 
             entity.HasOne(d => d.SecretCharNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.SecretChar)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Fond_SecretChar");
 
             entity.HasOne(d => d.StorageTimeNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.StorageTime)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Fond_StorageTime");
 
             entity.HasOne(d => d.TypeNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.Type)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Fond_FondType");
 
             entity.HasOne(d => d.ViewNavigation).WithMany(p => p.Fonds)
                 .HasForeignKey(d => d.View)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Fond_FondView");
         });
 
@@ -412,7 +434,7 @@ public partial class ArchiveBdContext : DbContext
 
         modelBuilder.Entity<Inventory>(entity =>
         {
-            entity.ToTable("Inventory");
+            entity.ToTable("Inventory", tb => tb.HasTrigger("Literal"));
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Annotation).HasMaxLength(350);
@@ -425,30 +447,41 @@ public partial class ArchiveBdContext : DbContext
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.Acess)
-                .HasConstraintName("FK_Inventory_Acess");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Inventory");
 
             entity.HasOne(d => d.CarrierNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.Carrier)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_Carrier");
 
             entity.HasOne(d => d.CategoryNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.Category)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_Category");
 
             entity.HasOne(d => d.CharRestrictNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.CharRestrict)
                 .HasConstraintName("FK_Inventory_CharRestrict");
 
+            entity.HasOne(d => d.DocTypeNavigation).WithMany(p => p.Inventories)
+                .HasForeignKey(d => d.DocType)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Inventory_DocType");
+
             entity.HasOne(d => d.FondNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.Fond)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_Fond");
 
             entity.HasOne(d => d.IncomeSourceNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.IncomeSource)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_IncomeSource");
 
             entity.HasOne(d => d.MovementNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.Movement)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_Movement");
 
             entity.HasOne(d => d.MovementTypeNavigation).WithMany(p => p.Inventories)
@@ -457,14 +490,22 @@ public partial class ArchiveBdContext : DbContext
 
             entity.HasOne(d => d.ReceiptReasonNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.ReceiptReason)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_ReceiptReason");
+
+            entity.HasOne(d => d.SecretCharNavigation).WithMany(p => p.Inventories)
+                .HasForeignKey(d => d.SecretChar)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Inventory_SecretChar");
 
             entity.HasOne(d => d.StorageTimeNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.StorageTime)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_StorageTime");
 
             entity.HasOne(d => d.TypeNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.Type)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_InventoryType");
         });
 
@@ -567,7 +608,7 @@ public partial class ArchiveBdContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_StorageUnit1");
 
-            entity.ToTable("StorageUnit");
+            entity.ToTable("StorageUnit", tb => tb.HasTrigger("CheckLiteral"));
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.AccessRestrictionNote).HasMaxLength(50);
@@ -578,7 +619,7 @@ public partial class ArchiveBdContext : DbContext
             entity.Property(e => e.IsSf).HasColumnName("IsSF");
             entity.Property(e => e.Literal).HasMaxLength(2);
             entity.Property(e => e.Note).HasMaxLength(150);
-            entity.Property(e => e.Tite).HasMaxLength(50);
+            entity.Property(e => e.Title).HasMaxLength(50);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.StorageUnits)
                 .HasForeignKey(d => d.Acess)
@@ -594,6 +635,15 @@ public partial class ArchiveBdContext : DbContext
                 .HasForeignKey(d => d.Category)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_StorageUnit_Category1");
+
+            entity.HasOne(d => d.CharRestrictNavigation).WithMany(p => p.StorageUnits)
+                .HasForeignKey(d => d.CharRestrict)
+                .HasConstraintName("FK_StorageUnit_CharRestrict");
+
+            entity.HasOne(d => d.DocTypeNavigation).WithMany(p => p.StorageUnits)
+                .HasForeignKey(d => d.DocType)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_StorageUnit_DocType");
 
             entity.HasOne(d => d.InventoryNavigation).WithMany(p => p.StorageUnits)
                 .HasForeignKey(d => d.Inventory)
@@ -691,14 +741,17 @@ public partial class ArchiveBdContext : DbContext
 
             entity.HasOne(d => d.ActivityNavigation).WithMany(p => p.UnitLogs)
                 .HasForeignKey(d => d.Activity)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UnitLog_UnitActivity");
 
             entity.HasOne(d => d.UnitNavigation).WithMany(p => p.UnitLogs)
                 .HasForeignKey(d => d.Unit)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UnitLog_StorageUnit");
 
             entity.HasOne(d => d.UserNavigation).WithMany(p => p.UnitLogs)
                 .HasForeignKey(d => d.User)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UnitLog_User");
         });
 

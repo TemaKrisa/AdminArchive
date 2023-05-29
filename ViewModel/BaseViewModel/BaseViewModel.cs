@@ -23,7 +23,6 @@ namespace AdminArchive.ViewModel
             MessageBoxs.ShowDialog(messasge, title);
         // Свойство UCVisibility определяет видимость элемента управления.
         private Visibility _uCVisibility = Visibility.Collapsed;
-        public Visibility UCVisibility
-        { get => _uCVisibility; set { _uCVisibility = value; OnPropertyChanged(); } }
+        public Visibility UCVisibility { get => _uCVisibility; set { _uCVisibility = value; OnPropertyChanged(); } }
     }
 }

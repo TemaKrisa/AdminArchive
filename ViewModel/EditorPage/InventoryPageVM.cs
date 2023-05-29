@@ -2,6 +2,7 @@
 using AdminArchive.Model;
 using AdminArchive.View.Pages;
 using AdminArchive.View.Windows;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 
 namespace AdminArchive.ViewModel
@@ -10,38 +11,23 @@ namespace AdminArchive.ViewModel
     {
 
         private ObservableCollection<Inventory> _inventories;
-        public ObservableCollection<Inventory> Inventories
-        {
-            get => _inventories;
-            set
-            { _inventories = value; OnPropertyChanged(); }
-        } // Define an ObservableCollection of Fonds
-
-        private ArchiveBdContext dc;
-
-        private Inventory _selectedItem;
-        public Inventory SelectedItem
-        {
-            get => _selectedItem;
-            set => _selectedItem = value;
-        }
         private Fond curFond;
+        public ObservableCollection<Inventory> Inventories
+        { get => _inventories; set { _inventories = value; OnPropertyChanged(); } }
+        public Inventory SelectedItem { get; set; }
+
         public InventoryPageVM(Fond fond)
         {
             curFond = fond;
-            dc = new ArchiveBdContext();
             UpdateData();
         }
         public InventoryPageVM() { }
-
         public void UpdateData()
         {
-            dc = new ArchiveBdContext();
-            Inventories = new ObservableCollection<Inventory>(dc.Inventories.Where(u => u.Fond == curFond.Id).OrderBy(u => u.Number).ThenBy(u => u.Literal));
+            using ArchiveBdContext dc = new();
+            Inventories = new ObservableCollection<Inventory>(dc.Inventories.Include(u => u.TypeNavigation).Where(u => u.Fond == curFond.Id).OrderBy(u => u.Number).ThenBy(u => u.Literal));
         }
-
         protected override void GoBack() { Setting.mainFrame.Navigate(new FundPage()); }
-
         protected override void OpenItem()
         {
             if (SelectedItem != null)
@@ -51,7 +37,6 @@ namespace AdminArchive.ViewModel
                 Setting.mainFrame.Navigate(v);
             }
         }
-
         protected override void AddItem()// Define function that is called when a user clicks on the "Add" button
         {
             InventoryWindowVM viewModel = new(this, Inventories, curFond);
@@ -66,25 +51,11 @@ namespace AdminArchive.ViewModel
             newWindow.DataContext = viewModel;
             newWindow.ShowDialog();
         }
+        protected override void ResetSearch() { UpdateData(); }
 
         protected override void SearchCommand()
         {
-            throw new System.NotImplementedException();
-        }
 
-        protected override void ResetSearch()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void CloseSearchCommand()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void OpenSearchCommand()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

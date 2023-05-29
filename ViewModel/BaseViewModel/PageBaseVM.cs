@@ -21,10 +21,12 @@ namespace AdminArchive.ViewModel
         protected abstract void AddItem();
         protected abstract void SearchCommand();
         protected abstract void ResetSearch();
-        protected abstract void CloseSearchCommand();
-        protected abstract void OpenSearchCommand();
+        //protected abstract void CloseSearchCommand();
+        //protected abstract void OpenSearchCommand();
         protected abstract void GoBack();
         protected abstract void EditItem();
         protected abstract void OpenItem();
+        protected void CloseSearchCommand() => UCVisibility = System.Windows.Visibility.Collapsed;
+        protected void OpenSearchCommand() => UCVisibility = System.Windows.Visibility.Visible;
     }
 }

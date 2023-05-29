@@ -50,11 +50,23 @@
                           SelectedValuePath="Id" DisplayMemberPath="Name" 
                           Grid.Row="2" Grid.Column="2" Margin="10,0,30,0" IsEditable="True"/>
                 <TextBlock Grid.Row="3"><Run Text="Фамилия"/></TextBlock>
-                <TextBox Grid.Row="3" Grid.Column="2" Margin="10,0,30,0" Text="{Binding CurUser.Surname}"/>
+                <TextBox Grid.Row="3" Grid.Column="2" Margin="10,0,30,0" Text="{Binding CurUser.Surname}">
+                    <i:Interaction.Behaviors>
+                        <Behaviors:RussianLettersOnlyBehavior/>
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <TextBlock Grid.Row="4"><Run Text="Имя"/></TextBlock>
-                <TextBox Grid.Row="4" Grid.Column="1" Margin="10,0,30,0" Text="{Binding CurUser.Name}"/>
+                <TextBox Grid.Row="4" Grid.Column="1" Margin="10,0,30,0" Text="{Binding CurUser.Name}">
+                    <i:Interaction.Behaviors>
+                        <Behaviors:RussianLettersOnlyBehavior/>
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <TextBlock Grid.Row="5"><Run Text="Отчество"/></TextBlock>
-                <TextBox Grid.Row="5" Grid.Column="1" Margin="10,0,30,0" Text="{Binding CurUser.Midname}"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Margin="10,0,30,0" Text="{Binding CurUser.Midname}">
+                    <i:Interaction.Behaviors>
+                        <Behaviors:RussianLettersOnlyBehavior/>
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <TextBlock Grid.Row="6"><Run Text="Пароль"/></TextBlock>
                 <ui:PasswordBox Grid.Row="6" Grid.Column="1" Margin="10,0,30,0">
                     <i:Interaction.Behaviors>

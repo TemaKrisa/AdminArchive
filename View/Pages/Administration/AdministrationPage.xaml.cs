@@ -1,14 +1,12 @@
 ﻿using AdminArchive.Classes;
 using System.Windows.Controls;
 
-namespace AdminArchive.View.Pages
+namespace AdminArchive.View.Pages;
+public partial class AdministrationPage : Page
 {
-    public partial class AdministrationPage : Page
+    public AdministrationPage()
     {
-        public AdministrationPage()
-        {
-            InitializeComponent();
-            Setting.adminFrame = AdminFrame;
-        }
+        InitializeComponent();
+        Setting.adminFrame = AdminFrame;
     }
 }

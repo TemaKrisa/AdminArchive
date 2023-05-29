@@ -64,45 +64,61 @@ namespace AdminArchive.ViewModel
         public RelayCommand Save { get { return _save ??= new RelayCommand(SaveItem); } }
         public RelayCommand Close { get { return _close ??= new RelayCommand(CloseUC); } }
 
-        protected void SaveItem() //Сохранение элемента из UserControl
+        protected void SaveItem()
         {
-            if (string.IsNullOrWhiteSpace(CurUser.Surname)) ShowMessage("Введите фамилию!");
-            else if (string.IsNullOrWhiteSpace(CurUser.Name)) ShowMessage("Введите имя!");
-            else if (string.IsNullOrWhiteSpace(CurUser.Password)) ShowMessage("Введите пароль!");
-            else
-                try
+            string errorMessage = null;
+            if (string.IsNullOrWhiteSpace(CurUser.Surname)) errorMessage = "Введите фамилию!";
+            else if (string.IsNullOrWhiteSpace(CurUser.Name)) errorMessage = "Введите имя!";
+            else if (string.IsNullOrWhiteSpace(CurUser.Password)) errorMessage = "Введите пароль!";
+            if (errorMessage != null)
+            {
+                UpdateData();
+                ShowMessage(errorMessage.ToString());
+                return;
+            }
+            try
+            {
+                using ArchiveBdContext dc = new();
+                if (!dc.Users.Contains(CurUser))
                 {
-                    using ArchiveBdContext dc = new();
-                    if (!dc.Users.Contains(CurUser))
+                    if (!dc.Users.Any(u => u.Login == curUser.Login))
                     {
-                        if (!dc.Users.Any(u => u.Login == curUser.Login)) dc.Users.Add(CurUser);
-                        else
-                        {
-                            ShowMessage("Аккаунт с таким логином уже существует!", "Добавление аккаунта");
-                            return;
-                        }
+                        dc.Users.Add(CurUser);
                         ShowMessage("Добавление прошло успешно", "Добавление аккаунта");
                     }
                     else
                     {
-                        if (CurUser.Login != CurLogin && dc.Users.Any(u => u.Login == curUser.Login))
-                        {
-                            ShowMessage("Аккаунт с таким логином уже существует!", "Изменение аккаунта");
-                            return;
-                        }
-                        dc.Users.Update(CurUser);
-                        ShowMessage("Изменение прошло успешно", "Изменение аккаунта");
+                        UpdateData();
+                        ShowMessage("Аккаунт с таким логином уже существует!", "Добавление аккаунта");
+                        return;
                     }
-                    dc.SaveChanges();
-                    UCVisibility = Visibility.Collapsed;
-                    UpdateData();
                 }
-                catch (Exception ex) { ShowMessage($"Ошибка: {ex.Message}"); }
+                else
+                {
+                    if (CurUser.Login != CurLogin && dc.Users.Any(u => u.Login == curUser.Login))
+                    {
+                        UpdateData();
+                        ShowMessage("Аккаунт с таким логином уже существует!", "Изменение аккаунта");
+                        return;
+                    }
+                    dc.Users.Update(CurUser);
+                    ShowMessage("Изменение прошло успешно", "Изменение аккаунта");
+                }
+                dc.SaveChanges();
+                UpdateData();
+                UCVisibility = Visibility.Collapsed;
+            }
+            catch (Exception ex) { ShowMessage($"Ошибка: {ex.Message}"); }
         }
 
 
 
-        protected void CloseUC() => UCVisibility = Visibility.Collapsed;
+
+        protected void CloseUC()
+        {
+            UpdateData();
+            UCVisibility = Visibility.Collapsed;
+        }
 
         #endregion
     }

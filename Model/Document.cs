@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AdminArchive.Model;
+﻿namespace AdminArchive.Model;
 
 public partial class Document
 {
@@ -33,6 +30,8 @@ public partial class Document
 
     public int? Authenticity { get; set; }
 
+    public int? Number { get; set; }
+
     public virtual Authenticity? AuthenticityNavigation { get; set; }
 
     public virtual DocType DocTypeNavigation { get; set; } = null!;
@@ -42,6 +41,8 @@ public partial class Document
     public virtual ICollection<DocumentLog> DocumentLogs { get; set; } = new List<DocumentLog>();
 
     public virtual Reproduction? ReproductionNavigation { get; set; }
+
+    public virtual SecretChar SecretCharNavigation { get; set; } = null!;
 
     public virtual StorageUnit StorageUnitNavigation { get; set; } = null!;
 

@@ -9,7 +9,12 @@ namespace AdminArchive.ViewModel
 {
     class StorageUnitPageVM : PageBaseVM
     {
-        public ObservableCollection<StorageUnit> StorageUnits { get; set; }
+        private ObservableCollection<StorageUnit> _storageUnits;
+        public ObservableCollection<StorageUnit> StorageUnits
+        {
+            get => _storageUnits;
+            set { _storageUnits = value; OnPropertyChanged(); }
+        }
 
         private ArchiveBdContext dc;
 
@@ -70,22 +75,9 @@ namespace AdminArchive.ViewModel
 
         protected override void SearchCommand()
         {
-            throw new System.NotImplementedException();
+
         }
 
-        protected override void ResetSearch()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void CloseSearchCommand()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void OpenSearchCommand()
-        {
-            throw new System.NotImplementedException();
-        }
+        protected override void ResetSearch() { UpdateData(); }
     }
 }

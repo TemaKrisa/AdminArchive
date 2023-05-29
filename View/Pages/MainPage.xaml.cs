@@ -1,15 +1,13 @@
 ﻿using AdminArchive.Classes;
 using AdminArchive.ViewModel;
 
-namespace AdminArchive.View.Pages
+namespace AdminArchive.View.Pages;
+public partial class MainPage
 {
-    public partial class MainPage
+    public MainPage()
     {
-        public MainPage()
-        {
-            InitializeComponent();
-            Setting.mainFrame = RootFrame;
-            DataContext = new MainPageVM();
-        }
+        InitializeComponent();
+        Setting.mainFrame = RootFrame;
+        DataContext = new MainPageVM();
     }
 }

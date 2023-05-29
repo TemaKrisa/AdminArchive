@@ -4,14 +4,20 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:AdminArchive.Classes"
     xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
-    xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:vm="clr-namespace:AdminArchive.ViewModel"
     mc:Ignorable="d"        
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
         WindowCornerPreference="Round" WindowStartupLocation="CenterScreen" x:Name="Window" MinHeight="720" MinWidth="1000">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding CloseWindow}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.DataContext>
         <vm:FundWindowVM/>
     </Window.DataContext>
@@ -66,7 +72,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="160,15,10,15">Номер*</TextBlock>
-                        <TextBox Width="50" MaxLength="1" Text="{Binding  SelectedItem.Index}">
+                        <TextBox Width="50" MaxLength="1" Text="{Binding  SelectedItem.Index}" Cursor="IBeam">
                             <i:Interaction.Behaviors>
                                 <local:RussianLettersOnlyBehavior/>
                             </i:Interaction.Behaviors>
@@ -79,11 +85,11 @@
                         </TextBox>
                     </StackPanel>
                     <Grid Grid.Row="1">
-                        <TextBlock HorizontalAlignment="Left" Margin="105,0">Наименование</TextBlock>
+                        <TextBlock HorizontalAlignment="Left" Margin="105,0">Наименование*</TextBlock>
                         <TextBox Margin="210,0,30,0" Text="{Binding SelectedItem.Name}" />
                     </Grid>
                     <Grid Grid.Row="2">
-                        <TextBlock Margin="15   ,0,0,0" HorizontalAlignment="Left">Сокращенное наименование</TextBlock>
+                        <TextBlock Margin="15   ,0,0,0" HorizontalAlignment="Left">Сокращенное наименование*</TextBlock>
                         <TextBox Margin="210,0,30,0" Text="{Binding SelectedItem.ShortName}" />
                     </Grid>
                     <Grid Grid.Row="3">
@@ -95,13 +101,13 @@
                             <ColumnDefinition Width="50"/>
                             <ColumnDefinition Width="180"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Margin="10">Вид</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="10">Вид*</TextBlock>
                         <ComboBox ItemsSource="{Binding FondView}" SelectedValue="{Binding SelectedItem.View,Mode=TwoWay}"
                                   SelectedIndex="0" Grid.Column="1" />
-                        <TextBlock  Grid.Column="2" HorizontalAlignment="Right">Хар-ка секретности:</TextBlock>
+                        <TextBlock  Grid.Column="2" HorizontalAlignment="Right">Хар-ка секретности*:</TextBlock>
                         <ComboBox ItemsSource="{Binding SecretChar}" SelectedValue="{Binding SelectedItem.SecretChar}"
                                   SelectedIndex="0" Grid.Column="3" Margin="5" />
-                        <TextBlock Grid.Column="4">Доступ:</TextBlock>
+                        <TextBlock Grid.Column="4">Доступ*:</TextBlock>
                         <ComboBox ItemsSource="{Binding Acess}" SelectedValue="{Binding SelectedItem.Acess}" 
                                   SelectedIndex="0" Grid.Column="5"  Margin="5,0,30,0"/>
                     </Grid>
@@ -112,7 +118,7 @@
                             <ColumnDefinition Width="210"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Margin="10">Исторический период</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="10">Исторический период*</TextBlock>
                         <ComboBox SelectedIndex="0" Grid.Column="1" ItemsSource="{Binding HistoricalPeriod}" SelectedValue="{Binding SelectedItem.HistoricalPeriod}" />
                         <TextBlock Grid.Column="2" Margin="5" > Причина ограничения доступа</TextBlock>
                         <ComboBox ItemsSource="{Binding CharRestrict}" SelectedValue="{Binding SelectedItem.CharRestrict}"
@@ -125,9 +131,9 @@
                             <ColumnDefinition Width="110"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Margin="5">Тип фонда</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="5">Тип фонда*</TextBlock>
                         <ComboBox Grid.Column="1" ItemsSource="{Binding FondType}" SelectedValue="{Binding SelectedItem.Type}"/>
-                        <TextBlock HorizontalAlignment="Right" Margin="3" Grid.Column="2">Тип документов</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="3" Grid.Column="2">Тип документов*</TextBlock>
                         <ComboBox ItemsSource="{Binding DocType}" SelectedValue="{Binding SelectedItem.DocType}" 
                                   Grid.Column="3"  Margin="0,0,30,0"/>
                     </Grid>
@@ -138,10 +144,10 @@
                             <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="170"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Margin="5">Источник поступления</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="5">Источник поступления*</TextBlock>
                         <ComboBox ItemsSource="{Binding IncomeSource}" SelectedValue="{Binding SelectedItem.IncomeSource}" 
                                   SelectedIndex="0" Grid.Column="1" Margin="0,0,5,0"/>
-                        <TextBlock Grid.Column="2" Margin="5">Категория</TextBlock>
+                        <TextBlock Grid.Column="2" Margin="5">Категория*</TextBlock>
                         <ComboBox ItemsSource="{Binding Categories}" SelectedValue="{Binding SelectedItem.Category}" 
                                   IsSynchronizedWithCurrentItem="True"
                                   Margin="0,0,30,0" SelectedIndex="0" Grid.Column="3" />
@@ -153,10 +159,10 @@
                             <ColumnDefinition Width="120"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Margin="5">Собственность</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="5">Собственность*</TextBlock>
                         <ComboBox ItemsSource="{Binding Ownership}" SelectedValue="{Binding SelectedItem.OwnerShip}" 
                                   Grid.Column="1" IsEditable="True"/>
-                        <TextBlock Grid.Column="2" HorizontalAlignment="Center">Срок хранения</TextBlock>
+                        <TextBlock Grid.Column="2" HorizontalAlignment="Center">Срок хранения*</TextBlock>
                         <ComboBox ItemsSource="{Binding StorageTime}" SelectedValue="{Binding SelectedItem.StorageTime}" 
                                   Grid.Column="3" Margin="0,0,30,0" />
                     </Grid>
@@ -168,14 +174,14 @@
                             <ColumnDefinition Width="165"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Margin="5">Движение</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="5">Движение*</TextBlock>
                         <ComboBox ItemsSource="{Binding Movements}" SelectedValue="{Binding SelectedItem.Movement}"
                                   Grid.Column="1">
                         </ComboBox>
                         <ComboBox SelectedValue="{Binding SelectedItem.MovementType}" ItemsSource="{Binding MovementTypes}"
                                   IsEnabled="{Binding SelectedItem.Movement, Converter={StaticResource BooleanToBool}, ConverterParameter=1}"
                                   SelectedValuePath="Id" Grid.Column="2" Margin="5"/>
-                        <TextBlock Grid.Column="3" HorizontalAlignment="Center" Margin="5">Основание поступления</TextBlock>
+                        <TextBlock Grid.Column="3" HorizontalAlignment="Center" Margin="5">Основание поступления*</TextBlock>
                         <ComboBox ItemsSource="{Binding ReceiptReasons}" SelectedValue="{Binding SelectedItem.ReceiptReason}"
                             Grid.Column="4" Margin="0,0,30,0"/>
                     </Grid>
@@ -211,7 +217,7 @@
                                 </Grid>
                                 <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" Height="76">
                                     <TextBlock HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap">Дата поступления*</TextBlock>
-                                    <DatePicker Margin="15,5" SelectedDate="{Binding SelectedItem.ReceiptDate}"/>
+                                    <DatePicker Margin="15,5" Text="{Binding SelectedItem.ReceiptDate, TargetNullValue=null}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -225,13 +231,13 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <TextBlock HorizontalAlignment="Right" Margin="0,0,15,0">Поседняя выверка учетных документов</TextBlock>
-                            <TextBox Grid.Column="1" Margin="0,0,30,0" Text="{Binding SelectedItem.LastCheck}">
+                            <TextBox Grid.Column="1" Margin="0,0,30,0" MaxLength="4" Text="{Binding SelectedItem.LastCheck}">
                                 <i:Interaction.Behaviors>
                                     <local:NumericOnlyBehavior/>
                                 </i:Interaction.Behaviors>
                             </TextBox>
                             <TextBlock Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,15,0">Поседняя проверка наличия</TextBlock>
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="0,0,30,0" Text="{Binding SelectedItem.LastReconcilation}">
+                            <TextBox Grid.Column="1" Grid.Row="1" Margin="0,0,30,0" MaxLength="4" Text="{Binding SelectedItem.LastReconcilation}">
                                 <i:Interaction.Behaviors>
                                     <local:NumericOnlyBehavior/>
                                 </i:Interaction.Behaviors>
@@ -269,14 +275,14 @@
                     </Grid.RowDefinitions>
                     <Border CornerRadius="6" BorderThickness="3" BorderBrush="Gray" Height="250" Margin="30,20">
                         <Grid>
-                            <TextBlock VerticalAlignment="Top" Width="auto" Margin="10,-13,786,0" FontWeight="Bold"  Background="{DynamicResource SecondaryBackgroundBrush}">Переименования фонда</TextBlock>
+                            <TextBlock VerticalAlignment="Top" Width="170" Margin="10,-13,786,0" FontWeight="Bold"  Background="{DynamicResource ApplicationBackgroundBrush}">Переименования фонда</TextBlock>
                             <ui:Button Margin="10,5,0,0" VerticalAlignment="Top" Command="{Binding CreateRename}">Добавить</ui:Button>
-                            <ui:DataGrid Margin="10,42,10,10" SelectedItem="{Binding SelectedName}" AutoGenerateColumns="False" ColumnWidth="*" IsReadOnly="True" ItemsSource="{Binding FondNames, UpdateSourceTrigger=PropertyChanged}">
+                            <ui:DataGrid Margin="10,42,10,10" SelectedItem="{Binding SelectedName}" ItemsSource="{Binding FondNames}" AutoGenerateColumns="False" ColumnWidth="*" IsReadOnly="True">
                                 <ui:DataGrid.Columns>
-                                    <DataGridTextColumn Header="Сокращенное наименование" Width="*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTextColumn Header="Сокращенное наименование" Width="*" Binding="{Binding Name}"/>
                                     <DataGridTextColumn Header="Дата начала" Width="110" Binding="{Binding StartDate, StringFormat=\{0:dd.MM.yy\}}"/>
                                     <DataGridTextColumn Header="Дата окончания" Width="110" Binding="{Binding EndDate, StringFormat=\{0:dd.MM.yy\}}"/>
-                                    <DataGridTextColumn Header="Примечание" Width="*" Binding="{Binding Note, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTextColumn Header="Примечание" Width="*" Binding="{Binding Note}"/>
                                     <DataGridTemplateColumn Width="50">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
@@ -297,9 +303,9 @@
                     </Border>
                     <Border Grid.Row="1" CornerRadius="6" BorderThickness="3" BorderBrush="Gray" Height="250" Margin="30,10">
                         <Grid>
-                            <TextBlock VerticalAlignment="Top" Width="auto" Margin="10,-13,726,0" Background="{DynamicResource SecondaryBackgroundBrush}" FontWeight="Bold"><Run Text="Незадокументированные периоды"/></TextBlock>
+                            <TextBlock VerticalAlignment="Top" Width="245" Margin="10,-13,726,0" Background="{DynamicResource ApplicationBackgroundBrush}" FontWeight="Bold"><Run Text="Незадокументированные периоды"/></TextBlock>
                             <ui:Button Command="{Binding CreatePeriod}" Margin="10,5,0,0" VerticalAlignment="Top">Добавить</ui:Button>
-                            <ui:DataGrid Margin="10,42,10,10" IsReadOnly="True" SelectedItem="{Binding SelectedPeriod}" AutoGenerateColumns="False" ColumnWidth="*" ItemsSource="{Binding UndocumentPeriods, UpdateSourceTrigger=PropertyChanged}">
+                            <ui:DataGrid Margin="10,42,10,10" IsReadOnly="True" SelectedItem="{Binding SelectedPeriod}" AutoGenerateColumns="False" ColumnWidth="*" ItemsSource="{Binding UndocumentPeriods}">
                                 <ui:DataGrid.Columns>
                                     <DataGridTextColumn Header="Причина отсутсвия информации" Binding="{Binding Reason}"/>
                                     <DataGridTextColumn Header="Местонахождение документа" Binding="{Binding DocumentLocation}"/>
