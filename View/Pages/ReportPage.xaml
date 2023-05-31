@@ -17,6 +17,7 @@
                 <ComboBoxItem Content="Перечень Фондов"/>
                 <ComboBoxItem Content="Перечень Описей"/>
                 <ComboBoxItem Content="Перечень Единиц Хранения"/>
+                <ComboBoxItem Content="Действия пользователей"/>
             </ComboBox.Items>
         </ComboBox>
         <ui:Button VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Command="{Binding SaveRep}" Margin="30" Content="Сформировать"/>

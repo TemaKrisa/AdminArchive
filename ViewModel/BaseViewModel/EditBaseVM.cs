@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+
 namespace AdminArchive.ViewModel;
 /// <summary>
 /// ViewModel для редактирования Фондов, Описей, Ед.Хранения и Документов
@@ -18,6 +19,8 @@ internal abstract class EditBaseVM : BaseViewModel
     protected abstract void GoNext(); protected abstract void GoPrev();
     protected abstract void GoLast(); protected abstract void GoFirst();
     protected abstract void FillCollections();
+    public ActionType Action;
+    public enum ActionType { Add, Change };
     protected void Closer() => pageVM.UpdateData();
     // Команды, определяемые через лямбда-выражения и вызывающие соответствующие методы
     public RelayCommand CloseUC { get { return _close ??= new RelayCommand(CloseLog); } }

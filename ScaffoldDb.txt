@@ -1,6 +1,6 @@
 ﻿Scaffold-DbContext "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Model" -f
 
-
+string StringCon = "";
 protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         try

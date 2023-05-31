@@ -1,14 +1,12 @@
 ﻿using AdminArchive.View.Windows;
 using System.Windows;
 using System.Windows.Media.Effects;
-
 namespace AdminArchive.Classes;
 public partial class MessageBoxs
 {
     // Перечисления для типов кнопок и иконок в MessageBox
     public enum Buttons { YesNo, OK }
     public enum Icon { Error, Info, Default }
-
     // Метод для отображения MessageBox
     public static string Show(string text, string title = "", Buttons buttons = Buttons.OK, Icon icon = Icon.Default)
     {
@@ -16,7 +14,6 @@ public partial class MessageBoxs
         messageBox.Show(); // Отображение MessageBox
         return messageBox.ReturnString; // Возврат результата
     }
-
     // Метод для отображения модального MessageBox
     public static string ShowDialog(string text, string title = "", Buttons buttons = Buttons.OK, Icon icon = Icon.Default)
     {
@@ -26,21 +23,10 @@ public partial class MessageBoxs
         StopBlurEffectAllWindow(); // Отключение эффекта размытия
         return messageBox.ReturnString; // Возврат результата
     }
-
     // Эффект размытия для окон
     static readonly BlurEffect MyBlur = new BlurEffect { Radius = 15 };
-
     // Метод для включения эффекта размытия отображении MessageBox
-    public static void ShowBlurEffectAllWindow()
-    {
-        foreach (Window window in Application.Current.Windows)
-            window.Effect = MyBlur; // Применение эффекта размытия к каждому окну
-    }
-
+    public static void ShowBlurEffectAllWindow() { foreach (Window window in Application.Current.Windows) window.Effect = MyBlur; }
     // Метод для отключения эффекта размытия
-    public static void StopBlurEffectAllWindow()
-    {
-        foreach (Window window in Application.Current.Windows)
-            window.Effect = null; // Отключение эффекта размытия у каждого окна
-    }
+    public static void StopBlurEffectAllWindow() { foreach (Window window in Application.Current.Windows) window.Effect = null; }
 }

@@ -25,7 +25,6 @@
                 }
             }
         }
-
         public int? EndDate
         {
             get
@@ -42,7 +41,6 @@
                 }
             }
         }
-
         public int? Volume
         {
             get

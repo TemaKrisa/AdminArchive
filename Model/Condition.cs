@@ -1,6 +1,8 @@
-﻿namespace AdminArchive.Model;
+﻿using AdminArchive.Classes;
 
-public partial class Condition
+namespace AdminArchive.Model;
+
+public partial class Condition : IHasId
 {
     public int Id { get; set; }
 

@@ -93,7 +93,7 @@ public partial class ArchiveBdContext : DbContext
 
     public virtual DbSet<Work> Works { get; set; }
 
-    private string StringCon;
+    string StringCon = "";
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         try
@@ -118,7 +118,6 @@ public partial class ArchiveBdContext : DbContext
             }
         }
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Acess>(entity =>
@@ -293,7 +292,7 @@ public partial class ArchiveBdContext : DbContext
             entity.Property(e => e.Literal).HasMaxLength(2);
             entity.Property(e => e.MovementNote).HasMaxLength(350);
             entity.Property(e => e.Name).HasMaxLength(450);
-            entity.Property(e => e.ReceiptDate).HasColumnType("datetime");
+            entity.Property(e => e.ReceiptDate).HasColumnType("date");
             entity.Property(e => e.ShortName).HasMaxLength(350);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.Fonds)
@@ -392,7 +391,7 @@ public partial class ArchiveBdContext : DbContext
         {
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.EndDate).HasColumnType("date");
-            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.Name).HasMaxLength(450);
             entity.Property(e => e.Note).HasMaxLength(150);
             entity.Property(e => e.StartDate).HasColumnType("date");
 
@@ -440,10 +439,9 @@ public partial class ArchiveBdContext : DbContext
             entity.Property(e => e.Annotation).HasMaxLength(350);
             entity.Property(e => e.Literal).HasMaxLength(5);
             entity.Property(e => e.MovementNote).HasMaxLength(150);
-            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.Name).HasMaxLength(250);
             entity.Property(e => e.Note).HasMaxLength(150);
             entity.Property(e => e.Number).HasMaxLength(50);
-            entity.Property(e => e.Title).HasMaxLength(50);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.Acess)
@@ -619,7 +617,7 @@ public partial class ArchiveBdContext : DbContext
             entity.Property(e => e.IsSf).HasColumnName("IsSF");
             entity.Property(e => e.Literal).HasMaxLength(2);
             entity.Property(e => e.Note).HasMaxLength(150);
-            entity.Property(e => e.Title).HasMaxLength(50);
+            entity.Property(e => e.Title).HasMaxLength(350);
 
             entity.HasOne(d => d.AcessNavigation).WithMany(p => p.StorageUnits)
                 .HasForeignKey(d => d.Acess)
@@ -735,15 +733,9 @@ public partial class ArchiveBdContext : DbContext
         modelBuilder.Entity<UnitLog>(entity =>
         {
             entity.ToTable("UnitLog");
-
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Date).HasColumnType("datetime");
-
-            entity.HasOne(d => d.ActivityNavigation).WithMany(p => p.UnitLogs)
-                .HasForeignKey(d => d.Activity)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_UnitLog_UnitActivity");
-
+            entity.HasOne(d => d.ActivityNavigation).WithMany(p => p.UnitLogs).HasForeignKey(d => d.Activity).OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_UnitLog_UnitActivity");
             entity.HasOne(d => d.UnitNavigation).WithMany(p => p.UnitLogs)
                 .HasForeignKey(d => d.Unit)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -754,20 +746,16 @@ public partial class ArchiveBdContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UnitLog_User");
         });
-
         modelBuilder.Entity<UnitRequiredWork>(entity =>
         {
             entity.ToTable("UnitRequiredWork");
-
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CheckDate).HasColumnType("date");
             entity.Property(e => e.Note).HasMaxLength(150);
-
             entity.HasOne(d => d.UnitNavigation).WithMany(p => p.UnitRequiredWorks)
                 .HasForeignKey(d => d.Unit)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UnitRequiredWork_StorageUnit");
-
             entity.HasOne(d => d.WorkNavigation).WithMany(p => p.UnitRequiredWorks)
                 .HasForeignKey(d => d.Work)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -777,18 +765,13 @@ public partial class ArchiveBdContext : DbContext
         modelBuilder.Entity<User>(entity =>
         {
             entity.ToTable("User");
-
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Login).HasMaxLength(50);
             entity.Property(e => e.Midname).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Password).HasMaxLength(50);
             entity.Property(e => e.Surname).HasMaxLength(50);
-
-            entity.HasOne(d => d.RoleNavigation).WithMany(p => p.Users)
-                .HasForeignKey(d => d.Role)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_User_Role");
+            entity.HasOne(d => d.RoleNavigation).WithMany(p => p.Users).HasForeignKey(d => d.Role).OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_User_Role");
         });
 
         modelBuilder.Entity<Work>(entity =>

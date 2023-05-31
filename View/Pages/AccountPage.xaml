@@ -5,7 +5,7 @@
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
       xmlns:vm="clr-namespace:AdminArchive.ViewModel"
-      x:Name="window" Title="Аккаунты">
+      Title="Аккаунты">
     <Page.DataContext>
         <vm:AccountVM/>
     </Page.DataContext>
@@ -54,7 +54,7 @@
             </i:Interaction.Triggers>
         </DataGrid>
         <TextBlock Text="{Binding Users.Count, StringFormat={}Всего аккаунов: {0}}" HorizontalAlignment="Left" Margin="0,341,0,-21" Grid.Row="1"/>
-        <uc:AccountUC DataContext="{Binding DataContext, ElementName=window}"
+        <uc:AccountUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
  Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
     </Grid>
 </Page>

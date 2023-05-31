@@ -5,7 +5,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+      xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
       mc:Ignorable="d"  Title="Описи"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.DataContext>
@@ -19,8 +19,9 @@
         <ui:Button Command="{Binding Back}" Content="Назад" HorizontalAlignment="Right" Icon="ArrowLeft24" Appearance="Info" Margin="0,-100,0,0"/>
         <Grid Margin="5">
             <StackPanel Orientation="Horizontal">
-                <ui:Button Content="Добавить новую запись" Icon="Add24" Appearance="Info" Command="{Binding Add}"/>
-                <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
+                <ui:Button Content="Добавить новую запись" Command="{Binding Add}"  Icon="Add24" Appearance="Info"/>
+                <ui:Button Content="Поиск" Command="{Binding OpenSearch}" Icon="Search24" Appearance="Caution"/>
+                <ui:Button Content="Обновить" Command="{Binding Update}" Icon="ArrowSync24" Appearance="Secondary"/>
             </StackPanel>
         </Grid>
         <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Inventories}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0">
@@ -28,8 +29,8 @@
                 <DataGridTextColumn Header="№" Binding="{Binding FullNumber}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Название" Binding="{Binding Name}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Тип" Width="*" Binding="{Binding TypeNavigation.Name}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Начальная дата" Width="*" Binding="{Binding StartDate,Mode=OneWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Конечная дата" Width="*" Binding="{Binding EndDate,Mode=OneWay}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Начальная дата" Width="120" Binding="{Binding StartDate,Mode=OneWay}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Конечная дата" Width="120" Binding="{Binding EndDate,Mode=OneWay}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Объем ед. хр." Binding="{Binding Volume}"></DataGridTextColumn>
                 <DataGridTemplateColumn Width="50">
                     <DataGridTemplateColumn.CellTemplate>
@@ -46,5 +47,7 @@
             </i:Interaction.Triggers>
         </ui:DataGrid>
         <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,-11" Text="{Binding Inventories.Count, StringFormat=Всего описей: {0}}"></TextBlock>
+        <uc:InventorySearchUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
     </Grid>
 </Page>

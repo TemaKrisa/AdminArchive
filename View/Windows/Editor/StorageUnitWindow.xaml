@@ -9,7 +9,7 @@
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
         WindowCornerPreference="Round" WindowStartupLocation="CenterScreen"
-        MinHeight="720" MinWidth="1000" x:Name="Window">
+        MinHeight="720" MinWidth="1000">
     <Window.DataContext>
         <vm:StorageUnitWindowVM/>
     </Window.DataContext>
@@ -271,15 +271,13 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
-                        <!--<DataGrid.Columns>
-                        <DataGridComboBoxColumn  ItemsSource="{Binding Features}"
-                            DisplayMemberPath="Name" SelectedValuePath="Id" Header="Особенность" Width="*"/>
-                    </DataGrid.Columns>-->
                     </DataGrid>
                 </Grid>
             </TabItem>
         </TabControl>
-        <uc:FeatureUC DataContext="{Binding DataContext, ElementName=Window}"
+        <uc:FeatureUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
  Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding FeatureVisibility}"/>
+        <uc:LogUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
     </Grid>
 </ui:UiWindow>

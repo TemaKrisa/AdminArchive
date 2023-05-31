@@ -9,7 +9,6 @@
     <Page.DataContext>
         <vm:LoginVM/>
     </Page.DataContext>
-    <Grid>
         <Grid Width="400" Height="350">
             <Border CornerRadius="8"  BorderThickness="1" Background="{DynamicResource ControlFillColorDefaultBrush}">
                 <Border.Effect>
@@ -29,5 +28,4 @@
                 <ui:Button Command="{Binding LoginCommand}" Appearance="Info" Margin="0,25" Height="35" Width="294" Content="Войти"/>
             </StackPanel>
         </Grid>
-    </Grid>
 </Page>

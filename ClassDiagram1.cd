@@ -55,7 +55,7 @@
   <Class Name="AdminArchive.Classes.SearchClass" Collapsed="true">
     <Position X="62.5" Y="18.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEBAAAAAAAAAEBAAAAAAAAAA=</HashCode>
       <FileName>Classes\SearchClass.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -209,7 +209,7 @@
   <Class Name="AdminArchive.Model.Inventory" Collapsed="true">
     <Position X="62.5" Y="16.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQCAgAAAgQJAEQDBFICkAQgAAAIBEAACUIAIkEATgA=</HashCode>
+      <HashCode>AAQCAgAAAgQJAAQDBFICkAQgAAAIBEAACUIAIkEATgA=</HashCode>
       <FileName>Model\Partial\InventoryPartial.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -356,7 +356,7 @@
   <Class Name="AdminArchive.ViewModel.FundWindowVM" Collapsed="true">
     <Position X="62.5" Y="11.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IRNCCkEJAgADKIqMhLAQjAAigRiAFkBAIBJwAsICAUA=</HashCode>
+      <HashCode>IRNCCkEJAgADKIqMjLAQjAAigRiAFkBAIDJwAsICAUA=</HashCode>
       <FileName>ViewModel\EditorWindow\FundWindowVM.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -377,14 +377,14 @@
   <Class Name="AdminArchive.ViewModel.DocumentPageVM" Collapsed="true">
     <Position X="66" Y="12.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IgBAAAIEECAAgAAAAAAAAAAAgQAAAAECIBAAAAAAAAA=</HashCode>
+      <HashCode>ogBCAAIEECAAggAIAAAAAIAEgQgAIAECIBAAAAACAAA=</HashCode>
       <FileName>ViewModel\EditorPage\DocumentPageVM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.ViewModel.FundPageVM" Collapsed="true">
     <Position X="60.75" Y="12.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IABAMAAEEAAApIIAAAAAAAQigQAAEIEAABAAAEAACAA=</HashCode>
+      <HashCode>IEBCEgAGEAAYgIAgAEAgAAAQgQAAEAECABAAAAAAAAA=</HashCode>
       <FileName>ViewModel\EditorPage\FundPageVM.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -413,7 +413,7 @@
   <Class Name="AdminArchive.ViewModel.EditBaseVM" Collapsed="true">
     <Position X="64.25" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>PwJACIEFAAACAQIAEAAwAABAgAQAEEQgYAIqAACAAAA=</HashCode>
+      <HashCode>PwJACIEFAAACAQIAEAAwAABAgAQAEEQgYAIqAACAAAQ=</HashCode>
       <FileName>ViewModel\BaseViewModel\EditBaseVM.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -455,21 +455,21 @@
   <Class Name="AdminArchive.ViewModel.MainPageVM" Collapsed="true">
     <Position X="57.25" Y="11.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAEAAAABAAEAAACBAAAAgAAAAAAAAAAAA=</HashCode>
+      <HashCode>IAAAAAAAAAAAFBAAABAAEAgACJCAAAiAgCAAACAwAAA=</HashCode>
       <FileName>ViewModel\MainPageVM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.ViewModel.ReportVM" Collapsed="true">
     <Position X="55.5" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIIABAYAAEAAAAgAAAAAAAAAAAAAggAAAAAAAAAABAA=</HashCode>
+      <HashCode>AIIAEAYAAEAAAEgCAAAAAAAgAAAAggAEAAAAAAAABAA=</HashCode>
       <FileName>ViewModel\ReportVM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AdminArchive.ViewModel.SearchPageVM" Collapsed="true">
     <Position X="59" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IEACMAAAEAAgpIIgAAAgAAACAQAAEAACABAAAAAAABA=</HashCode>
+      <HashCode>oEJCNiAOMAA6ioGsJWAgAIEUIohgMJECUAABCAiiADo=</HashCode>
       <FileName>ViewModel\SearchPageVM.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -479,6 +479,230 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAQAAAAIAAAQAAAAAA=</HashCode>
       <FileName>ViewModel\SettingVM.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="AdminArchive.View.UserControls.AccountUC" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="57.25" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\UserControls\AccountUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.UserControls.AdministrationEditUC" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="55.5" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\UserControls\AdministrationEditUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.UserControls.DocumentFileUC" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="55.5" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\UserControls\DocumentFileUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.UserControls.DocumentSearchUC" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="59" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\UserControls\DocumentSearchUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.UserControls.FeatureUC" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="60.75" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\UserControls\FeatureUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.UserControls.FondRenameUC" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="62.5" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\UserControls\FondRenameUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.UserControls.FondSearchUC" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="55.5" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\UserControls\FondSearchUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.UserControls.FondUndocUC" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="66" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\UserControls\FondUndocUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.UserControls.InventorySearchUC" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="64.25" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\UserControls\InventorySearchUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.UserControls.LogUC" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="62.5" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\UserControls\LogUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.DocumentPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="57.25" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\EditorPages\DocumentPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.FundPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="64.25" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\EditorPages\FundPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.InventoryPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="66" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\EditorPages\InventoryPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.StorageUnitPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="59" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\EditorPages\StorageUnitPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.AdministrationEditPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="59" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\Administration\AdministrationEditPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.AdministrationPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="57.25" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\Administration\AdministrationPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.AccountPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="55.5" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\AccountPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.LoginPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="60.75" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\LoginPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.MainPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="64.25" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\MainPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.ReportPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="55.5" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\ReportPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.SearchPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="59" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\SearchPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Pages.SettingsPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="57.25" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Pages\SettingsPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Windows.DocumentWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="60.75" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Windows\Editor\DocumentWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Windows.FundWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="62.5" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Windows\Editor\FundWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Windows.InventoryWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="57.25" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Windows\Editor\InventoryWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Windows.StorageUnitWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="60.75" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Windows\Editor\StorageUnitWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Windows.Container" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="59" Y="20.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Windows\Container.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AdminArchive.View.Windows.MessageBoxW" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="66" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAEAAAAAAAAAAQAAEIAAAQA=</HashCode>
+      <FileName>View\Windows\MessageBoxW.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

@@ -4,10 +4,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:local="clr-namespace:AdminArchive.View.Pages" xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:classes="clr-namespace:AdminArchive.Classes"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Администрирование">
+      xmlns:classes="clr-namespace:AdminArchive.Classes"
+      xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+      mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800"
+      Title="Управление">
     <Page.DataContext>
         <vm:AdministrationVM/>
     </Page.DataContext>
@@ -21,16 +21,44 @@
         </Grid.ColumnDefinitions>
         <ui:NavigationFluent x:Name="Nav" Margin="5" Width="250" HorizontalAlignment="Left">
             <ui:NavigationFluent.Items>
-                <ui:NavigationItem Content="Категории" 
+                <ui:NavigationItem Content="Категории ед. хр." 
                                    IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=1}" 
                                    Command="{Binding Navigator}" CommandParameter="1"  
-                                   HorizontalAlignment="Left" Icon="ScreenSearch24"/>
+                                   HorizontalAlignment="Left" Icon="Certificate20"/>
                 <ui:NavigationItem Content="Источники поступления" 
                                    IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=2}"
-                                   Command="{Binding Navigator}" CommandParameter="2" HorizontalAlignment="Left" Icon="ScreenSearch24"/>
+                                   Command="{Binding Navigator}" CommandParameter="2" HorizontalAlignment="Left" Icon="SoundSource24"/>
                 <ui:NavigationItem Content="Исторические периоды" 
                                    IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=3}" 
                                    Command="{Binding Navigator}" CommandParameter="3" 
+                                   HorizontalAlignment="Left" Icon="History24"/>                
+                <ui:NavigationItem Content="Тип движения" 
+                                   IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=4}" 
+                                   Command="{Binding Navigator}" CommandParameter="4" 
+                                   HorizontalAlignment="Left" Icon="TableMoveLeft24"/>                
+                <ui:NavigationItem Content="Причина огр. доступа" 
+                                   IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=5}" 
+                                   Command="{Binding Navigator}" CommandParameter="5" 
+                                   HorizontalAlignment="Left" Icon="PresenceBlocked24"/>                
+                <ui:NavigationItem Content="Работы" 
+                                   IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=6}" 
+                                   Command="{Binding Navigator}" CommandParameter="6" 
+                                   HorizontalAlignment="Left" Icon="CalendarWorkWeek24"/>                
+                <ui:NavigationItem Content="Вид фонда" 
+                                   IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=7}" 
+                                   Command="{Binding Navigator}" CommandParameter="7" 
+                                   HorizontalAlignment="Left" Icon="ContentView24"/>                
+                <ui:NavigationItem Content="Основание поступления" 
+                                   IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=8}" 
+                                   Command="{Binding Navigator}" CommandParameter="8" 
+                                   HorizontalAlignment="Left" Icon="ScreenSearch24"/> 
+                <ui:NavigationItem Content="Носитель" 
+                                   IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=9}" 
+                                   Command="{Binding Navigator}" CommandParameter="9" 
+                                   HorizontalAlignment="Left" Icon="Note24"/>                
+                <ui:NavigationItem Content="Особенности" 
+                                   IsActive="{Binding NavType, Converter={StaticResource BoolConverter}, ConverterParameter=10}" 
+                                   Command="{Binding Navigator}" CommandParameter="10" 
                                    HorizontalAlignment="Left" Icon="ScreenSearch24"/>
             </ui:NavigationFluent.Items>
         </ui:NavigationFluent>

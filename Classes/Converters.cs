@@ -22,8 +22,23 @@ namespace AdminArchive.Classes
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         { return value is bool boolean && boolean == true; }
     }
-
-
+    internal class ReverseBooleanConverter : IValueConverter
+    {
+        // Метод Convert преобразует значение value в тип bool и возвращает true, если оно равно параметру parameter, иначе - false.
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value != null && parameter != null)
+            {
+                if (value.ToString() == parameter.ToString()) return false;
+                return true;
+            }
+            return false;
+        }
+        // Метод ConvertBack преобразует значение value типа bool обратно в исходный тип данных.
+        // Если значение равно true, то метод возвращает true, иначе - false.
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        { return value is bool boolean && boolean == true; }
+    }
     public class BoolToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -40,10 +55,8 @@ namespace AdminArchive.Classes
             else return false;
         }
     }
-
     public class MediaElementConverter : IMultiValueConverter
     {
-
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values.Length == 2 && values[0] is byte[] fileBytes && values[1] is string fileName)
@@ -57,15 +70,12 @@ namespace AdminArchive.Classes
                     return new Uri(uriString);
                 }
             }
-
             return null;
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
-
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

@@ -5,16 +5,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:AdminArchive.Classes"
+    xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
     xmlns:vm="clr-namespace:AdminArchive.ViewModel"
-    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
     x:Class="AdminArchive.View.Windows.DocumentWindow" x:Name="Window" mc:Ignorable="d"
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
         WindowCornerPreference="Round" WindowStartupLocation="CenterScreen"
-        Width="900"
-        Title="FundWindow" Cursor="">
+        Width="900">
     <ui:UiWindow.Resources>
-        <local:MediaElementConverter x:Key="UriConverter"/>
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="5"/>
@@ -118,7 +116,7 @@
                         <TextBlock><Run Text="Место события"/></TextBlock>
                         <TextBox Grid.Column="1" />
                         <TextBlock Grid.Column="2"><Run Text="Дата события"/></TextBlock>
-                        <DatePicker Grid.Column="3" Text="{Binding SelectedItem.ReceiptDate, TargetNullValue=null}"/>
+                        <DatePicker Grid.Column="3" Text="{Binding SelectedItem.Date, TargetNullValue=null}"/>
                     </Grid>
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
@@ -203,7 +201,9 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <uc:DocumentFileUC DataContext="{Binding DataContext, ElementName=Window}"
+        <uc:DocumentFileUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
  Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding FileVisibility}"/>
+        <uc:LogUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
     </Grid>
 </ui:UiWindow>

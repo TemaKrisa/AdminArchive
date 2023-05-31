@@ -28,14 +28,14 @@
         </Border>
         <ui:NavigationStore Width="64" x:Name="RootNavigation" Margin="5,0" Frame="{Binding ElementName=RootFrame, Mode=OneWay}">
             <ui:NavigationStore.Items>
-                <ui:NavigationItem Width="64" Visibility="{Binding IsWorker, Converter={StaticResource BoolConv}}" ToolTip="Ведение БД" Content="Ведение БД" PageType="{x:Type local:FundPage}" Icon="Database24" PageTag="db" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" Visibility="{Binding IsAdmin, Converter={StaticResource BoolConv}}" ToolTip="Аккаунты" Content="Аккаунты" Icon="InprivateAccount24" PageType="{x:Type local:AccountPage}" PageTag="acc" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" Visibility="{Binding IsHead, Converter={StaticResource BoolConv}}" ToolTip="Отчёты" Content="Отчёты" Icon="Book24" PageTag="rep" PageType="{x:Type local:ReportPage}" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" Visibility="{Binding IsWorker, Converter={StaticResource BoolConv}}" ToolTip="Управление" Content="Управление" Icon="Person24" PageTag="dep1" PageType="{x:Type local:AdministrationPage}" Cursor="Hand"/>
-                <ui:NavigationItem Width="64" Visibility="{Binding IsWorker, Converter={StaticResource BoolConv}}" ToolTip="Поиск" Content="Поиск" Icon="Search24" PageTag="srch1" PageType="{x:Type local:SearchPage}" Cursor="Hand"/>
+                <ui:NavigationItem IsActive="{Binding BD}" Width="64" Visibility="{Binding IsWorker, Converter={StaticResource BoolConv}}" ToolTip="Ведение БД" Content="Ведение БД" PageType="{x:Type local:FundPage}" Icon="Database24" PageTag="db" Cursor="Hand"/>
+                <ui:NavigationItem IsActive="{Binding Accounts}" Width="64" Visibility="{Binding IsAdmin, Converter={StaticResource BoolConv}}" ToolTip="Аккаунты" Content="Аккаунты" Icon="InprivateAccount24" PageType="{x:Type local:AccountPage}" PageTag="acc" Cursor="Hand"/>
+                <ui:NavigationItem IsActive="{Binding Reports}" Width="64" Visibility="{Binding IsHead, Converter={StaticResource BoolConv}}" ToolTip="Отчёты" Content="Отчёты" Icon="Book24" PageTag="rep" PageType="{x:Type local:ReportPage}" Cursor="Hand"/>
+                <ui:NavigationItem IsActive="{Binding Administrating}" Width="64" Visibility="{Binding IsWorker, Converter={StaticResource BoolConv}}" ToolTip="Управление" Content="Управление" Icon="Person24" PageTag="dep1" PageType="{x:Type local:AdministrationPage}" Cursor="Hand"/>
+                <ui:NavigationItem IsActive="{Binding Search}" Width="64" Visibility="{Binding IsWorker, Converter={StaticResource BoolConv}}" ToolTip="Поиск" Content="Поиск" Icon="Search24" PageTag="srch1" PageType="{x:Type local:SearchPage}" Cursor="Hand"/>
             </ui:NavigationStore.Items>
             <ui:NavigationStore.Footer>
-                <ui:NavigationItem ToolTip="Настройки" Content="Настройки" Width="64" Icon="Settings24" PageTag="set" PageType="{x:Type local:SettingsPage}"/>
+                <ui:NavigationItem IsActive="{Binding Settings}" ToolTip="Настройки" Content="Настройки" Width="64" Icon="Settings24" PageTag="set" PageType="{x:Type local:SettingsPage}"/>
             </ui:NavigationStore.Footer>
         </ui:NavigationStore>
     </Grid>

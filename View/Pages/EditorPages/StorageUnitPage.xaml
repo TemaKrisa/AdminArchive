@@ -5,7 +5,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+      xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Единицы хранения">
@@ -20,9 +20,10 @@
         <ui:Button Command="{Binding Back}" Content="Назад" HorizontalAlignment="Right" Icon="ArrowLeft24" Appearance="Info" Margin="0,-100,0,0"/>
         <Grid Margin="5">
             <StackPanel Orientation="Horizontal">
-                <ui:Button Content="Добавить новую запись" Icon="Add24" Appearance="Info" Command="{Binding Add}"/>
-                <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
-            </StackPanel>
+                <ui:Button Content="Добавить новую запись" Command="{Binding Add}"  Icon="Add24" Appearance="Info"/>
+                <ui:Button Content="Поиск" Command="{Binding OpenSearch}" Icon="Search24" Appearance="Caution"/>
+                <ui:Button Content="Обновить" Command="{Binding Update}" Icon="ArrowSync24" Appearance="Secondary"/>
+            </StackPanel>   
         </Grid>
         <ui:DataGrid Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding StorageUnits}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" RowHeaderWidth="0">
             <ui:DataGrid.Columns>
@@ -48,5 +49,7 @@
             </i:Interaction.Triggers>
         </ui:DataGrid>
         <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,-11" Text="{Binding StorageUnits.Count, StringFormat=Всего единиц хранения: {0}}"/>
+        <uc:UnitSearch DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
     </Grid>
 </Page>

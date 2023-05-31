@@ -6,12 +6,11 @@
                xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:local="clr-namespace:AdminArchive.Classes"
-               xmlns:vm="clr-namespace:AdminArchive.ViewModel"
+               xmlns:vm="clr-namespace:AdminArchive.ViewModel" xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
                mc:Ignorable="d"     
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
-        WindowCornerPreference="Round" WindowStartupLocation="CenterScreen"
-        Title="FundWindow" MinHeight="720" MinWidth="1000">
+        WindowCornerPreference="Round" WindowStartupLocation="CenterScreen" MinHeight="720" MinWidth="1000">
     <Window.DataContext>
         <vm:InventoryWindowVM/>
     </Window.DataContext>
@@ -201,5 +200,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <uc:LogUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
     </Grid>
     </ui:UiWindow>

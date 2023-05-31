@@ -1,4 +1,5 @@
-﻿using AdminArchive.Model;
+﻿using AdminArchive.Classes;
+using AdminArchive.Model;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
@@ -20,8 +21,10 @@ class StorageUnitWindowVM : EditBaseVM
     private UnitCompletedWork _editedCompletedWork, _selectedCompletedWork;
     private UnitCondition _editedCondition, _selectedCondition;
     private ObservableCollection<UnitCompletedWork> _completedWorksDelete, _completedWorks;
-    private ObservableCollection<Model.Condition> _conditionsDelete, _unitConditions, _conditions;
+    private ObservableCollection<Model.UnitCondition> _conditionsDelete, _unitConditions;
+    private ObservableCollection<Model.Condition> _conditions;
     private ObservableCollection<Work> _works;
+
     public ObservableCollection<Feature> Features { get => _features; set { _features = value; OnPropertyChanged(); } }
     public Feature SelectedFeature { get => _selectedFeature; set { _selectedFeature = value; OnPropertyChanged(); } }
     public Feature EditedFeature { get => _editedFeature; set { _editedFeature = value; OnPropertyChanged(); } }
@@ -35,11 +38,12 @@ class StorageUnitWindowVM : EditBaseVM
     public ObservableCollection<Feature> UnitFeaturesDelete { get => _unitFeaturesDelete; set { _unitFeaturesDelete = value; OnPropertyChanged(); } }
     public ObservableCollection<UnitRequiredWork> RequiredWorks { get => _unitRequiredWorks; set { _unitRequiredWorks = value; OnPropertyChanged(); } }
     public ObservableCollection<UnitRequiredWork> RequiredWorksDelete { get => _requiredWorksDelete; set { _requiredWorksDelete = value; OnPropertyChanged(); } }
-    public ObservableCollection<UnitCompletedWork> CompletedWorks { get => CompletedWorks; set { CompletedWorks = value; OnPropertyChanged(); } }
+    public ObservableCollection<UnitCompletedWork> CompletedWorks { get => _completedWorks; set { _completedWorks = value; OnPropertyChanged(); } }
     public ObservableCollection<UnitCompletedWork> CompletedWorksDelete { get => _completedWorksDelete; set { _completedWorksDelete = value; OnPropertyChanged(); } }
     public ObservableCollection<Work> Works { get => _works; set { _works = value; OnPropertyChanged(); } }
-    public ObservableCollection<Feature> Conditions { get => _unitFeaturesDelete; set { _unitFeaturesDelete = value; OnPropertyChanged(); } }
-    public ObservableCollection<Feature> ConditionsDelete { get => _unitFeaturesDelete; set { _unitFeaturesDelete = value; OnPropertyChanged(); } }
+    public ObservableCollection<Model.Condition> Conditions { get => _conditions; set { _conditions = value; OnPropertyChanged(); } }
+    public ObservableCollection<UnitCondition> ConditionsDelete { get => _conditionsDelete; set { _conditionsDelete = value; OnPropertyChanged(); } }
+    public ObservableCollection<UnitCondition> UnitConditions { get => _unitConditions; set { _unitConditions = value; OnPropertyChanged(); } }
     public ObservableCollection<Acess> Acesses { get; set; }
     public ObservableCollection<SecretChar> SecretChars { get; set; }
     public ObservableCollection<Carrier> Carriers { get; set; }
@@ -48,7 +52,8 @@ class StorageUnitWindowVM : EditBaseVM
     public ObservableCollection<StorageUnit> ItemList { get => itemList; set { itemList = value; OnPropertyChanged(); } }
     public ObservableCollection<UnitLog> Log { get => _Log; set { _Log = value; OnPropertyChanged(); } }
     public StorageUnit SelectedItem { get => _selectedUnit; set { _selectedUnit = value; OnPropertyChanged(); } }
-    private Visibility _featureVisibility, _completedWorkVisibility, _conditionVisibility, _requiredWorkVisibility = Visibility.Collapsed;
+    private Visibility _featureVisibility = Visibility.Collapsed, _completedWorkVisibility = Visibility.Collapsed,
+        _conditionVisibility = Visibility.Collapsed, _requiredWorkVisibility = Visibility.Collapsed;
     public Visibility FeatureVisibility { get => _featureVisibility; set { _featureVisibility = value; OnPropertyChanged(); } }
     public Visibility CompletedWorkVisibility { get => _completedWorkVisibility; set { _completedWorkVisibility = value; OnPropertyChanged(); } }
     public Visibility RequiredWorkVisibility { get => _requiredWorkVisibility; set { _requiredWorkVisibility = value; OnPropertyChanged(); } }
@@ -74,8 +79,7 @@ class StorageUnitWindowVM : EditBaseVM
     #endregion
     #region Навигация
     private void CheckNav(int index) { IsFirst = index != 0; IsLast = index != ItemList.Count - 1; }
-    private void CheckNav() { IsFirst = false; IsLast = false; }
-    protected override void GoNext()
+    protected override void GoNext() //Открытие следующей единицы хранения в списке
     {
         currentIndex++;
         SelectedItem = (currentIndex < ItemList.Count) ? ItemList[currentIndex] : SelectedItem;
@@ -83,7 +87,15 @@ class StorageUnitWindowVM : EditBaseVM
         IsLast = currentIndex != ItemList.Count - 1;
         FillTables();
     }
-    protected override void GoPrev()
+    private void CheckNav(string q)
+    {
+        if (q == "Add")
+        {
+            ItemList = pageVM.Fonds;
+            CheckNav(pageVM.Fonds.IndexOf(SelectedItem));
+        }
+    }
+    protected override void GoPrev() //Открытие прошлой единицы хранения в списке
     {
         currentIndex--;
         SelectedItem = (currentIndex >= 0) ? ItemList[currentIndex] : SelectedItem;
@@ -91,7 +103,7 @@ class StorageUnitWindowVM : EditBaseVM
         IsLast = currentIndex != ItemList.Count - 1;
         FillTables();
     }
-    protected override void GoFirst()
+    protected override void GoFirst() //Открытие первой единицы хранения в списке
     {
         SelectedItem = (ItemList.Count > 0) ? ItemList[0] : null;
         currentIndex = ItemList.IndexOf(SelectedItem);
@@ -99,7 +111,7 @@ class StorageUnitWindowVM : EditBaseVM
         IsLast = currentIndex != ItemList.Count - 1;
         FillTables();
     }
-    protected override void GoLast()
+    protected override void GoLast() //Открытие последней единицы хранения в списке
     {
         SelectedItem = (ItemList.Count > 0) ? ItemList[^1] : null;
         currentIndex = ItemList.IndexOf(SelectedItem);
@@ -128,13 +140,15 @@ class StorageUnitWindowVM : EditBaseVM
     }
     public StorageUnitWindowVM() { }
     #endregion
-    private void FillTables()
+    private void FillTables() //Заполнение таблиц
     {
         using ArchiveBdContext dc = new();
+        UnitConditions = new ObservableCollection<UnitCondition>(dc.UnitConditions.Where(u => u.Unit == SelectedItem.Id));
+        RequiredWorks = new ObservableCollection<UnitRequiredWork>(dc.UnitRequiredWorks.Where(u => u.Unit == SelectedItem.Id));
+        CompletedWorks = new ObservableCollection<UnitCompletedWork>(dc.UnitCompletedWorks.Where(u => u.Unit == SelectedItem.Id));
         UnitFeatures = new ObservableCollection<Feature>(dc.Features.Include(u => u.Units).Where(u => u.Units.Any(u => u.Id == SelectedItem.Id)));
-        UnitFeaturesDelete = new ObservableCollection<Feature>();
     }
-    protected override void FillCollections()
+    protected override void FillCollections() //Заполнение списков перечислений
     {
         try
         {
@@ -144,12 +158,27 @@ class StorageUnitWindowVM : EditBaseVM
             Carriers = new ObservableCollection<Carrier>(dc.Carriers);
             Categories = new ObservableCollection<UnitCategory>(dc.UnitCategories);
             CharRestricts = new ObservableCollection<CharRestrict>(dc.CharRestricts);
-            if (SelectedItem.Number != null) { CheckNav(currentIndex); }
-            else { AddItem(); }
+            if (SelectedItem != null)
+            {
+                FillTables();
+                CheckNav(currentIndex);
+            }
+            else
+            {
+                UnitConditions = new ObservableCollection<UnitCondition>();
+                ConditionsDelete = new ObservableCollection<UnitCondition>();
+                RequiredWorks = new ObservableCollection<UnitRequiredWork>();
+                RequiredWorksDelete = new ObservableCollection<UnitRequiredWork>();
+                CompletedWorks = new ObservableCollection<UnitCompletedWork>();
+                CompletedWorksDelete = new ObservableCollection<UnitCompletedWork>();
+                UnitFeatures = new ObservableCollection<Feature>();
+                UnitFeaturesDelete = new ObservableCollection<Feature>();
+                AddItem();
+            }
         }
         catch (Exception e) { ShowMessage(e.Message); }
     }
-    protected override void AddItem()
+    protected override void AddItem() //Добавление новой единицы хранения
     {
         SelectedItem = new StorageUnit()
         {
@@ -162,18 +191,92 @@ class StorageUnitWindowVM : EditBaseVM
         };
         CheckNav();
     }
-    protected override void SaveItem()
+    string q = "";
+    private bool ValidateInput()
     {
+        return true;
+    }
+    protected override void SaveItem() //Сохранение изменений
+    {
+        if (!ValidateInput()) return;
+        UnitLog Log;
+        using ArchiveBdContext dc = new();
+        if (dc.StorageUnits.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal && u.Id != SelectedItem.Id))
+        {
+            ShowMessage("Единица хранения с таким номером уже существует");
+            return;
+        }
+        using var transaction = dc.Database.BeginTransaction();
         try
         {
-            using ArchiveBdContext dc = new();
-            if (!dc.StorageUnits.Any(u => u.Id == SelectedItem.Id))
+            if (!dc.StorageUnits.Contains(SelectedItem))
+            {
                 dc.StorageUnits.Add(SelectedItem);
-            else dc.StorageUnits.Update(SelectedItem);
+                Log = new() { Activity = 1, Date = DateTime.Now, User = 1 };
+                q = "Add";
+            }
+            else
+            {
+                dc.Update(SelectedItem);
+                Log = new() { Activity = 2, Date = DateTime.Now, User = 1 };
+                q = "";
+            }
             dc.SaveChanges();
+            //Сохранение condition
+            if (UnitConditions.Count != 0)
+            {
+                dc.UnitConditions.UpdateRange(UnitConditions.Where(uc => dc.UnitConditions.Any(u => u.Id == uc.Id)));
+                foreach (var item in UnitConditions.Where(fn => !dc.UnitConditions.Any(u => u.Id == fn.Id)))
+                {
+                    UnitCondition newItem = new() { Condition = item.Condition, Note = item.Note, SheetsNumber = item.SheetsNumber, Unit = SelectedItem.Id };
+                    dc.UnitConditions.Add(newItem);
+                }
+                dc.UnitConditions.RemoveRange(ConditionsDelete.Where(fnd => dc.UnitConditions.Any(u => u.Id == fnd.Id)));
+            }
+            //Сохранение незадокументированных периодов
+            if (RequiredWorks.Count != 0)
+            {
+                dc.UnitRequiredWorks.UpdateRange(RequiredWorks.Where(uc => dc.UnitRequiredWorks.Any(u => u.Id == uc.Id)));
+                foreach (var item in RequiredWorks.Where(rw => !dc.UnitRequiredWorks.Any(u => u.Id == rw.Id)))
+                {
+                    UnitRequiredWork newItem = new() { Work = item.Work, Note = item.Note, CheckDate = item.CheckDate, Unit = SelectedItem.Id };
+                    dc.UnitRequiredWorks.Add(newItem);
+                }
+                dc.UnitRequiredWorks.RemoveRange(RequiredWorksDelete.Where(rwd => dc.UnitRequiredWorks.Any(u => u.Id == rwd.Id)));
+            }
+            if (CompletedWorks.Count != 0)
+            {
+                dc.UnitCompletedWorks.UpdateRange(CompletedWorks.Where(uc => dc.UnitCompletedWorks.Any(u => u.Id == uc.Id)));
+                foreach (var item in CompletedWorks.Where(rw => !dc.UnitCompletedWorks.Any(u => u.Id == rw.Id)))
+                {
+                    UnitCompletedWork newItem = new() { Work = item.Work, Note = item.Note, Date = item.Date, Unit = SelectedItem.Id };
+                    dc.UnitCompletedWorks.Add(newItem);
+                }
+                dc.UnitRequiredWorks.RemoveRange(RequiredWorksDelete.Where(rwd => dc.UnitRequiredWorks.Any(u => u.Id == rwd.Id)));
+            }
+
+            Log.Unit = SelectedItem.Id;
+            dc.UnitLogs.Add(Log);
+            dc.SaveChanges();
+            transaction.Commit();
+            CheckNav(q);
             pageVM.UpdateData();
+            q = "";
         }
-        catch (Exception ex) { ShowMessage(ex.ToString()); }
+        catch (Exception ex) { transaction.Rollback(); ShowMessage(ex.ToString()); }
+    }
+    private void UpdateAndAddItems<T>(DbSet<T> dbSet, ObservableCollection<T> items, ObservableCollection<T> itemsToDelete, Func<T, T> createNewItem) where T : class, IHasId
+    {
+        if (items.Count == 0) return;
+
+        dbSet.UpdateRange(items.Where(item => dbSet.Any(u => u.Id == item.Id)));
+
+        foreach (var item in items.Where(item => !dbSet.Any(u => u.Id == item.Id)))
+        {
+            dbSet.Add(createNewItem(item));
+        }
+
+        dbSet.RemoveRange(itemsToDelete.Where(item => dbSet.Any(u => u.Id == item.Id)));
     }
     #region Протокол
     protected override void OpenLog() //Открытие протокола
@@ -182,7 +285,7 @@ class StorageUnitWindowVM : EditBaseVM
         UCVisibility = Visibility.Visible;
         Log = new ObservableCollection<UnitLog>(dc.UnitLogs.Where(u => u.Unit == SelectedItem.Id).Include(w => w.UserNavigation).Include(b => b.ActivityNavigation));
     }
-    protected override void CloseLog()
+    protected override void CloseLog() //Закрытие пользовательских элементов управления
     {
         UCVisibility = Visibility.Collapsed;
         FeatureVisibility = Visibility.Collapsed;
@@ -197,8 +300,11 @@ class StorageUnitWindowVM : EditBaseVM
         using ArchiveBdContext dc = new();
         if (SelectedFeature != null)
         {
-            Features = new ObservableCollection<Feature>(dc.Features);
-            Features = new ObservableCollection<Feature>(Features.AsEnumerable().Except(UnitFeatures));
+            Features = new ObservableCollection<Feature>();
+            foreach (Feature f in dc.Features)
+            {
+                if (!UnitFeatures.Contains(f)) Features.Add(f);
+            }
             Features.Add(SelectedFeature);
             FeatureVisibility = Visibility.Visible;
         }
@@ -206,8 +312,12 @@ class StorageUnitWindowVM : EditBaseVM
     private void AddFeatureCommand()
     {
         using ArchiveBdContext dc = new();
-        Features = new ObservableCollection<Feature>(dc.Features);
-        Features = new ObservableCollection<Feature>(Features.AsEnumerable().Except(UnitFeatures));
+        Features = new ObservableCollection<Feature>();
+        if (UnitFeatures != null)
+            foreach (Feature f in UnitFeatures)
+            {
+                if (!UnitFeatures.Contains(f)) Features.Add(f);
+            }
         FeatureVisibility = Visibility.Visible;
     }
     private void RemoveFeatureCommand()
@@ -225,23 +335,26 @@ class StorageUnitWindowVM : EditBaseVM
     }
     #endregion
     #region RequiredWork
-    private void EditRequiredWorkCommand()
+    private void EditRequiredWorkCommand() //+
     {
-        using ArchiveBdContext dc = new();
-        if (SelectedFeature != null)
+        if (SelectedRequiredWork != null)
         {
-            Features = new ObservableCollection<Feature>(dc.Features);
-            Features = new ObservableCollection<Feature>(Features.AsEnumerable().Except(UnitFeatures));
-            Features.Add(SelectedFeature);
-            FeatureVisibility = Visibility.Visible;
+            EditedRequiredWork = new UnitRequiredWork()
+            {
+                Id = SelectedRequiredWork.Id,
+                Note = SelectedRequiredWork.Note,
+                Unit = SelectedItem.Id,
+                CheckDate = SelectedRequiredWork.CheckDate,
+                Work = SelectedRequiredWork.Work
+            };
+            CompletedWorkVisibility = Visibility.Visible;
         }
     }
-    private void AddRequiredWorkCommand()
+    private void AddRequiredWorkCommand() //+
     {
-        using ArchiveBdContext dc = new();
-        Features = new ObservableCollection<Feature>(dc.Features);
-        Features = new ObservableCollection<Feature>(Features.AsEnumerable().Except(UnitFeatures));
-        FeatureVisibility = Visibility.Visible;
+        SelectedRequiredWork = new UnitRequiredWork();
+        Action = ActionType.Add;
+        EditRequiredWorkCommand();
     }
     private void RemoveRequiredWorkCommand() //+
     {
@@ -251,30 +364,38 @@ class StorageUnitWindowVM : EditBaseVM
     }
     private void SaveRequiredWorkCommand()
     {
-        var index = Features.IndexOf(Features.FirstOrDefault(u => u.Id == EditedFeature.Id));
-        if (index == -1) Features.Add(EditedFeature);
-        else Features[index] = EditedFeature;
-        CloseLog();
+        if (EditedRequiredWork != null)
+            if (EditedRequiredWork.Work == null) ShowMessage("Выберите работу!");
+            else
+            {
+                if (Action == ActionType.Add) { RequiredWorks.Add(EditedRequiredWork); }
+                else RequiredWorks[RequiredWorks.IndexOf(RequiredWorks.FirstOrDefault(u => u.Id == EditedRequiredWork.Id))] = EditedRequiredWork;
+                CloseLog();
+            }
+        Action = ActionType.Change;
     }
     #endregion
     #region CompletedWork
     private void EditCompletedWorkCommand()
     {
-        using ArchiveBdContext dc = new();
-        if (SelectedFeature != null)
+        if (SelectedCompletedWork != null)
         {
-            Features = new ObservableCollection<Feature>(dc.Features);
-            Features = new ObservableCollection<Feature>(Features.AsEnumerable().Except(UnitFeatures));
-            Features.Add(SelectedFeature);
-            FeatureVisibility = Visibility.Visible;
+            EditedCompletedWork = new UnitCompletedWork()
+            {
+                Id = SelectedCompletedWork.Id,
+                Note = SelectedCompletedWork.Note,
+                Unit = SelectedItem.Id,
+                Date = SelectedCompletedWork.Date,
+                Work = SelectedCompletedWork.Work
+            };
+            CompletedWorkVisibility = Visibility.Visible;
         }
     }
-    private void AddCompletedWorkCommand()
+    private void AddCompletedWorkCommand() //+
     {
-        using ArchiveBdContext dc = new();
-        Features = new ObservableCollection<Feature>(dc.Features);
-        Features = new ObservableCollection<Feature>(Features.AsEnumerable().Except(UnitFeatures));
-        FeatureVisibility = Visibility.Visible;
+        SelectedCompletedWork = new UnitCompletedWork();
+        Action = ActionType.Add;
+        EditCompletedWorkCommand();
     }
     private void RemoveCompletedWorkCommand() //+
     {
@@ -284,43 +405,56 @@ class StorageUnitWindowVM : EditBaseVM
     }
     private void SaveCompletedWorkCommand()
     {
-        var index = Features.IndexOf(Features.FirstOrDefault(u => u.Id == EditedFeature.Id));
-        if (index == -1) Features.Add(EditedFeature);
-        else Features[index] = EditedFeature;
-        CloseLog();
+        if (EditedCompletedWork != null)
+            if (EditedCompletedWork.Work == null) ShowMessage("Выберите работу!");
+            else
+            {
+                if (Action == ActionType.Add) { CompletedWorks.Add(EditedCompletedWork); }
+                else CompletedWorks[CompletedWorks.IndexOf(CompletedWorks.FirstOrDefault(u => u.Id == EditedCompletedWork.Id))] = EditedCompletedWork;
+                CloseLog();
+            }
+        Action = ActionType.Change;
     }
     #endregion
     #region Condition
-    private void EditConditionCommand()
+    private void EditConditionCommand() //+
     {
-        using ArchiveBdContext dc = new();
-        if (SelectedFeature != null)
+        if (SelectedCondition != null)
         {
-            Features = new ObservableCollection<Feature>(dc.Features);
-            Features = new ObservableCollection<Feature>(Features.AsEnumerable().Except(UnitFeatures));
-            Features.Add(SelectedFeature);
-            FeatureVisibility = Visibility.Visible;
+            EditedCondition = new UnitCondition()
+            {
+                Id = SelectedCondition.Id,
+                Condition = SelectedCondition.Condition,
+                Note = SelectedCondition.Note,
+                SheetsNumber = SelectedCondition.SheetsNumber,
+                Unit = SelectedItem.Id
+            };
+            ConditionVisibility = Visibility.Visible;
         }
     }
-    private void AddConditionCommand()
+    private void AddConditionCommand() //Открытие юзерконтрола по добавлению состояния
     {
-        using ArchiveBdContext dc = new();
-        Features = new ObservableCollection<Feature>(dc.Features);
-        Features = new ObservableCollection<Feature>(Features.AsEnumerable().Except(UnitFeatures));
-        FeatureVisibility = Visibility.Visible;
+        SelectedCondition = new UnitCondition();
+        Action = ActionType.Add;
+        EditConditionCommand();
     }
     private void RemoveConditionCommand() //+
     {
         if (SelectedCondition == null) return;
-        Conditions.Add(SelectedFeature);
-        ConditionsDelete.Remove(SelectedFeature);
+        UnitConditions.Add(SelectedCondition);
+        ConditionsDelete.Remove(SelectedCondition);
     }
-    private void SaveConditionCommand()
+    private void SaveConditionCommand() //Сохранение состояния
     {
-        var index = Features.IndexOf(Features.FirstOrDefault(u => u.Id == EditedFeature.Id));
-        if (index == -1) Features.Add(EditedFeature);
-        else Features[index] = EditedFeature;
-        CloseLog();
+        if (EditedCondition != null)
+            if (EditedCondition.SheetsNumber == null) ShowMessage("Выберите работу!");
+            else
+            {
+                if (Action == ActionType.Add) { UnitConditions.Add(EditedCondition); }
+                else UnitConditions[UnitConditions.IndexOf(UnitConditions.FirstOrDefault(u => u.Id == EditedCondition.Id))] = EditedCondition;
+                CloseLog();
+            }
+        Action = ActionType.Change;
     }
     #endregion
 }

@@ -41,6 +41,5 @@ partial class Inventory
         }
     }
     //Конвертация полного номера
-    public string FullNumber
-    { get { return Number + "" + Literal; } }
+    public string FullNumber { get { return Number + "" + Literal; } }
 }

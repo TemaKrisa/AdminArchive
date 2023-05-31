@@ -1,7 +1,5 @@
 ﻿using System.Windows.Controls;
-
 namespace AdminArchive.Classes;
-
 public static class Setting
 {
     public static Frame? containerFrame;

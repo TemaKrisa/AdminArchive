@@ -38,7 +38,6 @@ public partial class MessageBoxW : Window
         anim.Completed += (s, _) => this.Close();
         this.BeginAnimation(UIElement.OpacityProperty, anim);
     }
-    private void BtnReturnValue_Click(object sender, RoutedEventArgs e)
-    { ReturnString = ((Button)sender).Uid.ToString(); Close(); }
+    private void BtnReturnValue_Click(object sender, RoutedEventArgs e) { ReturnString = ((Button)sender).Uid.ToString(); Close(); }
     private void CopyItem_Click(object sender, RoutedEventArgs e) => Clipboard.SetText(txtText.Text); //Копирование содержимого диалогового окна
 }

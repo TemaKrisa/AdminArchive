@@ -118,14 +118,11 @@ class DocumentWindowVM : EditBaseVM
     {
         using ArchiveBdContext dc = new();
         DocumentLog Log;
+        if (dc.Documents.Any(u => u.Number == SelectedItem.Number && u.Id != SelectedItem.Id)) { ShowMessage("Документ с таким номером уже существует"); return; }
         try
         {
-            using var transaction = dc.Database.BeginTransaction();
-
             if (!dc.Documents.Contains(SelectedItem))
             {
-                if (dc.Fonds.Any(u => u.Number == SelectedItem.Number))
-                { ShowMessage("Документ с таким номером уже существует"); return; }
                 dc.Documents.Add(SelectedItem);
                 Log = new() { Activity = 1, Date = DateTime.Now, Document = SelectedItem.Id, User = 1 };
             }
@@ -135,15 +132,23 @@ class DocumentWindowVM : EditBaseVM
                 Log = new() { Activity = 2, Date = DateTime.Now, Document = SelectedItem.Id, User = 1 };
             }
             dc.SaveChanges();
-            dc.DocumentFiles.UpdateRange(DocFiles.Where(up => dc.DocumentFiles.Any(u => u.Id == up.Id)));
-            dc.DocumentFiles.AddRange(DocFiles.Where(up => !dc.DocumentFiles.Any(u => u.Id == up.Id)));
-            dc.RemoveRange(DocFilesDelete.Where(u => dc.DocumentFiles.Any(v => v.Id == u.Id)));
+            if (DocFiles.Count != 0)
+            {
+                dc.DocumentFiles.UpdateRange(DocFiles.Where(up => dc.DocumentFiles.Any(u => u.Id == up.Id)));
+                dc.DocumentFiles.AddRange(DocFiles.Where(up => !dc.DocumentFiles.Any(u => u.Id == up.Id)));
+                foreach (var item in DocFiles.Where(fn => !dc.DocumentFiles.Any(u => u.Id == fn.Id)))
+                {
+                    DocumentFile p = new() { Document = SelectedItem.Id, Description = item.Description, Extension = item.Extension, File = item.File, FileName = item.FileName };
+                    dc.DocumentFiles.Add(p);
+                }
+                dc.RemoveRange(DocFilesDelete.Where(u => dc.DocumentFiles.Any(v => v.Id == u.Id)));
+            }
+            Log.Document = SelectedItem.Id;
+            dc.DocumentLogs.Add(Log);
             dc.SaveChanges();
-            transaction.Commit();
             pageVM.UpdateData();
         }
-        catch (Exception ex)
-        { ShowMessage(ex.ToString()); }
+        catch (Exception ex) { ShowMessage(ex.ToString()); }
     }
     protected override void OpenLog() //Открытие протокола
     {
@@ -158,14 +163,10 @@ class DocumentWindowVM : EditBaseVM
     public ICommand AddEditFile => new RelayCommand(AddEditFileCommand);
     public ICommand DeleteFile => new RelayCommand(DeleteFileCommand);
     protected override void CloseLog() { UCVisibility = Visibility.Collapsed; FileVisibility = Visibility.Collapsed; }
-
     private void DeleteFileCommand()
     {
-        if (SelFile != null)
-        {
-            DocFilesDelete.Add(SelFile);
-            DocFiles.Remove(SelFile);
-        }
+        if (SelFile != null || SelFile.Id == 0) return;
+        DocFilesDelete.Add(SelFile); DocFiles.Remove(SelFile);
     }
     private void OpenEditFileCommand()
     {
@@ -179,11 +180,13 @@ class DocumentWindowVM : EditBaseVM
             Extension = SelFile.Extension
         };
         FileVisibility = Visibility.Visible;
+        Action = ActionType.Change;
     }
     private void AddEditFileCommand()
     {
         EditFile = new DocumentFile() { Document = SelectedItem.Id };
         FileVisibility = Visibility.Visible;
+        Action = ActionType.Add;
     }
     private void ChooseFiles()
     {
@@ -209,9 +212,8 @@ class DocumentWindowVM : EditBaseVM
             if (EditFile.File == null) ShowMessage("Выберите файл!");
             else
             {
-                var index = DocFiles.IndexOf(DocFiles.FirstOrDefault(u => u.Id == EditFile.Id));
-                if (index == -1) DocFiles.Add(EditFile);
-                else DocFiles[index] = EditFile;
+                if (Action == ActionType.Add) DocFiles.Add(EditFile);
+                else DocFiles[DocFiles.IndexOf(DocFiles.FirstOrDefault(u => u.Id == EditFile.Id))] = EditFile;
                 CloseLog();
             }
         }

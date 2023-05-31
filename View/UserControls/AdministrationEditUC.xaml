@@ -3,7 +3,6 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:vm="clr-namespace:AdminArchive.ViewModel"
              Foreground="{DynamicResource TextFillColorPrimaryBrush}" Margin="-350">
     <UserControl.Resources>
         <Style TargetType="TextBlock">

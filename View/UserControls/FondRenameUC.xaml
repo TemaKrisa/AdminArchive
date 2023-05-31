@@ -1,13 +1,9 @@
 ﻿<UserControl x:Class="AdminArchive.View.UserControls.FondRenameUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:AdminArchive.ViewModel"
-             d:DataContext="{d:DesignInstance Type=vm:FundWindowVM}"
-             mc:Ignorable="d" Foreground="{DynamicResource TextFillColorPrimaryBrush}" Margin="-150">
+             Foreground="{DynamicResource TextFillColorPrimaryBrush}" Margin="-150" Cursor="">
     <UserControl.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -54,12 +50,7 @@
                 <TextBlock Grid.Row="4" Margin="0"><Run Text="Примечание"/></TextBlock>
                 <ui:TextBox Text="{Binding EditingName.Note}" MaxLength="350" Margin="10,10,30,10" Grid.Row="4" Grid.RowSpan="2" VerticalAlignment="Stretch"  Grid.Column="1"/>
                 <Grid Grid.Row="7" Grid.ColumnSpan="2" Margin="30,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
                     <ui:Button FontWeight="Black" Command="{Binding SaveName}" Margin="5,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Appearance="Info" Content="Сохранить"/>
-                    <ui:Button Grid.Column="1" Command="{Binding RemoveName}" Margin="5,0" FontWeight="Black" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Appearance="Danger" Content="Удалить"/>
                 </Grid>
             </Grid>
         </Border>

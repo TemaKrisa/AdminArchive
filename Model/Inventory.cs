@@ -1,4 +1,7 @@
-﻿namespace AdminArchive.Model;
+﻿using System;
+using System.Collections.Generic;
+
+namespace AdminArchive.Model;
 
 public partial class Inventory
 {
@@ -11,8 +14,6 @@ public partial class Inventory
     public int Type { get; set; }
 
     public string Number { get; set; } = null!;
-
-    public string Title { get; set; } = null!;
 
     public int DocType { get; set; }
 

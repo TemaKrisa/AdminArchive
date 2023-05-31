@@ -5,7 +5,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:viewmodel="clr-namespace:AdminArchive.ViewModel"
+      xmlns:viewmodel="clr-namespace:AdminArchive.ViewModel" xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Поиск">
@@ -20,15 +20,14 @@
                         <RowDefinition Height="50"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Grid Margin="5">
-                        <StackPanel Orientation="Horizontal">
-                            <ui:Button Content="Поиск" Command="{Binding OpenSearch}" Icon="Search24" Appearance="Caution"/>
-                        </StackPanel>
-                    </Grid>
-                    <ui:DataGrid CanUserSortColumns="False" Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding Fonds}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"  AutoGenerateColumns="False" RowHeaderWidth="0">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:Button Margin="5" Content="Поиск" Command="{Binding OpenSearch}" CommandParameter="Fond" Icon="Search24" Appearance="Caution"/>
+                        <ui:Button Content="Обновить" Command="{Binding Update}" CommandParameter="Fond" Icon="ArrowSync24" Appearance="Secondary"/>
+                    </StackPanel>
+                    <ui:DataGrid CanUserSortColumns="False" Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding Fonds}" SelectedItem="{Binding SelectedFond}"  AutoGenerateColumns="False" RowHeaderWidth="0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding Open}"/>
+                                <i:InvokeCommandAction Command="{Binding OpenItem}" CommandParameter="Fond"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <DataGrid.Columns>
@@ -41,15 +40,13 @@
                             <DataGridTemplateColumn Width="50">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.Edit, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                        <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.EditItem, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="Fond"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </ui:DataGrid>
                     <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,-11" Text="{Binding Fonds.Count, StringFormat=Всего фондов: {0}}"></TextBlock>
-                    <!--<uc:FondSearchUC DataContext="{Binding DataContext, ElementName=Page}"
- Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>-->
                 </Grid>
             </TabItem>
             <TabItem Header="Описи">
@@ -58,33 +55,33 @@
                         <RowDefinition Height="50"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Grid Margin="5">
-                        <StackPanel Orientation="Horizontal">
-                            <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
-                        </StackPanel>
-                    </Grid>
-                    <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Inventories}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:Button Margin="5" Content="Поиск" Command="{Binding OpenSearch}" CommandParameter="Inventory" Icon="Search24" Appearance="Caution"/>
+                        <ui:Button Content="Обновить" Command="{Binding Update}" CommandParameter="Inventory" Icon="ArrowSync24" Appearance="Secondary"/>
+                    </StackPanel>
+                    <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Inventories}" SelectedItem="{Binding SelectedInventory}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0">
                         <ui:DataGrid.Columns>
                             <DataGridTextColumn Header="№" Binding="{Binding FullNumber}"></DataGridTextColumn>
                             <DataGridTextColumn Header="Название" Binding="{Binding Name}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Тип" Width="*" Binding="{Binding Type}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Тип" Width="*" Binding="{Binding TypeNavigation.Name}"></DataGridTextColumn>
                             <DataGridTextColumn Header="Начальная дата" Width="*" Binding="{Binding StartDate,Mode=OneWay}"></DataGridTextColumn>
                             <DataGridTextColumn Header="Конечная дата" Width="*" Binding="{Binding EndDate,Mode=OneWay}"></DataGridTextColumn>
                             <DataGridTextColumn Header="Объем ед. хр." Binding="{Binding Volume}"></DataGridTextColumn>
                             <DataGridTemplateColumn Width="50">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.Edit, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                        <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.EditItem, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="Inventory"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </ui:DataGrid.Columns>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding Open}"/>
+                                <i:InvokeCommandAction Command="{Binding OpenItem}" CommandParameter="Inventory"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ui:DataGrid>
+                    <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,-11" Text="{Binding Inventories.Count, StringFormat=Всего описей: {0}}"></TextBlock>
                 </Grid>
             </TabItem>
             <TabItem Header="Ед.Хранения">
@@ -94,35 +91,35 @@
                             <RowDefinition Height="50"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Grid Margin="5">
-                            <StackPanel Orientation="Horizontal">
-                                <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
-                            </StackPanel>
-                        </Grid>
-                        <ui:DataGrid Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding StorageUnits}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" RowHeaderWidth="0">
+                        <StackPanel Orientation="Horizontal">
+                            <ui:Button Margin="5" Content="Поиск" Command="{Binding OpenSearch}" CommandParameter="Unit" Icon="Search24" Appearance="Caution"/>
+                            <ui:Button Content="Обновить" Command="{Binding Update}" CommandParameter="Unit" Icon="ArrowSync24" Appearance="Secondary"/>
+                        </StackPanel>
+                        <ui:DataGrid Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding Units}" SelectedItem="{Binding SelectedUnit}" AutoGenerateColumns="False" RowHeaderWidth="0">
                             <ui:DataGrid.Columns>
-                                <DataGridTextColumn Header="№" Binding="{Binding UnitId}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Том"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding UnitName}"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Категория"  Binding="{Binding CategoryNavigation.CategoryName}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="№" Binding="{Binding FullNumber}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Том" Binding="{Binding Vol}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding Title}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Категория"  Binding="{Binding CategoryNavigation.Name}"></DataGridTextColumn>
                                 <DataGridTextColumn Header="Дата нач." Binding="{Binding StartDate}"></DataGridTextColumn>
                                 <DataGridTextColumn Header="Дата кон." Binding="{Binding EndDate}"></DataGridTextColumn>
                                 <DataGridTextColumn Header="Объем ед. хр." Binding="{Binding Volume}"></DataGridTextColumn>
                                 <DataGridTemplateColumn Width="50">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.Edit, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.EditItem, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="Unit"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                             </ui:DataGrid.Columns>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseDoubleClick">
-                                    <i:InvokeCommandAction Command="{Binding Open}"/>
+                                    <i:InvokeCommandAction Command="{Binding OpenItem}" CommandParameter="Unit"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </ui:DataGrid>
                     </Grid>
+                    <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,-11" Text="{Binding Units.Count, StringFormat=Всего ед. хранения: {0}}"></TextBlock>
                 </Grid>
             </TabItem>
             <TabItem Header="Документы">
@@ -131,31 +128,35 @@
                         <RowDefinition Height="50"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Grid Margin="5">
-                        <StackPanel Orientation="Horizontal">
-                            <ui:Button Content="Поиск" Icon="Search24" Appearance="Caution"/>
-                        </StackPanel>
-                    </Grid>
-                    <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Documents}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:Button Margin="5" Content="Поиск" Command="{Binding OpenSearch}" CommandParameter="Document" Icon="Search24" Appearance="Caution"/>
+                        <ui:Button Content="Обновить" Command="{Binding Update}" CommandParameter="Document" Icon="ArrowSync24" Appearance="Secondary"/>
+                    </StackPanel>
+                    <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Documents}" SelectedItem="{Binding SelectedDocument}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0">
                         <ui:DataGrid.Columns>
-                            <DataGridTextColumn Header="№" Binding="{Binding DocumentId}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding DocumentName}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Дата документа" Width="*" Binding="{Binding Date}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="№" Binding="{Binding Number}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Дата документа" Width="*" Binding="{Binding Date,StringFormat={}{0:dd.MM.yyyy}}"></DataGridTextColumn>
                             <DataGridTextColumn Header="Кол-во листов"  Binding="{Binding Vol}"></DataGridTextColumn>
                             <DataGridTextColumn Header="С" Binding="{Binding VolStart}"></DataGridTextColumn>
                             <DataGridTextColumn Header="По" Binding="{Binding VolEnd}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Хар-ка секретности" Binding="{Binding SecretChar}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Хар-ка секретности" Binding="{Binding SecretCharNavigation.Name}"></DataGridTextColumn>
                             <DataGridTemplateColumn Width="50">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.Edit, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                        <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.EditItem, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="Document"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </ui:DataGrid.Columns>
                     </ui:DataGrid>
+                    <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,-11" Text="{Binding Documents.Count, StringFormat=Всего документов: {0}}"></TextBlock>
                 </Grid>
             </TabItem>
         </TabControl>
+        <uc:FondSearchUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}" IsHitTestVisible="True" WindowChrome.IsHitTestVisibleInChrome="True" Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding FondVisibility}"/>
+        <uc:InventorySearchUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}" IsHitTestVisible="True" WindowChrome.IsHitTestVisibleInChrome="True" Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding InventoryVisibility}"/>
+        <uc:DocumentSearchUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}" IsHitTestVisible="True" WindowChrome.IsHitTestVisibleInChrome="True" Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding DocumentVisibility}"/>
+        <uc:UnitSearch DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}" IsHitTestVisible="True" WindowChrome.IsHitTestVisibleInChrome="True" Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UnitVisibility}"/>
     </Grid>
 </Page>

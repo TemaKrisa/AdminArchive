@@ -12,7 +12,7 @@
     mc:Ignorable="d"        
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
-        WindowCornerPreference="Round" WindowStartupLocation="CenterScreen" x:Name="Window" MinHeight="720" MinWidth="1000">
+        WindowCornerPreference="Round" WindowStartupLocation="CenterScreen" MinHeight="720" MinWidth="1000">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding CloseWindow}"/>
@@ -23,6 +23,7 @@
     </Window.DataContext>
     <Window.Resources>
         <local:BooleanConverter x:Key="BooleanToBool" />
+        <local:ReverseBooleanConverter x:Key="ReverseBooleanToBool" x:Shared="false"/>
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
@@ -333,11 +334,11 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <uc:LogUC DataContext="{Binding DataContext, ElementName=Window}"
- Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>              
-        <uc:FondRenameUC DataContext="{Binding DataContext, ElementName=Window}"
- Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding RenameVisibility}"/>            
-        <uc:FondUndocUC DataContext="{Binding DataContext, ElementName=Window}"
+        <uc:LogUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
+        <uc:FondRenameUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding RenameVisibility}"/>
+        <uc:FondUndocUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
  Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding PeriodVisibility}"/>        
     </Grid>
 </ui:UiWindow>

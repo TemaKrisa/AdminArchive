@@ -47,7 +47,7 @@
                     </Grid.RowDefinitions>
                     <ui:SymbolIcon Symbol="Info24" FontSize="24"/>
                     <TextBlock Grid.Column="1" Text="AppealsService" VerticalAlignment="Center" FontWeight="DemiBold"  />
-                    <TextBlock Grid.Column="2" VerticalAlignment="Center"  Text="{Binding AppVersion, Mode=OneWay}" />
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center"  Text="1.0" />
                     <ui:NavigationSeparator  Grid.ColumnSpan="5" VerticalAlignment="Bottom" Margin="0,0,0,0"/>
                     <StackPanel Grid.Row="1" Margin="0,5" Grid.Column="1" Orientation="Vertical">
                         <Label Grid.Row="1"  Content="Ссылки" FontSize="14" FontWeight="DemiBold"/>

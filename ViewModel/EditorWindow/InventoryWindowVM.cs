@@ -65,7 +65,7 @@ class InventoryWindowVM : EditBaseVM
     }
     #endregion
     #region Инициализация
-    public InventoryWindowVM(Inventory selInv, InventoryPageVM vm, int selIndex, ObservableCollection<Inventory> items, Fond fond)
+    public InventoryWindowVM(Inventory selInv, dynamic vm, int selIndex, ObservableCollection<Inventory> items, Fond fond)
     {
         SelectedItem = selInv;
         pageVM = vm;
@@ -74,7 +74,7 @@ class InventoryWindowVM : EditBaseVM
         ItemList = items;
         FillCollections();
     }
-    public InventoryWindowVM(InventoryPageVM vm, ObservableCollection<Inventory> items, Fond fond)
+    public InventoryWindowVM(dynamic vm, ObservableCollection<Inventory> items, Fond fond)
     {
         curFond = fond;
         ItemList = items;
@@ -124,7 +124,8 @@ class InventoryWindowVM : EditBaseVM
             MovementType = curFond?.MovementType ?? null,
             ReceiptReason = curFond.ReceiptReason,
             StorageTime = curFond.StorageTime,
-            CharRestrict = curFond?.CharRestrict ?? null
+            CharRestrict = curFond?.CharRestrict ?? null,
+            Fond = curFond.Id
         };
         CheckNav();
     }
@@ -135,18 +136,15 @@ class InventoryWindowVM : EditBaseVM
         {
             InventoryLog Log;
             using ArchiveBdContext dc = new();
-            if (SelectedItem.Movement == 2 && SelectedItem.MovementType == null) { ShowMessage("При выборе движения выбыл, также должен быть выбран тип движения!"); }
+            if (SelectedItem.Movement == 1 && SelectedItem.MovementType == null) { ShowMessage("При выборе движения выбыл, также должен быть выбран тип движения!"); }
             else if (string.IsNullOrWhiteSpace(SelectedItem.Name)) { ShowMessage("Введите наименование описи!"); }
             else if (string.IsNullOrWhiteSpace(SelectedItem.Number)) { ShowMessage("Введите номер описи!"); }
+            else if (dc.Inventories.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal && u.Id != SelectedItem.Id))
+            { ShowMessage("Опись с таким номером уже существует"); return; }
             else
             {
                 if (!dc.Inventories.Contains(SelectedItem))
                 {
-                    if (dc.Inventories.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal))
-                    {
-                        ShowMessage("Добавление описи", "Опись с таким номером уже существует");
-                        return;
-                    }
                     dc.Inventories.Add(SelectedItem);
                     dc.SaveChanges();
                     Log = new() { Activity = 1, Date = DateTime.Now, Inventory = SelectedItem.Id, User = 1 };

@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <None Remove="Resources\Logo.png" />
+    <None Remove="Resources\Отчёт о работе сотрудников на 30 мая 2023.rtf" />
   </ItemGroup>
 
   <ItemGroup>
