@@ -12,14 +12,30 @@
         <vm:ReportVM/>
     </Page.DataContext>
     <Grid>
-        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"  Width="220" SelectedIndex="{Binding SelectedType,Mode=TwoWay}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="75"/>
+            <RowDefinition/>
+            <RowDefinition Height="75"/>
+        </Grid.RowDefinitions>
+        <ComboBox Margin="10" Grid.Row="1"  Width="220" SelectedIndex="{Binding SelectedType,Mode=TwoWay}">
             <ComboBox.Items>
                 <ComboBoxItem Content="Перечень Фондов"/>
                 <ComboBoxItem Content="Перечень Описей"/>
                 <ComboBoxItem Content="Перечень Единиц Хранения"/>
                 <ComboBoxItem Content="Действия пользователей"/>
+                <ComboBoxItem Content="Переименования фондов"/>
             </ComboBox.Items>
         </ComboBox>
-        <ui:Button VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Command="{Binding SaveRep}" Margin="30" Content="Сформировать"/>
+        <ui:Button Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Command="{Binding SaveRep}" Margin="30,0,30,30" Content="Сформировать"/>
+        <TextBlock Grid.Column="1" VerticalAlignment="Center" Visibility="{Binding UserActionsVisibility}">Начальная дата</TextBlock>
+        <DatePicker Grid.Column="1" Margin="5" Grid.Row="1" SelectedDate="{Binding UserActionStartDate}" Visibility="{Binding UserActionsVisibility}"/>
+        <TextBlock Grid.Column="2" VerticalAlignment="Center" Visibility="{Binding UserActionsVisibility}">Конечная дата</TextBlock>
+        <DatePicker Grid.Column="2" Margin="5" Grid.Row="1" SelectedDate="{Binding UserActionEndDate}" Visibility="{Binding UserActionsVisibility}"/>
     </Grid>
 </Page>

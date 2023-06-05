@@ -58,7 +58,9 @@ internal class FundPageVM : PageBaseVM
         newWindow.ShowDialog(); // открываем окно редактирования фонда
     }
     #region Поиск
-    protected override void ResetSearch() { FondName = null; FondShortName = null; FondStartDate = null; FondEndDate = null; FondCategory = -1; UpdateData(); }
+    protected override void ResetSearch() { FondName = null; FondShortName = null; FondStartDate = null; FondEndDate = null; FondCategory = -1; UCVisibility = System.Windows.Visibility.Collapsed; UpdateData(); }
     #endregion
     protected override void GoBack() { }
+
+    protected override void RemoveItem() { RemoveCommand(SelectedItem); }
 }

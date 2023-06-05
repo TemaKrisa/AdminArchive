@@ -11,13 +11,11 @@ namespace AdminArchive.ViewModel
         private string password, login;
         public string Password { get => password; set { password = value; OnPropertyChanged(); } }
         public string Login { get => login; set { login = value; OnPropertyChanged(); } }
-
         public ICommand LoginCommand => new RelayCommand(Logining);
 
         public LoginVM()
         {
-            Login = "Worker";
-            Password = "123";
+
         }
         private void Logining()
         {
@@ -37,10 +35,8 @@ namespace AdminArchive.ViewModel
                     }
                     else { ShowMessage("Неверный логин или пароль", "Авторизация"); }
                 }
-                catch (Exception ex)
-                { ShowMessage($"Ошибка авторизации: {ex.Message}", "Авторизация"); }
+                catch (Exception ex) { ShowMessage($"Ошибка авторизации: {ex.Message}", "Авторизация"); }
             }
-
         }
     }
 }

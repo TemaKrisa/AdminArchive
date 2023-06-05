@@ -1,4 +1,5 @@
-﻿using AdminArchive.Model;
+﻿using AdminArchive.Classes;
+using AdminArchive.Model;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
@@ -20,7 +21,13 @@ namespace AdminArchive.ViewModel
         private FontFamily font = new("Times New Roman");
         public ICommand SaveRep => new RelayCommand(Report);
         private int _selectedType;
-        public int SelectedType { get { return _selectedType; } set { _selectedType = value; OnPropertyChanged(); } }
+        private DateTime? userActionStartDate, userActionEndDate;
+        public DateTime? UserActionStartDate { get => userActionStartDate; set { userActionStartDate = value; OnPropertyChanged(); } }
+        public DateTime? UserActionEndDate { get => userActionEndDate; set { userActionEndDate = value; OnPropertyChanged(); } }
+        private Visibility userActionVisibility = Visibility.Collapsed;
+        public Visibility UserActionsVisibility { get => userActionVisibility; set { userActionVisibility = value; OnPropertyChanged(); } }
+
+        public int SelectedType { get { return _selectedType; } set { _selectedType = value; if (_selectedType == 3) UserActionsVisibility = Visibility.Visible; else UserActionsVisibility = Visibility.Collapsed; OnPropertyChanged(); } }
         private void Report()
         {
             switch (SelectedType)
@@ -29,6 +36,7 @@ namespace AdminArchive.ViewModel
                 case 1: InventoriesListReport(); break;
                 case 2: UnitsListReport(); break;
                 case 3: UserActionsList(); break;
+                case 4: FondRenamesReport(); break;
             }
         }
         private Table CreateHeaderAndDateTable(string headerText)
@@ -89,6 +97,29 @@ namespace AdminArchive.ViewModel
                 dataGroup.Rows.Add(finalRow);
                 table.RowGroups.Add(dataGroup);
                 flowDoc.Blocks.Add(table);
+            }
+            FormDoc(flowDoc);
+        }
+        private void FondRenamesReport()
+        {
+            using ArchiveBdContext dc = new();
+            ReportTitle = "Незадокументированные периоды";
+            var Fonds = dc.Fonds.OrderBy(u => u.Index).ThenBy(u => u.Number).ThenBy(u => u.Literal).ToList();
+            FlowDocument flowDoc = new();
+            flowDoc.Blocks.Add(CreateHeader(ReportTitle));
+            flowDoc.Blocks.Add(new Paragraph());
+            Table headerAndDateTable = CreateHeaderAndDateTable(ReportTitle);
+            flowDoc.Blocks.Add(headerAndDateTable);
+            flowDoc.Blocks.Add(new Paragraph());
+            foreach (var item in Fonds)
+            {
+                flowDoc.Blocks.Add(new Paragraph(new Run($"{"Фонд №" + item.FullNumber + " " + item.Name}"))
+                { TextAlignment = TextAlignment.Left, FontWeight = FontWeights.Bold, FontFamily = font, FontSize = 20 });
+                foreach (var rename in dc.FondNames.Where(u => u.Fond == item.Id))
+                {
+                    flowDoc.Blocks.Add(new Paragraph(new Run($"({rename.StartDate.ToString("dd/MMMMM/yyyy")} - {rename.EndDate.ToString("dd/MMMMM/yyyy")})  {rename.Name}"))
+                    { TextAlignment = TextAlignment.Left, FontFamily = font, FontSize = 18 });
+                }
             }
             FormDoc(flowDoc);
         }
@@ -179,16 +210,23 @@ namespace AdminArchive.ViewModel
                 for (int i = 0; i < activities.Length; i++)
                 {
                     TableRow actionRow = new() { Cells = { new TableCell(new Paragraph(new Run(actions[i]))) } };
-                    actionRow.Cells.Add(new TableCell(new Paragraph(new Run($"{dc.FondLogs.Where(u => u.User == user.Id && u.Activity == activities[i]).Count()}"))));
-                    actionRow.Cells.Add(new TableCell(new Paragraph(new Run($"{dc.InventoryLogs.Where(u => u.User == user.Id && u.Activity == activities[i]).Count()}"))));
-                    actionRow.Cells.Add(new TableCell(new Paragraph(new Run($"{dc.UnitLogs.Where(u => u.User == user.Id && u.Activity == activities[i]).Count()}"))));
-                    actionRow.Cells.Add(new TableCell(new Paragraph(new Run($"{dc.DocumentLogs.Where(u => u.User == user.Id && u.Activity == activities[i]).Count()}"))));
+                    actionRow.Cells.Add(CreateTableCell(dc.FondLogs, user.Id, activities[i]));
+                    actionRow.Cells.Add(CreateTableCell(dc.InventoryLogs, user.Id, activities[i]));
+                    actionRow.Cells.Add(CreateTableCell(dc.UnitLogs, user.Id, activities[i]));
+                    actionRow.Cells.Add(CreateTableCell(dc.DocumentLogs, user.Id, activities[i]));
                     dataGroup.Rows.Add(actionRow);
                 }
                 table.RowGroups.Add(dataGroup);
                 flowDoc.Blocks.Add(table);
             }
             FormDoc(flowDoc);
+        }
+        private TableCell CreateTableCell<T>(IQueryable<T> logs, int userId, int activity) where T : Log
+        {
+            int count = logs.Where(u => u.User == userId && u.Activity == activity
+                && (UserActionStartDate == null || u.Date >= UserActionStartDate)
+                && (UserActionEndDate == null || u.Date <= UserActionEndDate)).Count();
+            return new TableCell(new Paragraph(new Run($"{count}")));
         }
         private void FondListReport()
         {

@@ -71,7 +71,7 @@
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Номер*</TextBlock>
-                        <ui:NumberBox Grid.Column="1" IntegersOnly="True" Min="1" Margin="5,0" Text="{Binding SelectedItem.Number}"/>
+                        <ui:NumberBox Grid.Column="1" MaxLength="3" IntegersOnly="True" Margin="5,0" Text="{Binding SelectedItem.Number}"/>
                         <ui:TextBox Grid.Column="2" Width="70" MaxLength="3" Text="{Binding SelectedItem.Literal}">
                             <i:Interaction.Behaviors>
                                 <local:RussianLettersOnlyBehavior/>
@@ -97,7 +97,7 @@
                         <TextBlock HorizontalAlignment="Right" Margin="5">Носитель</TextBlock>
                         <ComboBox ItemsSource="{Binding Carriers}" SelectedValue="{Binding SelectedItem.Carrier}"
                                   Grid.Column="1" Margin="5" />
-                        <TextBlock Grid.Column="2" HorizontalAlignment="Right">Хар-ка секретности:</TextBlock>
+                        <TextBlock Grid.Column="2" HorizontalAlignment="Right">Секретность:</TextBlock>
                         <ComboBox ItemsSource="{Binding SecretChar}" SelectedValue="{Binding SelectedItem.SecretChar}"
                                   Grid.Column="3" Margin="5" />
                         <TextBlock Grid.Column="4">Доступ:</TextBlock>
@@ -133,7 +133,7 @@
                             <ColumnDefinition Width="210"/>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="170"/>
+                            <ColumnDefinition Width="180"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Источник поступления</TextBlock>
                         <ComboBox ItemsSource="{Binding IncomeSource}" SelectedValue="{Binding SelectedItem.IncomeSource}"
@@ -176,7 +176,7 @@
                     </Grid>
                     <Grid Grid.Row="8">
                         <TextBlock Margin="100,0,0,0" HorizontalAlignment="Left">Примечание</TextBlock>
-                        <TextBox Margin="210,10,30,20" VerticalAlignment="Stretch" Text="{Binding SelectedItem.Note}" MaxLength="150"/>
+                        <TextBox  TextWrapping="Wrap" Margin="210,10,30,20" VerticalAlignment="Stretch" Text="{Binding SelectedItem.Note}" MaxLength="150"/>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -196,7 +196,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock FontSize="16" Grid.Column="1" FontWeight="DemiBold">Аннотация</TextBlock>
-                    <TextBox Text="{Binding SelectedItem.Annotation}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" MaxLength="350" />
+                    <TextBox   TextWrapping="Wrap" Text="{Binding SelectedItem.Annotation}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" MaxLength="350" />
                 </Grid>
             </TabItem>
         </TabControl>

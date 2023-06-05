@@ -25,6 +25,13 @@
             </StackPanel>
         </Grid>
         <ui:DataGrid CanUserSortColumns="False" Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding Fonds}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"  AutoGenerateColumns="False" RowHeaderWidth="0">
+            <ui:DataGrid.ContextMenu>
+                <ContextMenu>
+                    <ui:MenuItem SymbolIcon="Edit24" Header="Изменить" Command="{Binding Edit}"/>
+                    <ui:MenuItem SymbolIcon="Open24" Header="Открыть" Command="{Binding Open}"/>
+                    <ui:MenuItem SymbolIcon="Delete24" Header="Удалить" Command="{Binding Remove}"/>
+                </ContextMenu>
+            </ui:DataGrid.ContextMenu>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding Open}"/>
@@ -37,10 +44,14 @@
                 <DataGridTextColumn Header="Дата нач." Binding="{Binding StartDate}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Дата кон." Binding="{Binding EndDate}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Объем ед. хр." Binding="{Binding Volume}"></DataGridTextColumn>
-                <DataGridTemplateColumn Width="50">
+                <DataGridTemplateColumn Width="120">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                           <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.Edit, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.Edit, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                <ui:Button HorizontalAlignment="Center" Icon="Open24" Command="{Binding DataContext.Open, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                <ui:Button HorizontalAlignment="Center" Icon="Delete24" Appearance="Danger" Command="{Binding DataContext.Remove, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                            </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

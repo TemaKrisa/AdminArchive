@@ -6,17 +6,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ui:ThemesDictionary Theme="Dark"/>
+                <ui:ThemesDictionary Theme="Light"/>
                 <ui:ControlsDictionary/>
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="{x:Type DataGridRow}">
-                <Setter Property="Background" Value="Transparent"/>
-                <Style.Triggers>
-                    <Trigger Property="IsSelected" Value="True">
-                        <Setter Property="Background" Value="LightBlue"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
+            <!--<Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="MaxLength" Value="50"/>
+            </Style>-->
             <Style TargetType="TextBlock">
                 <Setter Property="HorizontalAlignment" Value="Center"/>
             </Style>

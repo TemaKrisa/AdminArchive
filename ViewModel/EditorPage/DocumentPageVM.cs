@@ -8,7 +8,8 @@ namespace AdminArchive.ViewModel;
 /// <summary> ViewModel для страницы документов </summary>
 class DocumentPageVM : PageBaseVM
 {
-    public ObservableCollection<Document>? Documents { get; set; }
+    private ObservableCollection<Document> _documents;
+    public ObservableCollection<Document>? Documents { get => _documents; set { _documents = value; OnPropertyChanged(); } }
     private ArchiveBdContext dc;
     private Document _selectedItem;
     private StorageUnit curUnit;
@@ -16,11 +17,11 @@ class DocumentPageVM : PageBaseVM
     private Fond curFond;
     private string _docTitle;
     private int _docAu = -1, _docType = -1;
-    private DateTime _docDate;
+    private DateTime? _docDate = null;
     public string? DocTitle { get => _docTitle; set { _docTitle = value; OnPropertyChanged(); } }
     public int DocAu { get => _docAu; set { _docAu = value; OnPropertyChanged(); } }
     public int DocType { get => _docType; set { _docType = value; OnPropertyChanged(); } }
-    public DateTime DocDate { get => _docDate; set { _docDate = value; OnPropertyChanged(); } }
+    public DateTime? DocDate { get => _docDate; set { _docDate = value; OnPropertyChanged(); } }
     public ObservableCollection<Authenticity> Authenticities { get; set; }
     public ObservableCollection<DocType> DocTypes { get; set; }
     public Document SelectedItem { get => _selectedItem; set => _selectedItem = value; }
@@ -30,6 +31,10 @@ class DocumentPageVM : PageBaseVM
         curUnit = unit;
         curFond = fond;
         curInv = inventory;
+        Authenticities = new ObservableCollection<Authenticity>(dc.Authenticities);
+        Authenticities.Insert(0, new Authenticity { Name = "Все подлинности", Id = -1 });
+        DocTypes = new ObservableCollection<DocType>(dc.DocTypes);
+        DocTypes.Insert(0, new DocType { Name = "Все виды", Id = -1 });
         UpdateData();
     }
     public override void UpdateData() => Documents = SearchClass.SearchDocument(DocTitle, DocAu, DocType, DocDate, curUnit);
@@ -55,4 +60,5 @@ class DocumentPageVM : PageBaseVM
     protected override void ResetSearch() { DocTitle = null; DocAu = -1; DocType = -1; DocDate = DateTime.MinValue; UpdateData(); }
     protected override void OpenItem() { }
     public DocumentPageVM() { }
+    protected override void RemoveItem() { RemoveCommand(SelectedItem); }
 }

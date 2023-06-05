@@ -45,14 +45,14 @@ public static class SearchClass
         return new ObservableCollection<StorageUnit>(FilteredItems); // овозвращаем коллекцию ;
     }
     /// <summary>Поиск документа</summary><param name="Title">Наименование</param><param name="Au">Подлинность</param><param name="Type">Тип</param><param name="date">Дата документа</param><param name="curUnit">Текущая единица хранения для фильтрации по ней</param>
-    public static ObservableCollection<Document> SearchDocument(string Title, int Au, int Type, DateTime date, StorageUnit curUnit = null) // функция, которая вызывается при нажатии на кнопку "Поиск"
+    public static ObservableCollection<Document> SearchDocument(string Title, int Au, int Type, DateTime? date, StorageUnit curUnit = null) // функция, которая вызывается при нажатии на кнопку "Поиск"
     {
         using ArchiveBdContext dc = new();
         IQueryable<Document> query = dc.Documents.Include(u => u.SecretCharNavigation).OrderBy(u => u.Number); //Загружаем список документов
         if (curUnit != null) query = query.Where(u => u.StorageUnit == curUnit.Id);
         var FilteredItems = query.Where(u => (string.IsNullOrWhiteSpace(Title) || u.Name.Contains(Title))
         && (Au == -1 || u.Authenticity == Au) && (Type == -1 || u.DocType == Type)
-        && (date == DateTime.MinValue || u.Date == date)); // фируем фонды по категории
+        && (date == null || u.Date == date)); // фируем фонды по категории
         return new ObservableCollection<Document>(FilteredItems); // возвращаем коллекцию
     }
 }

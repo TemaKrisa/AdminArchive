@@ -44,7 +44,7 @@
                 <ui:Button Grid.Row="0" Icon="Dismiss24" Command="{Binding CloseSearch}" CommandParameter="Document" Appearance="Transparent" HorizontalAlignment="Right" BorderThickness="0" Width="31" Height="25" VerticalAlignment="Top" Grid.Column="1" Margin="10"/>
                 <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0" FontWeight="Bold" FontSize="24"><Run Text="Поиск документа"/></TextBlock>
                 <TextBlock Grid.Row="1" Margin="0"><Run Text="Заголовок"/></TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding DocTitle}" Margin="10,0,30,0"/>
+                <TextBox Grid.Row="1" MaxLength="250" Grid.Column="2" Text="{Binding DocTitle}" Margin="10,0,30,0"/>
                 <TextBlock Grid.Row="2"><Run Text="Подлинность"/></TextBlock>
                 <ComboBox  ItemsSource="{Binding Authenticities}" SelectedValue="{Binding DocAu}" SelectedValuePath="Id" DisplayMemberPath="Name" 
                            Grid.Row="2" Grid.Column="2" Margin="10,0,30,0"/>
@@ -52,7 +52,7 @@
                 <ComboBox ItemsSource="{Binding DocTypes}" SelectedValue="{Binding DocType}" SelectedValuePath="Id" DisplayMemberPath="Name"
                           Grid.Row="3" Grid.Column="1" Margin="10,0,30,0"/>
                 <TextBlock Grid.Row="4"><Run Text="Дата документа"/></TextBlock>
-                <DatePicker Text="{Binding DocDate, TargetNullValue=Null}" Grid.Row="4" Grid.Column="1" Margin="10,0,30,0">
+                <DatePicker SelectedDate="{Binding DocDate, TargetNullValue=Null}" Grid.Row="4" Grid.Column="1" Margin="10,0,30,0">
                 </DatePicker>
                 <Grid Grid.Row="5" Grid.ColumnSpan="2" Margin="30,10">
                     <Grid.ColumnDefinitions>

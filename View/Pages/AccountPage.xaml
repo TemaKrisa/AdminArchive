@@ -24,16 +24,6 @@
             <ui:Button Content="Добавить" Command="{Binding Add}" Icon="Add24" Appearance="Info" HorizontalAlignment="Stretch" Margin="10" Grid.Column="3"/>
         </Grid>
         <DataGrid ItemsSource="{Binding Users}"  SelectedItem="{Binding SelectedUser}" RowHeaderWidth="0" SelectionMode="Single" HorizontalContentAlignment="Center" IsReadOnly="True" AutoGenerateColumns="False" Grid.Row="1" ColumnWidth="*">
-            <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="LightBlue"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Login}" Header="Логин"/>
                 <DataGridTextColumn Header="ФИО">
@@ -46,6 +36,15 @@
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding RoleNavigation.Name}" Header="Тип пользователя"/>
+                <DataGridTemplateColumn Width="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <ui:Button HorizontalAlignment="Center" Icon="Edit24" Command="{Binding DataContext.Edit, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
@@ -53,7 +52,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </DataGrid>
-        <TextBlock Text="{Binding Users.Count, StringFormat={}Всего аккаунов: {0}}" HorizontalAlignment="Left" Margin="0,341,0,-21" Grid.Row="1"/>
+        <TextBlock Text="{Binding Users.Count, StringFormat={}Всего аккаунов: {0}}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,-20" Grid.Row="1"/>
         <uc:AccountUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
  Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
     </Grid>

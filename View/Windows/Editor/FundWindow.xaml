@@ -56,7 +56,7 @@
             </StackPanel>
         </Grid>
         <TabControl Grid.Row="2">
-            <TabItem Header="Общие сведения" Width="150" IsSelected="True">
+            <TabItem Header="Общие сведения" Width="150" IsSelected="True" Margin="-2,0,2,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="45"/>
@@ -78,7 +78,7 @@
                                 <local:RussianLettersOnlyBehavior/>
                             </i:Interaction.Behaviors>
                         </TextBox>
-                        <ui:NumberBox Min="1" IntegersOnly="True" Margin="5,0" Text="{Binding SelectedItem.Number}"/>
+                        <ui:NumberBox IntegersOnly="True" Margin="5,0" Text="{Binding SelectedItem.Number}"/>
                         <TextBox Width="70" MaxLength="2" Text="{Binding SelectedItem.Literal}">
                             <i:Interaction.Behaviors>
                                 <local:RussianLettersOnlyBehavior/>
@@ -105,7 +105,7 @@
                         <TextBlock HorizontalAlignment="Right" Margin="10">Вид*</TextBlock>
                         <ComboBox ItemsSource="{Binding FondView}" SelectedValue="{Binding SelectedItem.View,Mode=TwoWay}"
                                   SelectedIndex="0" Grid.Column="1" />
-                        <TextBlock  Grid.Column="2" HorizontalAlignment="Right">Хар-ка секретности*:</TextBlock>
+                        <TextBlock  Grid.Column="2" HorizontalAlignment="Right">Секретность*:</TextBlock>
                         <ComboBox ItemsSource="{Binding SecretChar}" SelectedValue="{Binding SelectedItem.SecretChar}"
                                   SelectedIndex="0" Grid.Column="3" Margin="5" />
                         <TextBlock Grid.Column="4">Доступ*:</TextBlock>
@@ -129,7 +129,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="210"/>
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="115"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Тип фонда*</TextBlock>
@@ -171,8 +171,8 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="210"/>
                             <ColumnDefinition Width="160"/>
-                            <ColumnDefinition Width="160"/>
-                            <ColumnDefinition Width="165"/>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="170"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Движение*</TextBlock>
@@ -218,7 +218,7 @@
                                 </Grid>
                                 <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" Height="76">
                                     <TextBlock HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap">Дата поступления*</TextBlock>
-                                    <DatePicker Margin="15,5" Text="{Binding SelectedItem.ReceiptDate, TargetNullValue=null}"/>
+                                    <DatePicker Margin="15,5" SelectedDate="{Binding SelectedItem.ReceiptDate}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -263,12 +263,12 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock FontSize="16" Grid.Column="1" FontWeight="DemiBold">Аннотация</TextBlock>
-                    <TextBox Text="{Binding SelectedItem.Annotation}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" MaxLength="350" />                    
-                    <TextBlock FontSize="16" Grid.Row="2" Grid.Column="1" FontWeight="DemiBold">Историческая справка</TextBlock>
+                    <TextBox Text="{Binding SelectedItem.Annotation}" TextWrapping="Wrap" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" MaxLength="350" />
+                    <TextBlock FontSize="16" Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" FontWeight="DemiBold">Историческая справка</TextBlock>
                     <TextBox Text="{Binding SelectedItem.HistoricalOverview}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" MaxLength="350" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Доп. инф." Width="150">
+            <TabItem Header="Доп инф." Width="150">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -276,7 +276,7 @@
                     </Grid.RowDefinitions>
                     <Border CornerRadius="6" BorderThickness="3" BorderBrush="Gray" Height="250" Margin="30,20">
                         <Grid>
-                            <TextBlock VerticalAlignment="Top" Width="170" Margin="10,-13,786,0" FontWeight="Bold"  Background="{DynamicResource ApplicationBackgroundBrush}">Переименования фонда</TextBlock>
+                            <TextBlock VerticalAlignment="Top" Width="170" Margin="10,-13,730,0" FontWeight="Bold"  Background="{DynamicResource ApplicationBackgroundBrush}">Переименования фонда</TextBlock>
                             <ui:Button Margin="10,5,0,0" VerticalAlignment="Top" Command="{Binding CreateRename}">Добавить</ui:Button>
                             <ui:DataGrid Margin="10,42,10,10" SelectedItem="{Binding SelectedName}" ItemsSource="{Binding FondNames}" AutoGenerateColumns="False" ColumnWidth="*" IsReadOnly="True">
                                 <ui:DataGrid.Columns>
@@ -294,7 +294,7 @@
                                     <DataGridTemplateColumn Width="50">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <ui:Button Icon="Delete24" Width="50"  Command="{Binding DataContext.RemoveName, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                <ui:Button Icon="Delete24" Width="50" Appearance="Danger"  Command="{Binding DataContext.RemoveName, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -304,7 +304,7 @@
                     </Border>
                     <Border Grid.Row="1" CornerRadius="6" BorderThickness="3" BorderBrush="Gray" Height="250" Margin="30,10">
                         <Grid>
-                            <TextBlock VerticalAlignment="Top" Width="245" Margin="10,-13,726,0" Background="{DynamicResource ApplicationBackgroundBrush}" FontWeight="Bold"><Run Text="Незадокументированные периоды"/></TextBlock>
+                            <TextBlock VerticalAlignment="Top" Width="245" Margin="10,-13,650,0" Background="{DynamicResource ApplicationBackgroundBrush}" FontWeight="Bold"><Run Text="Незадокументированные периоды"/></TextBlock>
                             <ui:Button Command="{Binding CreatePeriod}" Margin="10,5,0,0" VerticalAlignment="Top">Добавить</ui:Button>
                             <ui:DataGrid Margin="10,42,10,10" IsReadOnly="True" SelectedItem="{Binding SelectedPeriod}" AutoGenerateColumns="False" ColumnWidth="*" ItemsSource="{Binding UndocumentPeriods}">
                                 <ui:DataGrid.Columns>
@@ -316,7 +316,7 @@
                                     <DataGridTemplateColumn Width="50">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <ui:Button Icon="Delete24" Width="50"  Command="{Binding DataContext.RemovePeriod, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                <ui:Button Icon="Delete24" Width="50" Appearance="Danger" Command="{Binding DataContext.RemovePeriod, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>                                    

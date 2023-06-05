@@ -38,11 +38,11 @@ internal class SearchPageVM : BaseViewModel
     //Свойства документа
     private string _docTitle;
     private int _docAu = -1, _docType = -1;
-    private DateTime _docDate;
+    private DateTime? _docDate;
     public string? DocTitle { get => _docTitle; set { _docTitle = value; OnPropertyChanged(); } }
     public int DocAu { get => _docAu; set { _docAu = value; OnPropertyChanged(); } }
     public int DocType { get => _docType; set { _docType = value; OnPropertyChanged(); } }
-    public DateTime DocDate { get => _docDate; set { _docDate = value; OnPropertyChanged(); } }
+    public DateTime? DocDate { get => _docDate; set { _docDate = value; OnPropertyChanged(); } }
     //Коллекции Datagrid
     private ObservableCollection<Fond> _fonds;
     private ObservableCollection<Inventory> _inventories;
@@ -91,9 +91,9 @@ internal class SearchPageVM : BaseViewModel
         UnitCategories = new ObservableCollection<UnitCategory>(dc.UnitCategories);
         UnitCategories.Insert(0, new UnitCategory { Name = "Все категории", Id = -1 });
         Authenticities = new ObservableCollection<Authenticity>(dc.Authenticities);
-        Authenticities.Insert(0, new Authenticity { Name = "Все категории", Id = -1 });
+        Authenticities.Insert(0, new Authenticity { Name = "Все подлинности", Id = -1 });
         DocTypes = new ObservableCollection<DocType>(dc.DocTypes);
-        DocTypes.Insert(0, new DocType { Name = "Все категории", Id = -1 });
+        DocTypes.Insert(0, new DocType { Name = "Все виды", Id = -1 });
         UpdateData();
     }
     public void UpdateData(string type)
@@ -177,7 +177,7 @@ internal class SearchPageVM : BaseViewModel
             case "Unit":
                 if (SelectedUnit != null)
                 {
-                    Inventory curInv = dc.Inventories.Where(u => u.Id == SelectedUnit.Id).Single();
+                    Inventory curInv = dc.Inventories.Where(u => u.Id == SelectedUnit.Inventory).Single();
                     Fond curFond = dc.Fonds.Where(u => u.Id == curInv.Fond).Single();
                     DocumentPageVM vm = new(SelectedUnit, curFond, curInv);
                     DocumentPage v = new() { DataContext = vm };
@@ -190,6 +190,9 @@ internal class SearchPageVM : BaseViewModel
     {
         int index;
         using ArchiveBdContext dc = new();
+        Fond curFond;
+        Inventory curInv;
+        StorageUnit curUnit;
         switch (command)
         {
             case "Fond":
@@ -200,7 +203,7 @@ internal class SearchPageVM : BaseViewModel
                 fundWindow.ShowDialog(); // открываем окно редактирования фонда
                 break;
             case "Inventory":
-                Fond curFond = dc.Fonds.Where(u => u.Id == SelectedInventory.Id).Single();
+                curFond = dc.Fonds.Where(u => u.Id == SelectedInventory.Fond).Single();
                 index = Inventories.IndexOf(SelectedInventory);
                 InventoryWindow inventoryWindow = new();
                 InventoryWindowVM inventoryVM = new((SelectedInventory as Inventory), this, index, Inventories, curFond);
@@ -208,10 +211,21 @@ internal class SearchPageVM : BaseViewModel
                 inventoryWindow.ShowDialog();
                 break;
             case "Unit":
-
+                curInv = dc.Inventories.Where(u => u.Id == SelectedUnit.Inventory).Single();
+                curFond = dc.Fonds.Single(u => u.Id == curInv.Fond);
+                index = Units.IndexOf(SelectedUnit);
+                StorageUnitWindow unitWindow = new();
+                StorageUnitWindowVM unitVM = new((SelectedUnit as StorageUnit), this, index, Units, curInv);
+                unitWindow.DataContext = unitVM;
+                unitWindow.ShowDialog();
                 break;
             case "Document":
-
+                index = Documents.IndexOf(SelectedDocument);
+                curUnit = dc.StorageUnits.Single(u => u.Id == SelectedDocument.StorageUnit);
+                DocumentWindow docWindow = new();
+                DocumentWindowVM? documentVM = new((SelectedDocument as Document), this, index, Documents, curUnit);
+                docWindow.DataContext = documentVM;
+                docWindow.ShowDialog();
                 break;
         }
     }

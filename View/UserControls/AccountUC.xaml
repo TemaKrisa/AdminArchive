@@ -44,25 +44,25 @@
                 <ui:Button Grid.Row="0" Icon="Dismiss24" Command="{Binding Close}" Appearance="Transparent" HorizontalAlignment="Right" BorderThickness="0" Width="31" Height="25" VerticalAlignment="Top" Grid.Column="1" Margin="10"/>
                 <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0" FontWeight="Bold" FontSize="24"><Run Text="Аккаунт"/></TextBlock>
                 <TextBlock Grid.Row="1"><Run Text="Логин"/></TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="2" Margin="10,0,30,0" Text="{Binding CurUser.Login}"/>
+                <TextBox Grid.Row="1" MaxLength="50" Grid.Column="2" Margin="10,0,30,0" Text="{Binding CurUser.Login}"/>
                 <TextBlock Grid.Row="2" Margin="30,0,10,0"><Run Text="Тип пользователя"/></TextBlock>
                 <ComboBox ItemsSource="{Binding Roles}" SelectedValue="{Binding CurUser.Role}" 
                           SelectedValuePath="Id" DisplayMemberPath="Name" 
                           Grid.Row="2" Grid.Column="2" Margin="10,0,30,0" IsEditable="True"/>
                 <TextBlock Grid.Row="3"><Run Text="Фамилия"/></TextBlock>
-                <TextBox Grid.Row="3" Grid.Column="2" Margin="10,0,30,0" Text="{Binding CurUser.Surname}">
+                <TextBox Grid.Row="3" MaxLength="50" Grid.Column="2" Margin="10,0,30,0" Text="{Binding CurUser.Surname}">
                     <i:Interaction.Behaviors>
                         <Behaviors:RussianLettersOnlyBehavior/>
                     </i:Interaction.Behaviors>
                 </TextBox>
                 <TextBlock Grid.Row="4"><Run Text="Имя"/></TextBlock>
-                <TextBox Grid.Row="4" Grid.Column="1" Margin="10,0,30,0" Text="{Binding CurUser.Name}">
+                <TextBox Grid.Row="4" MaxLength="50" Grid.Column="1" Margin="10,0,30,0" Text="{Binding CurUser.Name}">
                     <i:Interaction.Behaviors>
                         <Behaviors:RussianLettersOnlyBehavior/>
                     </i:Interaction.Behaviors>
                 </TextBox>
                 <TextBlock Grid.Row="5"><Run Text="Отчество"/></TextBlock>
-                <TextBox Grid.Row="5" Grid.Column="1" Margin="10,0,30,0" Text="{Binding CurUser.Midname}">
+                <TextBox Grid.Row="5" MaxLength="50" Grid.Column="1" Margin="10,0,30,0" Text="{Binding CurUser.Midname}">
                     <i:Interaction.Behaviors>
                         <Behaviors:RussianLettersOnlyBehavior/>
                     </i:Interaction.Behaviors>

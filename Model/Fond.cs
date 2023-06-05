@@ -13,7 +13,7 @@ public partial class Fond
 
     public int View { get; set; }
 
-    public int SecretChar { get; set; }
+    public int? SecretChar { get; set; }
 
     public int Acess { get; set; }
 
@@ -83,7 +83,7 @@ public partial class Fond
 
     public virtual ReceiptReason ReceiptReasonNavigation { get; set; } = null!;
 
-    public virtual SecretChar SecretCharNavigation { get; set; } = null!;
+    public virtual SecretChar? SecretCharNavigation { get; set; }
 
     public virtual StorageTime StorageTimeNavigation { get; set; } = null!;
 

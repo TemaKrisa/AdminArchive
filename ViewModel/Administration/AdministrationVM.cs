@@ -90,12 +90,22 @@ public partial class AdministrationVM : BaseViewModel
         {
             try
             {
-                using ArchiveBdContext dc = new();
-                if (dc.Entry(SelectedItem).State == EntityState.Detached) dc.Add(SelectedItem);
-                else dc.Update(SelectedItem);
-                dc.SaveChanges();
-                UpdateData();
-                UCVisibility = System.Windows.Visibility.Collapsed;
+                object obj = SelectedItem;
+                if (obj is { } && (obj.GetType().GetProperty("Name")?.GetValue(obj) as string) != null)
+                {
+                    string name = (obj as dynamic).Name;
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        using ArchiveBdContext dc = new();
+                        if (dc.Entry(SelectedItem).State == EntityState.Detached) dc.Add(SelectedItem);
+                        else dc.Update(SelectedItem);
+                        dc.SaveChanges();
+                        UpdateData();
+                        UCVisibility = System.Windows.Visibility.Collapsed;
+                    }
+                    else ShowMessage("Введите наименование");
+                }
+                else ShowMessage("Введите наименование");
             }
             catch (Exception ex) { ShowMessage(ex.ToString()); }
         }

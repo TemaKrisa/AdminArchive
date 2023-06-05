@@ -15,8 +15,9 @@ partial class InventoryPageVM : PageBaseVM
     public string InventoryEndDate { get => _inventoryEndDate; set { _inventoryEndDate = value; OnPropertyChanged(); } }
     public int InventoryCategory { get => _inventoryCategory; set { _inventoryCategory = value; OnPropertyChanged(); } }
     public ObservableCollection<Inventory> Inventories { get => _inventories; set { _inventories = value; OnPropertyChanged(); } }
+    public ObservableCollection<Category> Categories { get; set; }
     public Inventory SelectedItem { get; set; }
-    public InventoryPageVM(Fond fond) { curFond = fond; UpdateData(); }
+    public InventoryPageVM(Fond fond) { using ArchiveBdContext dc = new(); curFond = fond; Categories = new ObservableCollection<Category>(dc.Categories); UpdateData(); Categories.Insert(0, new Category { Name = "Все категории", Id = -1 }); }
     public InventoryPageVM() { }
     public override void UpdateData() => Inventories = SearchClass.SearchInventory(InventoryName, InventoryStartDate, InventoryEndDate, InventoryCategory, curFond); /*new ObservableCollection<Inventory>(dc.Inventories.Include(u => u.TypeNavigation).Where(u => u.Fond == curFond.Id).OrderBy(u => u.Number).ThenBy(u => u.Literal));*/
     protected override void GoBack() { Setting.mainFrame.Navigate(new FundPage()); }
@@ -43,5 +44,6 @@ partial class InventoryPageVM : PageBaseVM
         newWindow.DataContext = viewModel;
         newWindow.ShowDialog();
     }
-    protected override void ResetSearch() { InventoryName = null; InventoryStartDate = null; InventoryEndDate = null; InventoryCategory = -1; UpdateData(); }
+    protected override void ResetSearch() { InventoryName = null; InventoryStartDate = null; InventoryEndDate = null; InventoryCategory = -1; UCVisibility = System.Windows.Visibility.Collapsed; UpdateData(); }
+    protected override void RemoveItem() { RemoveCommand(SelectedItem); }
 }

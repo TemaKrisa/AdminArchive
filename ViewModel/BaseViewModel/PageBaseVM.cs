@@ -1,15 +1,18 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using AdminArchive.Classes;
+using AdminArchive.Model;
+using CommunityToolkit.Mvvm.Input;
 using System.Windows;
 namespace AdminArchive.ViewModel;
 /// <summary> Базовая ViewModel для страниц фондов, документов, описей, ед.хранения  </summary>
 internal abstract class PageBaseVM : BaseViewModel
 {
     // Команды для добавления, редактирования, открытия, возврата, поиска, сброса поиска, открытия и закрытия окна поиска
-    private RelayCommand _add, _open, _edit, _back, _search, _reset, _openSearch, _closeSearch, _update;
+    private RelayCommand _add, _open, _edit, _back, _search, _reset, _openSearch, _closeSearch, _update, _remove;
     public RelayCommand Add { get { return _add ??= new RelayCommand(AddItem); } }
     public RelayCommand Edit { get { return _edit ??= new RelayCommand(EditItem); } }
     public RelayCommand Open { get { return _open ??= new RelayCommand(OpenItem); } }
     public RelayCommand Back { get { return _back ??= new RelayCommand(GoBack); } }
+    public RelayCommand Remove { get { return _remove ??= new RelayCommand(RemoveItem); } }
     public RelayCommand Search { get { return _search ??= new RelayCommand(SearchCommand); } }
     public RelayCommand Reset { get { return _reset ??= new RelayCommand(ResetSearch); } }
     public RelayCommand OpenSearch { get { return _openSearch ??= new RelayCommand(OpenSearchCommand); } }
@@ -18,6 +21,18 @@ internal abstract class PageBaseVM : BaseViewModel
     // Абстрактные методы, которые должны быть реализованы в производных классах
     ///<summary>Функция, которая вызывается при нажатии на кнопку "Добавить"</summary>
     protected abstract void AddItem();
+    protected abstract void RemoveItem();
+    protected void RemoveCommand(dynamic SelectedItem)
+    {
+        if (SelectedItem != null && MessageBoxs.ShowDialog("Вы точно хотите удалить", "Удаление", MessageBoxs.Buttons.YesNo) == "1")
+            try
+            {
+                using ArchiveBdContext dc = new();
+                dc.Remove(SelectedItem); dc.SaveChanges(); UpdateData();
+                ShowMessage("Удаление прошло успешно", "Удаление");
+            }
+            catch (Exception ex) { ShowMessage(ex.ToString(), "Удаление"); }
+    }
     public abstract void UpdateData();
     ///<summary> Сброс поиска </summary>
     protected abstract void ResetSearch();

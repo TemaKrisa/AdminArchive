@@ -30,22 +30,34 @@ class InventoryWindowVM : EditBaseVM
     public ObservableCollection<Inventory> ItemList { get => itemList; set { itemList = value; OnPropertyChanged(); } }
     #endregion
     #region Навигация
-    private void CheckNav(int index) { IsFirst = index != 0; IsLast = index != ItemList.Count - 1; }
+    private void CheckNav(int index) //Определение доступности кнопок навигации
+    {
+        if (ItemList.Count == 0) { IsFirst = false; IsLast = false; }
+        else { IsFirst = index != 0; IsLast = index != ItemList.Count - 1; }
+    }
     protected override void GoNext()
     {
-        currentIndex++;
-        SelectedItem = (currentIndex < ItemList.Count) ? ItemList[currentIndex] : SelectedItem;
-        IsFirst = currentIndex != 0;
-        IsLast = currentIndex != ItemList.Count - 1;
-        FillTables();
+        try
+        {
+            currentIndex++;
+            SelectedItem = (currentIndex < ItemList.Count) ? ItemList[currentIndex] : SelectedItem;
+            IsFirst = currentIndex != 0;
+            IsLast = currentIndex != ItemList.Count - 1;
+            FillTables();
+        }
+        catch { IsLast = false; }
     }
     protected override void GoPrev()
     {
-        currentIndex--;
-        SelectedItem = (currentIndex >= 0) ? ItemList[currentIndex] : SelectedItem;
-        IsFirst = currentIndex != 0;
-        IsLast = currentIndex != ItemList.Count - 1;
-        FillTables();
+        try
+        {
+            currentIndex--;
+            SelectedItem = (currentIndex >= 0) ? ItemList[currentIndex] : SelectedItem;
+            IsFirst = currentIndex != 0;
+            IsLast = currentIndex != ItemList.Count - 1;
+            FillTables();
+        }
+        catch { IsFirst = false; }
     }
     protected override void GoLast()
     {
@@ -129,42 +141,53 @@ class InventoryWindowVM : EditBaseVM
         };
         CheckNav();
     }
-
+    protected bool ValidateInput(ArchiveBdContext dc)
+    {
+        if (SelectedItem.Movement == 1 && SelectedItem.MovementType == null) { ShowMessage("При выборе движения выбыл, также должен быть выбран тип движения!"); return false; }
+        else if (string.IsNullOrWhiteSpace(SelectedItem.Name)) { ShowMessage("Введите наименование!"); return false; }
+        else if (string.IsNullOrWhiteSpace(SelectedItem.Number)) { ShowMessage("Введите номер!"); return false; }
+        else if (SelectedItem.Type == 0) { ShowMessage("Введите тип!"); return false; }
+        else if (SelectedItem.Carrier == 0) { ShowMessage("Выберите носитель!"); return false; }
+        else if (SelectedItem.Acess == 0) { ShowMessage("Выберите доступ!"); return false; }
+        else if (SelectedItem.Movement == 0) { ShowMessage("Выберите движение!"); return false; }
+        else if (SelectedItem.Category == 0) { ShowMessage("Выберите категорию!"); return false; }
+        else if (SelectedItem.ReceiptReason == 0) { ShowMessage("Выберите основание поступления!"); return false; }
+        else if (SelectedItem.IncomeSource == 0) { ShowMessage("Выберите источник поступления!"); return false; }
+        else if (SelectedItem.StorageTime == 0) { ShowMessage("Введите срок хранения!"); return false; }
+        else if (dc.Inventories.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal && u.Fond == SelectedItem.Fond && u.Id != SelectedItem.Id)) { ShowMessage("Опись с таким номером уже существует"); return false; }
+        if (SelectedItem.Movement == 2) { SelectedItem.MovementType = null; }
+        return true;
+    }
     protected override void SaveItem()
     {
+        using ArchiveBdContext dc = new();
+        if (!ValidateInput(dc)) return;
+        var q = string.Empty;
+        InventoryLog Log;
         try
         {
-            InventoryLog Log;
-            using ArchiveBdContext dc = new();
-            if (SelectedItem.Movement == 1 && SelectedItem.MovementType == null) { ShowMessage("При выборе движения выбыл, также должен быть выбран тип движения!"); }
-            else if (string.IsNullOrWhiteSpace(SelectedItem.Name)) { ShowMessage("Введите наименование описи!"); }
-            else if (string.IsNullOrWhiteSpace(SelectedItem.Number)) { ShowMessage("Введите номер описи!"); }
-            else if (dc.Inventories.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal && u.Id != SelectedItem.Id))
-            { ShowMessage("Опись с таким номером уже существует"); return; }
+            if (SelectedItem.Movement == 2) SelectedItem.MovementType = null;
+            SelectedItem.Fond = curFond.Id;
+            if (!dc.Inventories.Contains(SelectedItem))
+            {
+                dc.Inventories.Add(SelectedItem); q = "Add";
+                Log = new() { Activity = 1, Date = DateTime.Now, Inventory = SelectedItem.Id, User = 1 };
+            }
             else
             {
-                if (!dc.Inventories.Contains(SelectedItem))
-                {
-                    dc.Inventories.Add(SelectedItem);
-                    dc.SaveChanges();
-                    Log = new() { Activity = 1, Date = DateTime.Now, Inventory = SelectedItem.Id, User = 1 };
-                }
-                else
-                {
-                    dc.Update(SelectedItem);
-                    dc.SaveChanges();
-                    Log = new() { Activity = 2, Date = DateTime.Now, Inventory = SelectedItem.Id, User = 1 };
-                }
-                dc.InventoryLogs.Add(Log);
+                dc.Update(SelectedItem);
+                Log = new() { Activity = 2, Date = DateTime.Now, Inventory = SelectedItem.Id, User = 1 };
             }
             dc.SaveChanges();
-            pageVM.UpdateData();
+            Log.Inventory = SelectedItem.Id;
+            dc.InventoryLogs.Add(Log);
+            dc.SaveChanges();
+            pageVM.UpdateData(); //Обновление данных
+            if (q == "Add") { ItemList = pageVM.Inventories; CheckNav(pageVM.Inventories.IndexOf(SelectedItem)); } //Добавление элемента в коллекцию навигации
         }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString());
-        }
+        catch (Exception ex) { ShowMessage(ex.ToString()); }
     }
+
     #region Протокол
     protected override void OpenLog()
     {

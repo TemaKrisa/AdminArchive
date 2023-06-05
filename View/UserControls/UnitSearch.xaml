@@ -45,7 +45,7 @@
                 <ui:Button Grid.Row="0" Icon="Dismiss24" CommandParameter="Unit" Command="{Binding CloseSearch}" Appearance="Transparent" HorizontalAlignment="Right" BorderThickness="0" Width="31" Height="25" VerticalAlignment="Top" Grid.Column="1" Margin="10"/>
                 <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0" FontWeight="Bold" FontSize="24"><Run Text="Поиск единицы хранения"/></TextBlock>
                 <TextBlock Grid.Row="1" Margin="0"><Run Text="Наименование"/></TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding UnitName}" Margin="10,0,30,0"/>
+                <TextBox Grid.Row="1" Grid.Column="2" MaxLength="350" Text="{Binding UnitName}" Margin="10,0,30,0"/>
                 <TextBlock Grid.Row="2" Margin="0"><Run Text="Категория"/></TextBlock>
                 <ComboBox ItemsSource="{Binding UnitCategories}" SelectedValue="{Binding UnitCategory}" SelectedValuePath="Id" DisplayMemberPath="Name" Grid.Row="2" Grid.Column="2" Margin="10,0,30,0"/>
                 <TextBlock Grid.Row="3" Margin="0"><Run Text="Дата начала"/></TextBlock>

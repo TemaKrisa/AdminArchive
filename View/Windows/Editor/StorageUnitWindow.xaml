@@ -71,20 +71,20 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
-                            <TextBlock Margin="160,15,10,15">Номер*</TextBlock>
-                            <ui:NumberBox IntegersOnly="True" Text="{Binding SelectedItem.Number}"
+                        <TextBlock Margin="155,15,10,15">Номер*</TextBlock>
+                        <ui:NumberBox IntegersOnly="True" Text="{Binding SelectedItem.Number}"
                                            Margin="5,0" Grid.Column="1"/>
-                            <TextBox Text="{Binding SelectedItem.Literal}" MaxLength="2"
+                        <TextBox Text="{Binding SelectedItem.Literal}" MaxLength="3"
                                  Width="70" Grid.Column="2"/>
                         <TextBlock Grid.Column="4">Том</TextBlock>
-                        <ui:NumberBox Text="{Binding SelectedItem.Vol}" IntegersOnly="True"  Min="0"
+                        <ui:NumberBox Text="{Binding SelectedItem.Vol}" IntegersOnly="True"  
                             Grid.Column="5"/>
                         <TextBlock Grid.Column="6">Листов:</TextBlock>
                         <ui:NumberBox Text="{Binding SelectedItem.Volume}"
-                            Grid.Column="7" IntegersOnly="True" Min="0"/>
+                            Grid.Column="7" IntegersOnly="True"/>
                     </Grid>
                     <Grid Grid.Row="1">
-                        <TextBlock HorizontalAlignment="Left" Margin="105,0">Заголовок</TextBlock>
+                        <TextBlock HorizontalAlignment="Left" Margin="145,0,0,0">Заголовок</TextBlock>
                         <TextBox Text="{Binding SelectedItem.Title}"  
                                  Margin="210,0,30,0" />
                     </Grid>
@@ -97,7 +97,7 @@
                             <ColumnDefinition Width="170"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Right">Характеристика секретности</TextBlock>
+                        <TextBlock HorizontalAlignment="Left" Margin="131,0,0,0">Секретность</TextBlock>
                         <ComboBox SelectedValue="{Binding SelectedItem.SecretChar}" ItemsSource="{Binding SecretChars}"
                                   Grid.Column="1" />
                         <TextBlock HorizontalAlignment="Center" Grid.Column="2">Доступ</TextBlock>
@@ -137,7 +137,7 @@
                         <TextBlock  Margin="10" HorizontalAlignment="Right">Индекс</TextBlock>
                         <TextBox Grid.Column="1" Text="{Binding SelectedItem.Index}"/>
                         <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="5">Начальная дата</TextBlock>
-                        <ui:NumberBox Grid.Column="3" Margin="0,0,30,0" IntegersOnly="True" Min="0" Text="{Binding SelectedItem.StartDate}"/>
+                        <ui:NumberBox Grid.Column="3" MaxLength="4" Margin="0,0,30,0" IntegersOnly="True" Text="{Binding SelectedItem.StartDate}"/>
                     </Grid>
                     <Grid Grid.Row="6">
                         <Grid.ColumnDefinitions>
@@ -146,12 +146,11 @@
                             <ColumnDefinition Width="210"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Center">Причина ограничения доступа</TextBlock>
+                        <TextBlock HorizontalAlignment="Left" Margin="29,0,0,0">Причина ограничения доступа</TextBlock>
                         <ComboBox SelectedValue="{Binding SelectedItem.CharRestrict}" ItemsSource="{Binding CharRestricts}"
                                   Grid.Column="1"/>
                         <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="5">Конечная дата</TextBlock>
-                        <ui:NumberBox Grid.Column="3" Margin="0,0,30,0" IntegersOnly="True" Min="0" Text="{Binding SelectedItem.EndDate}"/>
-                        
+                        <ui:NumberBox Grid.Column="3"  MaxLength="4" Margin="0,0,30,0" IntegersOnly="True" Text="{Binding SelectedItem.EndDate}"/>
                     </Grid>
                     <Grid Grid.Row="7">
                         <Grid.ColumnDefinitions>
@@ -184,7 +183,7 @@
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="10">Примечание</TextBlock>
-                        <TextBox Text="{Binding SelectedItem.Note}"
+                        <TextBox Text="{Binding SelectedItem.Note}"  TextWrapping="Wrap"
                                  Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,20" MaxLength="350" VerticalAlignment="Stretch"/>
                     </Grid>
                 </Grid>
@@ -212,45 +211,85 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
-                        <RowDefinition/>                        
+                        <RowDefinition/>
                         <RowDefinition Height="25"/>
-                        <RowDefinition/>                        
+                        <RowDefinition/>
                         <RowDefinition Height="25"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock FontWeight="DemiBold" Margin="30,0" FontSize="18">Физ.Состояние</TextBlock>
-                    <ui:Button Grid.Row="1" Content="Добавить" VerticalAlignment="Top" Margin="30,0"/>
-                    <ui:DataGrid Grid.Row="1" Margin="30,37,30,5" IsReadOnly="True" AutoGenerateColumns="False">
+                    <ui:Button Grid.Row="1" Command="{Binding AddCondition}" Content="Добавить" VerticalAlignment="Top" Margin="30,0"/>
+                    <ui:DataGrid ItemsSource="{Binding UnitConditions}" Grid.Row="1" Margin="30,37,30,5" IsReadOnly="True" AutoGenerateColumns="False">
                         <ui:DataGrid.Columns>
-                            <DataGridTextColumn Header="Дата"/>
-                            <DataGridTextColumn Header="Состояние"/>
-                            <DataGridTextColumn Header="Кол-во листов"/>
-                            <DataGridTextColumn Header="Примечание" Width="*"/>
+                            <DataGridTextColumn Header="Состояние" Binding="{Binding ConditionNavigation.Name}"/>
+                            <DataGridTextColumn Header="Кол-во листов" Binding="{Binding SheetsNumber}"/>
+                            <DataGridTextColumn Header="Примечание" Width="*" Binding="{Binding Note}"/>
+                            <DataGridTemplateColumn Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Icon="Edit24" Width="50"  Command="{Binding DataContext.EditCondition, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Icon="Delete24" Width="50"  Command="{Binding DataContext.RemoveCondition, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </ui:DataGrid.Columns>
                     </ui:DataGrid>
                     <TextBlock Grid.Row="2" FontWeight="DemiBold" Margin="30,0" FontSize="18">Требуемые работы</TextBlock>
-                    <ui:Button Grid.Row="3" Content="Добавить" VerticalAlignment="Top" Margin="30,0"/>
-                    <ui:DataGrid Grid.Row="3" Margin="30,37,30,5" IsReadOnly="True" AutoGenerateColumns="False">
+                    <ui:Button Grid.Row="3" Command="{Binding AddRequiredWork}" Content="Добавить" VerticalAlignment="Top" Margin="30,0"/>
+                    <ui:DataGrid ItemsSource="{Binding RequiredWorks}" Grid.Row="3" Margin="30,37,30,5" IsReadOnly="True" AutoGenerateColumns="False">
                         <ui:DataGrid.Columns>
-                            <DataGridTextColumn Header="Дата"/>
-                            <DataGridTextColumn Header="Требуемая работа"/>
-                            <DataGridTextColumn Header="Примечание" Width="*"/>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding CheckDate,StringFormat=\{0:dd.MM.yy\}}"/>
+                            <DataGridTextColumn Header="Требуемая работа" Binding="{Binding WorkNavigation.Name}"/>
+                            <DataGridTextColumn Header="Примечание" Width="*" Binding="{Binding Note}"/>
+                            <DataGridTemplateColumn Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Icon="Edit24" Width="50"  Command="{Binding DataContext.EditRequiredWork, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Icon="Delete24" Width="50"  Command="{Binding DataContext.RemoveRequiredWork, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </ui:DataGrid.Columns>
                     </ui:DataGrid>
                     <TextBlock Grid.Row="4" FontWeight="DemiBold" Margin="30,0" FontSize="18">Проводимые работы</TextBlock>
-                    <ui:Button Grid.Row="5" Content="Добавить" VerticalAlignment="Top" Margin="30,0"/>
-                    <ui:DataGrid Grid.Row="5" Margin="30,37,30,5" IsReadOnly="True" AutoGenerateColumns="False">
+                    <ui:Button Grid.Row="5" Command="{Binding AddCompletedWork}" Content="Добавить" VerticalAlignment="Top" Margin="30,0"/>
+                    <ui:DataGrid ItemsSource="{Binding CompletedWorks}" Grid.Row="5" Margin="30,37,30,5" IsReadOnly="True" AutoGenerateColumns="False">
                         <ui:DataGrid.Columns>
-                            <DataGridTextColumn Header="Дата"/>
-                            <DataGridTextColumn Header="Проводимая работа"/>
-                            <DataGridTextColumn Header="Примечание" Width="*"/>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding Date,StringFormat=\{0:dd.MM.yy\}}"/>
+                            <DataGridTextColumn Header="Проводимая работа" Binding="{Binding WorkNavigation.Name}"/>
+                            <DataGridTextColumn Header="Примечание" Width="*" Binding="{Binding Note}"/>
+                            <DataGridTemplateColumn Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Icon="Edit24" Width="50"  Command="{Binding DataContext.EditCompletedWork, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Icon="Delete24" Width="50"  Command="{Binding DataContext.RemoveCompletedWork, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </ui:DataGrid.Columns>
                     </ui:DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Особенности" Width="150">
                 <Grid>
-
                     <Button Command="{Binding AddFeature}"  VerticalAlignment="Top" Margin="30,12,0,0" Content="Добавить"/>
                     <DataGrid ItemsSource="{Binding UnitFeatures}" IsReadOnly="True" AutoGenerateColumns="False"  SelectedItem="{Binding SelectedFeature}"
                     Margin="30,49,30,30">
@@ -277,6 +316,12 @@
         </TabControl>
         <uc:FeatureUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
  Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding FeatureVisibility}"/>
+        <uc:UnitCompletedWorkUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding CompletedWorkVisibility}"/>
+        <uc:UnitRequiredWork DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding RequiredWorkVisibility}"/>
+        <uc:UnitConditionUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding ConditionVisibility}"/>
         <uc:LogUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
  Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
     </Grid>

@@ -1,5 +1,4 @@
-﻿using AdminArchive.Classes;
-using AdminArchive.Model;
+﻿using AdminArchive.Model;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
@@ -57,29 +56,33 @@ class FundWindowVM : EditBaseVM
     public ICommand CreatePeriod => new RelayCommand(CreatePeriodCommand);
     #endregion
     #region Навигация
-    private void CheckNav(int index) { IsFirst = index != 0; IsLast = index != ItemList.Count - 1; }
-    private void CheckNav(string q)
+    private void CheckNav(int index) //Определение доступности кнопок навигации
     {
-        if (q == "Add")
-        {
-            ItemList = pageVM.Fonds;
-            CheckNav(pageVM.Fonds.IndexOf(SelectedItem));
-        }
+        if (ItemList.Count == 0) { IsFirst = false; IsLast = false; }
+        else { IsFirst = index != 0; IsLast = index != ItemList.Count - 1; }
     }
     protected override void GoNext()
     {
-        currentIndex++;
-        SelectedItem = (currentIndex < ItemList.Count) ? ItemList[currentIndex] : SelectedItem;
-        IsFirst = currentIndex != 0; IsLast = currentIndex != ItemList.Count - 1;
-        FillTables();
+        try
+        {
+            currentIndex++;
+            SelectedItem = (currentIndex < ItemList.Count) ? ItemList[currentIndex] : SelectedItem;
+            IsFirst = currentIndex != 0; IsLast = currentIndex != ItemList.Count - 1;
+            FillTables();
+        }
+        catch { IsLast = false; }
     }
     protected override void GoPrev()
     {
-        currentIndex--;
-        SelectedItem = (currentIndex >= 0) ? ItemList[currentIndex] : SelectedItem;
-        IsFirst = currentIndex != 0;
-        IsLast = currentIndex != ItemList.Count - 1;
-        FillTables();
+        try
+        {
+            currentIndex--;
+            SelectedItem = (currentIndex >= 0) ? ItemList[currentIndex] : SelectedItem;
+            IsFirst = currentIndex != 0;
+            IsLast = currentIndex != ItemList.Count - 1;
+            FillTables();
+        }
+        catch { IsFirst = false; }
     }
     protected override void GoFirst()
     {
@@ -145,8 +148,7 @@ class FundWindowVM : EditBaseVM
                 AddItem();
             }
         }
-        catch (Exception e)
-        { ShowMessage(e.Message); }
+        catch (Exception e) { ShowMessage(e.Message); }
     }
     private void FillTables()
     {
@@ -162,8 +164,7 @@ class FundWindowVM : EditBaseVM
         SelectedItem = new Fond() { Acess = 1, Category = 4, View = 2, Movement = 2, SecretChar = 1, HistoricalPeriod = 2, StorageTime = 1, IncomeSource = 6 };
         CheckNav();
     }
-    string q = "";
-    private bool ValidateInput()
+    private bool ValidateInput(ArchiveBdContext dc)
     {
         if (SelectedItem.Movement == 1 && SelectedItem.MovementType == null) { ShowMessage("При выборе движения выбыл, также должен быть выбран тип движения!"); return false; }
         else if (string.IsNullOrWhiteSpace(SelectedItem.Name)) { ShowMessage("Введите наименование фонда!"); return false; }
@@ -172,20 +173,24 @@ class FundWindowVM : EditBaseVM
         else if (SelectedItem.DocType == 0) { ShowMessage("Выберите тип документов!"); return false; }
         else if (SelectedItem.View == 0) { ShowMessage("Выберите вид!"); return false; }
         else if (SelectedItem.Type == 0) { ShowMessage("Выберите тип фонда!"); return false; }
-        else if (SelectedItem.ReceiptReason == 0) { ShowMessage("Выберите источник поступления!"); return false; }
+        else if (SelectedItem.ReceiptReason == 0) { ShowMessage("Выберите основание поступелиня!"); return false; }
+        else if (SelectedItem.SecretChar == 0) { ShowMessage("Выберите секретность!"); return false; }
+        else if (SelectedItem.CharRestrict == 0) { ShowMessage("Выберите причину огранеичения доступа!"); return false; }
+        else if (SelectedItem.Acess == 0) { ShowMessage("Выберите доступ!"); return false; }
+        else if (SelectedItem.StorageTime == 0) { ShowMessage("Выберите время хранения!"); return false; }
+        else if (SelectedItem.IncomeSource == 0) { ShowMessage("Выберите источник поступления!"); return false; }
+        else if (SelectedItem.Number == 0) ShowMessage("Выберите номер!");
+        else if (dc.Fonds.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal && u.Index == SelectedItem.Index && u.Id != SelectedItem.Id)) { ShowMessage("Фонд с таким номером уже существует"); return false; }
+        if (SelectedItem.Movement == 2) { SelectedItem.MovementType = null; }
         return true;
     }
     protected override void SaveItem() //Сохранение фонда
     {
-        if (!ValidateInput()) return;
+        using ArchiveBdContext dc = new();
+        if (!ValidateInput(dc)) return;
+        var q = string.Empty;
         var c = SelectedItem.Category;
         FondLog Log;
-        using ArchiveBdContext dc = new();
-        if (dc.Fonds.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal && u.Index == SelectedItem.Index && u.Id != SelectedItem.Id))
-        {
-            ShowMessage("Фонд с таким номером уже существует");
-            return;
-        }
         using var transaction = dc.Database.BeginTransaction();
         try
         {
@@ -199,54 +204,21 @@ class FundWindowVM : EditBaseVM
             {
                 dc.Update(SelectedItem);
                 Log = new() { Activity = 2, Date = DateTime.Now, User = 1 };
-                q = "";
             }
             dc.SaveChanges();
-            //Сохранение переименований фондов
-            //if (FondNames.Count != 0)
-            //{
-            //    dc.FondNames.UpdateRange(FondNames.Where(fn => dc.FondNames.Any(u => u.Id == fn.Id)));
-            //    foreach (var item in FondNames.Where(fn => !dc.FondNames.Any(u => u.Id == fn.Id)))
-            //    {
-            //        FondName f = new() { Name = item.Name, Fond = SelectedItem.Id, EndDate = item.EndDate, StartDate = item.StartDate, Note = item.Note };
-            //        dc.FondNames.Add(f);
-            //    }
-            //    dc.FondNames.RemoveRange(FondNamesDelete.Where(fnd => dc.FondNames.Any(u => u.Id == fnd.Id)));
-            //}
-            UpdateAndAddItems(dc.FondNames, FondNames, FondNamesDelete, (item) => new UnitCompletedWork { Work = item.Work, Note = item.Note, Date = item.Date, Unit = SelectedItem.Id });
-            //Сохранение незадокументированных периодов
-            if (UndocumentPeriods.Count != 0)
-            {
-                dc.UndocumentPeriods.UpdateRange(UndocumentPeriods.Where(up => dc.UndocumentPeriods.Any(u => u.Id == up.Id)));
-                dc.UndocumentPeriods.AddRange(UndocumentPeriods.Where(up => !dc.UndocumentPeriods.Any(u => u.Id == up.Id)));
-                foreach (var item in UndocumentPeriods.Where(fn => !dc.UndocumentPeriods.Any(u => u.Id == fn.Id)))
-                {
-                    UndocumentPeriod p = new() { Fond = SelectedItem.Id, EndDate = item.EndDate, StartDate = item.StartDate, Note = item.Note, Reason = item.Reason, DocumentLocation = item.DocumentLocation };
-                    dc.UndocumentPeriods.Add(p);
-                }
-                dc.UndocumentPeriods.RemoveRange(UndocumentPeriodsDelete.Where(upd => dc.UndocumentPeriods.Any(u => u.Id == upd.Id)));
-            }
-            SelectedItem.Category = c;
+            //Сохраняем переименования фондов
+            UpdateAndAddItems(dc.FondNames, FondNames, FondNamesDelete, (item) => new FondName { Name = item.Name, Fond = SelectedItem.Id, EndDate = item.EndDate, StartDate = item.StartDate, Note = item.Note });
+            //Сохраняем незадокументированные периоды
+            UpdateAndAddItems(dc.UndocumentPeriods, UndocumentPeriods, UndocumentPeriodsDelete, (item) => new UndocumentPeriod { Fond = SelectedItem.Id, EndDate = item.EndDate, StartDate = item.StartDate, Note = item.Note, Reason = item.Reason, DocumentLocation = item.DocumentLocation });
+            SelectedItem.Category = c; //Перезапись категории
             Log.Fond = SelectedItem.Id;
             dc.FondLogs.Add(Log);
             dc.SaveChanges();
             transaction.Commit();
-            CheckNav(q);
-            pageVM.UpdateData();
-            q = "";
+            pageVM.UpdateData();//Обновление данных
+            if (q == "Add") { ItemList = pageVM.Fonds; CheckNav(pageVM.Fonds.IndexOf(SelectedItem)); } //Добавление элемента в коллекцию навигации
         }
         catch (Exception ex) { transaction.Rollback(); ShowMessage(ex.ToString()); }
-    }
-
-    private void UpdateAndAddItems<T>(DbSet<T> dbSet, ObservableCollection<T> items, ObservableCollection<T> itemsToDelete, Func<T, T> createNewItem) where T : class, IHasId
-    {
-        if (items.Count == 0) return;
-        dbSet.UpdateRange(items.Where(item => dbSet.Any(u => u.Id == item.Id)));
-        foreach (var item in items.Where(item => !dbSet.Any(u => u.Id == item.Id)))
-        {
-            dbSet.Add(createNewItem(item));
-        }
-        dbSet.RemoveRange(itemsToDelete.Where(item => dbSet.Any(u => u.Id == item.Id)));
     }
     #region Протокол
     protected override void OpenLog() //Открытие протокола
@@ -270,71 +242,64 @@ class FundWindowVM : EditBaseVM
     }
     private void CreateRenameCommand()
     {
-        Action = ActionType.Add;
         SelectedName = new FondName();
         EditRenameCommand();
+        Action = ActionType.Add;
     }
     private FondName editingName;
     public FondName EditingName { get => editingName; set { editingName = value; OnPropertyChanged(); } }
     private void SaveRenameCommand()
     {
         if (EditingName != null)
-            if (EditingName.StartDate > EditingName.EndDate) ShowMessage("Начальная дата превышает конечную!");
+            if (String.IsNullOrWhiteSpace(EditingName.Name)) ShowMessage("Введите наименование!");
+            else if (EditingName.StartDate > EditingName.EndDate) ShowMessage("Начальная дата превышает конечную!");
             else
             {
                 if (Action == ActionType.Add) { FondNames.Add(EditingName); }
-                else
-                    FondNames[FondNames.IndexOf(FondNames.FirstOrDefault(u => u.Id == EditingName.Id))] = EditingName;
+                else FondNames[Index] = EditingName;
                 CloseLog();
+                Action = ActionType.Change;
             }
-        Action = ActionType.Change;
     }
     private void EditRenameCommand()
     {
-        if (SelectedName != null)
-        {
-            EditingName = new FondName()
-            {
-                Id = SelectedName.Id,
-                Fond = SelectedName.Fond,
-                Name = SelectedName.Name,
-                EndDate = SelectedName.EndDate,
-                StartDate = SelectedName.StartDate,
-                Note = SelectedName.Note
-            };
-            RenameVisibility = Visibility.Visible;
-        }
+        Index = FondNames.IndexOf(SelectedName);
+        EditingName = new FondName() { Id = SelectedName.Id, Fond = SelectedName.Fond, Name = SelectedName.Name, EndDate = SelectedName.EndDate, StartDate = SelectedName.StartDate, Note = SelectedName.Note };
+        Action = ActionType.Change;
+        RenameVisibility = Visibility.Visible;
     }
     #endregion
     #region Незадокументированные периоды
+    private void CreatePeriodCommand()
+    {
+        SelectedPeriod = new UndocumentPeriod();
+        EditPeriodCommand();
+        Action = ActionType.Add;
+    }
     private void EditPeriodCommand()
     {
+        Action = ActionType.Change;
+        Index = UndocumentPeriods.IndexOf(SelectedPeriod);
         EditingPeriod = new UndocumentPeriod() { Id = SelectedPeriod.Id, DocumentLocation = SelectedPeriod.DocumentLocation, StartDate = SelectedPeriod.StartDate, EndDate = SelectedPeriod.EndDate, Reason = SelectedPeriod.Reason, Fond = SelectedItem.Id, Note = SelectedPeriod.Note, };
         PeriodVisibility = Visibility.Visible;
     }
     private void SavePeriodCommand()
     {
         if (EditingPeriod != null)
-            if (EditingPeriod.StartDate > EditingPeriod.EndDate) ShowMessage("Начальная дата превышает конечную!");
+            if (String.IsNullOrWhiteSpace(EditingPeriod.Reason)) ShowMessage("Укажите причину!");
+            else if (EditingPeriod.StartDate > EditingPeriod.EndDate) ShowMessage("Начальная дата превышает конечную!");
             else
             {
                 if (Action == ActionType.Add) { UndocumentPeriods.Add(EditingPeriod); }
-                else
-                    UndocumentPeriods[UndocumentPeriods.IndexOf(UndocumentPeriods.FirstOrDefault(u => u.Id == EditingPeriod.Id))] = EditingPeriod;
+                else UndocumentPeriods[Index] = EditingPeriod;
                 CloseLog();
+                Action = ActionType.Change;
             }
-        Action = ActionType.Change;
     }
     private void RemovePeriodCommand()
     {
         if (SelectedPeriod == null || SelectedPeriod.Id == 0) return;
         UndocumentPeriodsDelete.Add(SelectedPeriod); UndocumentPeriods.Remove(SelectedPeriod); CloseLog();
-    }
-    private void CreatePeriodCommand()
-    {
-        SelectedPeriod = new UndocumentPeriod();
-        Action = ActionType.Add;
-        EditPeriodCommand();
     }
     #endregion
 }

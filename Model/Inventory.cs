@@ -21,7 +21,7 @@ public partial class Inventory
 
     public int Acess { get; set; }
 
-    public int SecretChar { get; set; }
+    public int? SecretChar { get; set; }
 
     public string? Note { get; set; }
 
@@ -67,7 +67,7 @@ public partial class Inventory
 
     public virtual ReceiptReason ReceiptReasonNavigation { get; set; } = null!;
 
-    public virtual SecretChar SecretCharNavigation { get; set; } = null!;
+    public virtual SecretChar? SecretCharNavigation { get; set; }
 
     public virtual StorageTime StorageTimeNavigation { get; set; } = null!;
 

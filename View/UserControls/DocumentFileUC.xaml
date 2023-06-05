@@ -41,11 +41,11 @@
                 <ui:Button Grid.Row="0" Icon="Dismiss24" Command="{Binding CloseUC}" Appearance="Transparent" HorizontalAlignment="Right" BorderThickness="0" Width="31" Height="25" VerticalAlignment="Top" Grid.Column="1" Margin="10"/>
                 <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0" FontWeight="Bold" FontSize="24"><Run Text="Файл документа"/></TextBlock>
                 <TextBlock Grid.Row="1" Margin="0"><Run Text="Наименование"/></TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding EditFile.FileName}" Margin="10,0,30,0"/>
+                <TextBox Grid.Row="1" MaxLength="50" Grid.Column="2" Text="{Binding EditFile.FileName}" Margin="10,0,30,0"/>
                 <TextBlock Grid.Row="2" Margin="0">Файл</TextBlock>
                 <ui:Button Grid.Row="2" Command="{Binding ChooseFile}"  Grid.Column="2" Margin="10,0,30,0" Icon="Copy24" IconFilled="True" Content="Выбрать файл" HorizontalAlignment="Stretch"/>
                 <TextBlock Grid.Row="3" Margin="0"><Run Text="Примечание"/></TextBlock>
-                <ui:TextBox Text="{Binding EditFile.Description}" MaxLength="350" Margin="10,10,30,10" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Stretch"  Grid.Column="1"/>
+                <ui:TextBox Text="{Binding EditFile.Description}" MaxLength="150" Margin="10,10,30,10" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Stretch"  Grid.Column="1"/>
                 <Grid Grid.Row="7" Grid.ColumnSpan="2" Margin="30,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>

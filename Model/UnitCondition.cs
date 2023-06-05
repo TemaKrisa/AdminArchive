@@ -9,7 +9,7 @@ public partial class UnitCondition
 
     public int Condition { get; set; }
 
-    public int SheetsNumber { get; set; }
+    public string SheetsNumber { get; set; } = null!;
 
     public string? Note { get; set; }
 

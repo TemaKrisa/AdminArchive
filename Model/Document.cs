@@ -11,11 +11,11 @@ public partial class Document
 
     public DateTime Date { get; set; }
 
-    public int SecretChar { get; set; }
+    public int? SecretChar { get; set; }
 
     public string? Applications { get; set; }
 
-    public int? Reproduction { get; set; }
+    public int Reproduction { get; set; }
 
     public string? Note { get; set; }
 
@@ -33,7 +33,7 @@ public partial class Document
 
     public int? Authenticity { get; set; }
 
-    public int? Number { get; set; }
+    public int Number { get; set; }
 
     public virtual Authenticity? AuthenticityNavigation { get; set; }
 
@@ -43,9 +43,9 @@ public partial class Document
 
     public virtual ICollection<DocumentLog> DocumentLogs { get; set; } = new List<DocumentLog>();
 
-    public virtual Reproduction? ReproductionNavigation { get; set; }
+    public virtual Reproduction ReproductionNavigation { get; set; } = null!;
 
-    public virtual SecretChar SecretCharNavigation { get; set; } = null!;
+    public virtual SecretChar? SecretCharNavigation { get; set; }
 
     public virtual StorageUnit StorageUnitNavigation { get; set; } = null!;
 

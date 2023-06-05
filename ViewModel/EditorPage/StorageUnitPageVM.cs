@@ -63,10 +63,17 @@ class StorageUnitPageVM : PageBaseVM
     {
         if (SelectedItem != null)
         {
-            DocumentPageVM vm = new(SelectedItem, curFond, curInv);
-            DocumentPage v = new() { DataContext = vm };
-            Setting.mainFrame?.Navigate(v);
+            try
+            {
+
+                DocumentPageVM vm = new(SelectedItem, curFond, curInv);
+                DocumentPage v = new() { DataContext = vm };
+                Setting.mainFrame?.Navigate(v);
+            }
+            catch (Exception ex) { ShowMessage(ex.ToString()); }
         }
     }
     protected override void ResetSearch() { UpdateData(); }
+
+    protected override void RemoveItem() { RemoveCommand(SelectedItem); }
 }

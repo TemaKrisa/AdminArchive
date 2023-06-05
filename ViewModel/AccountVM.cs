@@ -12,18 +12,14 @@ namespace AdminArchive.ViewModel
         private bool IsInitialized = false;
         private ObservableCollection<User> users;
         private ObservableCollection<Role> roles;
-        public ObservableCollection<User> Users //Список отображающий пользователей
-        { get => users; set { users = value; OnPropertyChanged(); } }
+        public ObservableCollection<User> Users { get => users; set { users = value; OnPropertyChanged(); } }
 
         private User curUser, selectedUser;
-        public User CurUser
-        { get => curUser; set { curUser = value; OnPropertyChanged(); } }
+        public User CurUser { get => curUser; set { curUser = value; OnPropertyChanged(); } }
 
-        public User SelectedUser
-        { get => selectedUser; set { selectedUser = value; OnPropertyChanged(); } }
+        public User SelectedUser { get => selectedUser; set { selectedUser = value; OnPropertyChanged(); } }
 
-        public ObservableCollection<Role> Roles
-        { get => roles; set { roles = value; OnPropertyChanged(); } }
+        public ObservableCollection<Role> Roles { get => roles; set { roles = value; OnPropertyChanged(); } }
         #endregion
         protected void AddItem() //Открытие UserControl
         {

@@ -4,14 +4,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:AdminArchive.Classes"
     xmlns:uc="clr-namespace:AdminArchive.View.UserControls"
     xmlns:vm="clr-namespace:AdminArchive.ViewModel"
     x:Class="AdminArchive.View.Windows.DocumentWindow" x:Name="Window" mc:Ignorable="d"
         Background="{DynamicResource ApplicationBackgroundBrush}" ExtendsContentIntoTitleBar="True"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}" WindowBackdropType="Mica"
         WindowCornerPreference="Round" WindowStartupLocation="CenterScreen"
-        Width="900">
+        MinWidth="900" MinHeight="700">
     <ui:UiWindow.Resources>
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -57,8 +56,7 @@
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="50"/>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -68,9 +66,9 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"><Run Text="Номер*"/></TextBlock>
-                        <ui:NumberBox IntegersOnly="True" Min="1"   Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding SelectedItem.Number}" Margin="10,0,110,0"/>
+                        <ui:NumberBox IntegersOnly="True"   Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding SelectedItem.Number}" Margin="10,0,110,0"/>
                         <TextBlock Grid.Column="2"><Run Text="Дата документа"/></TextBlock>
-                        <DatePicker Grid.Column="3" Text="{Binding SelectedItem.Date, TargetNullValue=null}" />
+                        <DatePicker Grid.Column="3" SelectedDate="{Binding SelectedItem.Date}" />
                     </Grid>
                     <Grid Grid.Row="1" >
                         <Grid.ColumnDefinitions>
@@ -79,15 +77,15 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock VerticalAlignment="Center"><Run Text="Заголовок"/></TextBlock>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedItem.Name}" TextWrapping="Wrap" AcceptsReturn="True" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedItem.Name}" TextWrapping="Wrap" AcceptsReturn="True" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" MaxLength="250"/>
                         <Border Grid.Column="2" HorizontalAlignment="Right" Width="300" CornerRadius="6" Margin="10,10,0,10" BorderThickness="1" BorderBrush="Gray">
                             <Grid>
                                 <TextBlock Margin="10,13,192,0" FontSize="14" VerticalAlignment="Top"><Run Text="Кол-во листов"/></TextBlock>
-                                <ui:NumberBox Min="1"  IntegersOnly="True" Text="{Binding SelectedItem.Vol}" Margin="129,5,10,0" VerticalAlignment="Top"/>
+                                <ui:NumberBox IntegersOnly="True" Text="{Binding SelectedItem.Vol}" Margin="129,5,10,0" VerticalAlignment="Top"/>
                                 <TextBlock Margin="10,70,185,0" FontSize="14" VerticalAlignment="Top"><Run Text="Номера листов"/></TextBlock>
                                 <TextBlock Margin="129,58,155,51" FontSize="14" RenderTransformOrigin="-0.214,0.488"><Run Text="C"/></TextBlock>
-                                <ui:NumberBox IntegersOnly="True" Min="0" Margin="152,50,10,0" VerticalAlignment="Top" Text="{Binding SelectedItem.VolStart}"/>
-                                <ui:NumberBox IntegersOnly="True" Min="1" Margin="152,90,10,0" VerticalAlignment="Top" Text="{Binding SelectedItem.VolEnd}"/>
+                                <ui:NumberBox IntegersOnly="True"  Margin="152,50,10,0" VerticalAlignment="Top" Text="{Binding SelectedItem.VolStart}"/>
+                                <ui:NumberBox IntegersOnly="True" Margin="152,90,10,0" VerticalAlignment="Top" Text="{Binding SelectedItem.VolEnd}"/>
                                 <TextBlock Margin="125,99,151,10" FontSize="14"><Run Language="ru-ru" Text="По"/></TextBlock>
                             </Grid>
                         </Border>
@@ -113,39 +111,27 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock><Run Text="Место события"/></TextBlock>
-                        <TextBox Grid.Column="1" />
-                        <TextBlock Grid.Column="2"><Run Text="Дата события"/></TextBlock>
-                        <DatePicker Grid.Column="3" Text="{Binding SelectedItem.Date, TargetNullValue=null}"/>
-                    </Grid>
-                    <Grid Grid.Row="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
                         <TextBlock><Run Text="Подлинность"/></TextBlock>
                         <ComboBox Grid.Column="1" SelectedValue="{Binding SelectedItem.Authenticity}" ItemsSource="{Binding Authenticities  }"/>
                         <TextBlock Grid.Column="2"><Run Text="Способ воспроизведения"/></TextBlock>
                         <ComboBox SelectedValue="{Binding SelectedItem.Reproduction}" ItemsSource="{Binding Reproductions}"
                                   Grid.Column="3" />
                     </Grid>
-                    <Grid Grid.Row="5">
+                    <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock><Run Text="Приложения"/></TextBlock>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedItem.Applications}" Margin="5,0,0,0" />
+                        <TextBox Grid.Column="1" Text="{Binding SelectedItem.Applications}" Margin="5,0,0,0" MaxLength="50"/>
                     </Grid>
-                    <Grid Grid.Row="8">
+                    <Grid Grid.Row="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Примечание:" VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="1" Text="{Binding SelectedItem.Note}"/>
+                        <TextBox Grid.Column="1" Text="{Binding SelectedItem.Note}" VerticalAlignment="Stretch" MaxLength="250" Margin="0,20"/>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -154,13 +140,34 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock><Run Text="Аннотация"/></TextBlock>
-                    <TextBox Margin="143,0,17,0"/>
+                    <TextBlock Margin="10,30,0,0" VerticalAlignment="Top"><Run Text="Аннотация"/></TextBlock>
+                    <TextBox Margin="143,30,17,0" VerticalAlignment="Stretch" Text="{Binding SelectedItem.Note}" MaxLength="350"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Особенности" Width="150">
+                <Grid>
+                    <Button Command="{Binding AddFeature}"  VerticalAlignment="Top" Margin="30,12,0,0" Content="Добавить"/>
+                    <DataGrid ItemsSource="{Binding DocFeatures}" IsReadOnly="True" AutoGenerateColumns="False"  SelectedItem="{Binding SelectedFeature}"
+                    Margin="30,49,30,30">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Особенность" Width="*"/>
+                            <DataGridTemplateColumn Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Icon="Edit24" Width="50"  Command="{Binding DataContext.EditFeature, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:Button Icon="Delete24" Width="50"  Command="{Binding DataContext.RemoveFeature, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Файлы">
@@ -203,6 +210,8 @@
         </TabControl>
         <uc:DocumentFileUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
  Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding FileVisibility}"/>
+        <uc:FeatureUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
+ Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding FeatureVisibility}"/>
         <uc:LogUC DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}"
  Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding UCVisibility}"/>
     </Grid>

@@ -7,7 +7,7 @@ public partial class StorageUnit
 {
     public int Id { get; set; }
 
-    public int Vol { get; set; }
+    public int? Vol { get; set; }
 
     public int Volume { get; set; }
 
@@ -51,7 +51,7 @@ public partial class StorageUnit
 
     public string? Note { get; set; }
 
-    public int Category { get; set; }
+    public int? Category { get; set; }
 
     public int? SecretChar { get; set; }
 
@@ -67,7 +67,7 @@ public partial class StorageUnit
 
     public virtual Carrier CarrierNavigation { get; set; } = null!;
 
-    public virtual UnitCategory CategoryNavigation { get; set; } = null!;
+    public virtual UnitCategory? CategoryNavigation { get; set; }
 
     public virtual CharRestrict? CharRestrictNavigation { get; set; }
 

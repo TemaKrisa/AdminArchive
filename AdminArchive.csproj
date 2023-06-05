@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Help.chm" />
     <None Remove="Resources\Logo.png" />
     <None Remove="Resources\Отчёт о работе сотрудников на 30 мая 2023.rtf" />
   </ItemGroup>
@@ -53,6 +54,9 @@
     <Resource Include="Resources\Logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <EmbeddedResource Include="Help.chm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -108,10 +112,6 @@
 
   <ItemGroup>
     <None Remove="C:\Users\A S\.nuget\packages\wpfmediakit\2.2.0\build\EVRPresenter64.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModel\SearchBase\" />
   </ItemGroup>
 
 </Project>
