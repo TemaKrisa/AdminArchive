@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AdminArchive.Classes;
+using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace AdminArchive.Model;
 
@@ -90,11 +92,31 @@ public partial class ArchiveBdContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<Work> Works { get; set; }
-
+    string StringCon = "";
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ArchiveBD;Integrated Security=True");
-
+    {
+        try
+        {
+            StringCon = AppSettings.Default.ConString;
+            if (string.IsNullOrWhiteSpace(StringCon))
+                StringCon = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ConnectionString.txt")) ?? "";
+            optionsBuilder.UseSqlServer(StringCon).EnableSensitiveDataLogging();
+            AppSettings.Default.ConString = StringCon;
+        }
+        catch
+        {
+            try
+            {
+                StringCon = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ConnectionString.txt")) ?? "";
+                optionsBuilder.UseSqlServer(StringCon);
+                AppSettings.Default.ConString = StringCon;
+            }
+            catch (Exception innerEx)
+            {
+                MessageBoxs.Show(innerEx.ToString(), "Ошибка подключения к базе данных", MessageBoxs.Buttons.OK, MessageBoxs.Icon.Error);
+            }
+        }
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Acess>(entity =>

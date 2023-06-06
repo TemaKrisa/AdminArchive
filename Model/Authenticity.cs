@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AdminArchive.Model;
-
+﻿namespace AdminArchive.Model;
 public partial class Authenticity
 {
     public int Id { get; set; }

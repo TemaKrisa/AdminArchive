@@ -21,10 +21,7 @@ internal class FundPageVM : PageBaseVM
     public Fond SelectedItem { get => _selectedItem; set { _selectedItem = value; } }
 
     #endregion
-    public FundPageVM()
-    {
-        LoadData();
-    }
+    public FundPageVM() { LoadData(); }
     private void LoadData()
     {
         using ArchiveBdContext dc = new(); // создаем контекст базы данных 
@@ -61,6 +58,5 @@ internal class FundPageVM : PageBaseVM
     protected override void ResetSearch() { FondName = null; FondShortName = null; FondStartDate = null; FondEndDate = null; FondCategory = -1; UCVisibility = System.Windows.Visibility.Collapsed; UpdateData(); }
     #endregion
     protected override void GoBack() { }
-
     protected override void RemoveItem() { RemoveCommand(SelectedItem); }
 }

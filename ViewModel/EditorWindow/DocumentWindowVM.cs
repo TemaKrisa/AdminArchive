@@ -286,14 +286,11 @@ class DocumentWindowVM : EditBaseVM
     }
     private void AddFeatureCommand()
     {
-        SelectedFeature = new Feature();
-        EditFeatureCommand();
-        Action = ActionType.Add;
+        SelectedFeature = new Feature(); EditFeatureCommand(); Action = ActionType.Add;
     }
     private void RemoveFeatureCommand()
     {
-        if (SelectedFeature == null) return;
-        DocFeatures.Remove(SelectedFeature);
+        if (SelectedFeature == null) return; DocFeatures.Remove(SelectedFeature);
     }
     #endregion
 }
