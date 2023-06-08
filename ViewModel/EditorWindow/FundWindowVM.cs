@@ -238,7 +238,9 @@ class FundWindowVM : EditBaseVM
     private void RemoveNameCommand()
     {
         if (SelectedName == null) return;
-        FondNamesDelete.Add(SelectedName); FondNames.Remove(SelectedName); CloseLog();
+        else if (SelectedName.Id == 0) { }
+        else { FondNamesDelete.Add(SelectedName); }
+        FondNames.Remove(SelectedName); CloseLog();
     }
     private void CreateRenameCommand()
     {
@@ -298,8 +300,11 @@ class FundWindowVM : EditBaseVM
     }
     private void RemovePeriodCommand()
     {
-        if (SelectedPeriod == null || SelectedPeriod.Id == 0) return;
-        UndocumentPeriodsDelete.Add(SelectedPeriod); UndocumentPeriods.Remove(SelectedPeriod); CloseLog();
+        if (SelectedPeriod == null) return;
+        else if (SelectedPeriod.Id == 0) { }
+        else UndocumentPeriodsDelete.Add(SelectedPeriod);
+        UndocumentPeriods.Remove(SelectedPeriod);
+        CloseLog();
     }
     #endregion
 }

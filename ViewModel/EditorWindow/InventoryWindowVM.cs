@@ -146,7 +146,7 @@ class InventoryWindowVM : EditBaseVM
         if (SelectedItem.Movement == 1 && SelectedItem.MovementType == null) { ShowMessage("При выборе движения выбыл, также должен быть выбран тип движения!"); return false; }
         else if (string.IsNullOrWhiteSpace(SelectedItem.Name)) { ShowMessage("Введите наименование!"); return false; }
         else if (string.IsNullOrWhiteSpace(SelectedItem.Number)) { ShowMessage("Введите номер!"); return false; }
-        else if (SelectedItem.Type == 0) { ShowMessage("Введите тип!"); return false; }
+        else if (SelectedItem.Type == 0) { ShowMessage("Выберите тип!"); return false; }
         else if (SelectedItem.Carrier == 0) { ShowMessage("Выберите носитель!"); return false; }
         else if (SelectedItem.Acess == 0) { ShowMessage("Выберите доступ!"); return false; }
         else if (SelectedItem.Movement == 0) { ShowMessage("Выберите движение!"); return false; }

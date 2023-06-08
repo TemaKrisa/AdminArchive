@@ -14,13 +14,17 @@ class DocumentWindowVM : EditBaseVM
     private Visibility _fileVisibility = Visibility.Collapsed, _featureVisibility = Visibility.Collapsed;
     private ObservableCollection<Document> itemList = new();
     private int currentIndex;
-    private ObservableCollection<Feature> _docFeatures, _features;
+    private DocumentFeatures _editedFeature, _selectedFeature;
+    private Feature _selectedUnitFeature;
+    public Feature SelectedUnitFeature { get => _selectedUnitFeature; set { _selectedUnitFeature = value; OnPropertyChanged(); } }
+    private ObservableCollection<DocumentFeatures> _docFeatures, _docFeaturesDelete;
+    private ObservableCollection<Feature> _features;
     public Visibility FeatureVisibility { get => _featureVisibility; set { _featureVisibility = value; OnPropertyChanged(); } }
-    public ObservableCollection<Feature> DocFeatures { get => _docFeatures; set { _docFeatures = value; OnPropertyChanged(); } }
+    public ObservableCollection<DocumentFeatures> DocFeatures { get => _docFeatures; set { _docFeatures = value; OnPropertyChanged(); } }
+    public ObservableCollection<DocumentFeatures> DocFeaturesDelete { get => _docFeaturesDelete; set { _docFeaturesDelete = value; OnPropertyChanged(); } }
     public ObservableCollection<Feature> Features { get => _features; set { _features = value; OnPropertyChanged(); } }
-    private Feature _editedFeature, _selectedFeature;
-    public Feature SelectedFeature { get => _selectedFeature; set { _selectedFeature = value; OnPropertyChanged(); } }
-    public Feature EditedFeature { get => _editedFeature; set { _editedFeature = value; OnPropertyChanged(); } }
+    public DocumentFeatures SelectedFeature { get => _selectedFeature; set { _selectedFeature = value; OnPropertyChanged(); } }
+    public DocumentFeatures EditedFeature { get => _editedFeature; set { _editedFeature = value; OnPropertyChanged(); } }
     private ObservableCollection<DocumentFile> docFiles, docFilesDelete;
     private StorageUnit storageUnit { get; set; }
     private DocumentFile addedFile, _editFile, _selFile = new();
@@ -104,7 +108,8 @@ class DocumentWindowVM : EditBaseVM
     {
         using ArchiveBdContext dc = new();
         DocFiles = new ObservableCollection<DocumentFile>(dc.DocumentFiles.Where(u => u.Document == SelectedItem.Id));
-        DocFeatures = new ObservableCollection<Feature>(dc.Features.Include(u => u.Documents).Where(u => u.Documents.Any(u => u.Id == SelectedItem.Id)));
+        DocFeatures = new ObservableCollection<DocumentFeatures>(dc.DocumentFeatures.Include(u => u.Feature).Where(u => u.DocumentId == SelectedItem.Id));
+        DocFeaturesDelete = new ObservableCollection<DocumentFeatures>();
     }
     protected override void FillCollections() //Заполнение списковв
     {
@@ -142,7 +147,7 @@ class DocumentWindowVM : EditBaseVM
     }
     protected bool ValidateInput(ArchiveBdContext dc)
     {
-        if (String.IsNullOrWhiteSpace(SelectedItem.Name)) { ShowMessage("Введите наименование!"); return false; }
+        if (String.IsNullOrWhiteSpace(SelectedItem.Name)) { ShowMessage("Введите заголовок!"); return false; }
         else if (SelectedItem.DocType == 0) { ShowMessage("Введите вид документов!"); return false; }
         else if (SelectedItem.Reproduction == 0) { ShowMessage("Выберите способ воспроизведения"); return false; }
         else if (SelectedItem.Vol == 0) { ShowMessage("Введите обьем!"); return false; }
@@ -173,7 +178,8 @@ class DocumentWindowVM : EditBaseVM
                 Log = new() { Activity = 2, Date = DateTime.Now, Document = SelectedItem.Id, User = 1 };
             }
             dc.SaveChanges();
-            UpdateAndAddItems(dc.DocumentFiles, DocFiles, DocFilesDelete, (item) => new DocumentFile { Document = SelectedItem.Id, Description = item.Description, Extension = item.Extension, File = item.File, FileName = item.FileName });
+            UpdateAndAddItems(dc.DocumentFiles, DocFiles, DocFilesDelete, (item) => new DocumentFile { Document = SelectedItem.Id, Description = item.Description, Extension = item.Extension, File = item.File, FileName = item.FileName, Id = item.Id });
+            UpdateAndAddFeatures(dc.DocumentFeatures, DocFeatures, DocFeaturesDelete, (item) => new DocumentFeatures { FeatureId = item.FeatureId, DocumentId = SelectedItem.Id });
             Log.Document = SelectedItem.Id;
             dc.DocumentLogs.Add(Log);
             dc.SaveChanges();
@@ -199,11 +205,11 @@ class DocumentWindowVM : EditBaseVM
     public ICommand AddFeature => new RelayCommand(AddFeatureCommand);
     public ICommand SaveFeature => new RelayCommand(SaveFeatureCommand);
     public ICommand RemoveFeature => new RelayCommand(RemoveFeatureCommand);
-    protected override void CloseLog() { UCVisibility = Visibility.Collapsed; FileVisibility = Visibility.Collapsed; }
+    protected override void CloseLog() { UCVisibility = Visibility.Collapsed; FileVisibility = Visibility.Collapsed; FeatureVisibility = Visibility.Collapsed; }
     private void DeleteFileCommand()
     {
-        if (SelFile != null || SelFile.Id == 0) { DocFiles.Remove(SelFile); }
-        DocFilesDelete.Add(SelFile); DocFiles.Remove(SelFile);
+        if (SelFile.Id == 0) { DocFiles.Remove(SelFile); }
+        else { DocFilesDelete.Add(SelFile); DocFiles.Remove(SelFile); }
     }
     private void OpenEditFileCommand()
     {
@@ -226,7 +232,6 @@ class DocumentWindowVM : EditBaseVM
             EditFile.FileName = Path.GetFileNameWithoutExtension(openFileDialog.FileName); //Установка имени файла
             EditFile.File = File.ReadAllBytes(openFileDialog.FileName); // Записывание файла
             EditFile.Extension = Path.GetExtension(openFileDialog.FileName); //Установка расширения
-            Action = ActionType.Change; //Установка действия на изменение
         }
     }
     private void SaveEditFileCommand()
@@ -256,41 +261,64 @@ class DocumentWindowVM : EditBaseVM
         // Если пользователь нажал кноп "Сохранить" в диалоге сохранения файла, то записываем файл на диск
         if (saveFileDialog.ShowDialog() ?? false) System.IO.File.WriteAllBytes(saveFileDialog.FileName, SelFile.File);
     }
-    #region Features
+    #region особенности
+    public void UpdateAndAddFeatures(DbSet<DocumentFeatures> dbSet, ObservableCollection<DocumentFeatures> items, ObservableCollection<DocumentFeatures> itemsToDelete, Func<DocumentFeatures, DocumentFeatures> createNewItem)
+    {
+        if (items.Count == 0) return; //Если коллекция пуста, то выходим из метода.
+        var itemsToUpdate = items.Where(item => dbSet.Any(u => u.FeatureId == item.FeatureId && u.DocumentId == item.DocumentId)).ToList(); //Выбираем элементы, которые нужно обновить.
+        var itemsToAdd = items.Where(item => !dbSet.Any(u => u.FeatureId == item.FeatureId && u.DocumentId == item.DocumentId)).ToList(); //Выбираем элементы, которые нужно добавить.
+        foreach (var item in itemsToUpdate.Concat(itemsToAdd)) //Обновляем или добавляем элементы.
+        {
+            var trackedEntity = dbSet.Local.SingleOrDefault(e => e.FeatureId == item.FeatureId && e.DocumentId == item.DocumentId); //Находим отслеживаемый объект в контексте.
+            if (trackedEntity != null) { dbSet.Remove(trackedEntity); } //Если объект найден, то удаляем его из контекста.
+        }
+        dbSet.UpdateRange(itemsToUpdate); //Обновляем элементы в контексте.
+        foreach (var item in itemsToAdd) { dbSet.Add(createNewItem(item)); } //Добавляем элементы в контекст.
+        dbSet.RemoveRange(itemsToDelete.Where(item => dbSet.Any(u => u.FeatureId == item.FeatureId && u.DocumentId == item.DocumentId))); //Удаляем элементы из контекста.
+    }
     private void EditFeatureCommand()
     {
         using ArchiveBdContext dc = new();
         Index = DocFeatures.IndexOf(SelectedFeature);
-        EditedFeature = new Feature() { Id = SelectedFeature.Id, Name = SelectedFeature.Name };
+        EditedFeature = new DocumentFeatures() { FeatureId = SelectedFeature.FeatureId, DocumentId = SelectedItem.Id };
         Features = new ObservableCollection<Feature>();
         var allFeatures = new ObservableCollection<Feature>(dc.Features.AsNoTracking());
         if (DocFeatures != null)
         {
             foreach (Feature f in allFeatures)
-                if (!DocFeatures.Any(uf => uf.Id == f.Id)) Features.Add(f);
+                if (!DocFeatures.Any(uf => uf.FeatureId == f.Id)) Features.Add(f);
         }
         else Features = allFeatures;
         FeatureVisibility = Visibility.Visible;
     }
+
     private void SaveFeatureCommand()
     {
-        if (EditedFeature != null)
-            if (EditedFeature.Name == null) ShowMessage("Выберите работу!");
-            else
-            {
-                if (Action == ActionType.Add) { DocFeatures.Add(EditedFeature); }
-                else DocFeatures[Index] = EditedFeature;
-                CloseLog();
-                Action = ActionType.Change;
-            }
+        if (SelectedUnitFeature == null) ShowMessage("Выберите особенность!");
+        else
+        {
+            EditedFeature.FeatureId = SelectedUnitFeature.Id;
+            EditedFeature.Feature = SelectedUnitFeature;
+            if (Action == ActionType.Add) { DocFeatures.Add(EditedFeature); }
+            else DocFeatures[Index] = EditedFeature;
+            CloseLog();
+            Action = ActionType.Change;
+        }
     }
+
     private void AddFeatureCommand()
     {
-        SelectedFeature = new Feature(); EditFeatureCommand(); Action = ActionType.Add;
+        SelectedFeature = new DocumentFeatures();
+        EditFeatureCommand();
+        Action = ActionType.Add;
     }
+
     private void RemoveFeatureCommand()
     {
-        if (SelectedFeature == null) return; DocFeatures.Remove(SelectedFeature);
+        if (SelectedFeature == null) return;
+        DocFeaturesDelete.Add(SelectedFeature);
+        DocFeatures.Remove(SelectedFeature);
     }
+
     #endregion
 }

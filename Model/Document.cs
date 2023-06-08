@@ -45,6 +45,6 @@ public partial class Document
     public virtual SecretChar? SecretCharNavigation { get; set; }
 
     public virtual StorageUnit StorageUnitNavigation { get; set; } = null!;
-
+    public virtual ICollection<DocumentFeatures> DocumentFeatures { get; set; } = new List<DocumentFeatures>();
     public virtual ICollection<Feature> Features { get; set; } = new List<Feature>();
 }

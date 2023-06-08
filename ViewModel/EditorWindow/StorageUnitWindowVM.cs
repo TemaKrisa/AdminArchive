@@ -1,6 +1,5 @@
 ﻿using AdminArchive.Model;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -14,9 +13,11 @@ class StorageUnitWindowVM : EditBaseVM
     private ObservableCollection<UnitLog> _Log;
     private StorageUnit _selectedUnit;
     private Inventory curInv;
-    private ObservableCollection<Feature> _unitFeatures, _features;
+    private ObservableCollection<Feature> _features;
+    private ObservableCollection<UnitFeatures> _unitFeatures, _unitFeaturesDelete;
     private ObservableCollection<UnitRequiredWork> _requiredWorksDelete, _unitRequiredWorks;
-    private Feature _editedFeature, _selectedFeature;
+    private UnitFeatures _editedFeature, _selectedFeature;
+    private Feature _selectedUnitFeature;
     private UnitRequiredWork _editedRequiredWork, _selectedRequiredWork;
     private UnitCompletedWork _editedCompletedWork, _selectedCompletedWork;
     private UnitCondition _editedCondition, _selectedCondition;
@@ -25,15 +26,17 @@ class StorageUnitWindowVM : EditBaseVM
     private ObservableCollection<Model.Condition> _conditions;
     private ObservableCollection<Work> _works;
     public ObservableCollection<Feature> Features { get => _features; set { _features = value; OnPropertyChanged(); } }
-    public Feature SelectedFeature { get => _selectedFeature; set { _selectedFeature = value; OnPropertyChanged(); } }
-    public Feature EditedFeature { get => _editedFeature; set { _editedFeature = value; OnPropertyChanged(); } }
+    public UnitFeatures SelectedFeature { get => _selectedFeature; set { _selectedFeature = value; OnPropertyChanged(); } }
+    public UnitFeatures EditedFeature { get => _editedFeature; set { _editedFeature = value; OnPropertyChanged(); } }
+    public Feature SelectedUnitFeature { get => _selectedUnitFeature; set { _selectedUnitFeature = value; OnPropertyChanged(); } }
     public UnitCondition SelectedCondition { get => _selectedCondition; set { _selectedCondition = value; OnPropertyChanged(); } }
     public UnitCondition EditedCondition { get => _editedCondition; set { _editedCondition = value; OnPropertyChanged(); } }
     public UnitCompletedWork SelectedCompletedWork { get => _selectedCompletedWork; set { _selectedCompletedWork = value; OnPropertyChanged(); } }
     public UnitCompletedWork EditedCompletedWork { get => _editedCompletedWork; set { _editedCompletedWork = value; OnPropertyChanged(); } }
     public UnitRequiredWork SelectedRequiredWork { get => _selectedRequiredWork; set { _selectedRequiredWork = value; OnPropertyChanged(); } }
     public UnitRequiredWork EditedRequiredWork { get => _editedRequiredWork; set { _editedRequiredWork = value; OnPropertyChanged(); } }
-    public ObservableCollection<Feature> UnitFeatures { get => _unitFeatures; set { _unitFeatures = value; OnPropertyChanged(); } }
+    public ObservableCollection<UnitFeatures> UnitFeatures { get => _unitFeatures; set { _unitFeatures = value; OnPropertyChanged(); } }
+    public ObservableCollection<UnitFeatures> UnitFeaturesDelete { get => _unitFeaturesDelete; set { _unitFeaturesDelete = value; OnPropertyChanged(); } }
     public ObservableCollection<UnitRequiredWork> RequiredWorks { get => _unitRequiredWorks; set { _unitRequiredWorks = value; OnPropertyChanged(); } }
     public ObservableCollection<UnitRequiredWork> RequiredWorksDelete { get => _requiredWorksDelete; set { _requiredWorksDelete = value; OnPropertyChanged(); } }
     public ObservableCollection<UnitCompletedWork> CompletedWorks { get => _completedWorks; set { _completedWorks = value; OnPropertyChanged(); } }
@@ -147,7 +150,8 @@ class StorageUnitWindowVM : EditBaseVM
         UnitConditions = new ObservableCollection<UnitCondition>(dc.UnitConditions.Include(u => u.ConditionNavigation).Where(u => u.Unit == SelectedItem.Id));
         RequiredWorks = new ObservableCollection<UnitRequiredWork>(dc.UnitRequiredWorks.Include(u => u.WorkNavigation).Where(u => u.Unit == SelectedItem.Id));
         CompletedWorks = new ObservableCollection<UnitCompletedWork>(dc.UnitCompletedWorks.Include(u => u.WorkNavigation).Where(u => u.Unit == SelectedItem.Id));
-        UnitFeatures = new ObservableCollection<Feature>(dc.Features.Include(u => u.Units).Where(u => u.Units.Any(u => u.Id == SelectedItem.Id)));
+        UnitFeatures = new ObservableCollection<UnitFeatures>(dc.UnitFeatures.Include(u => u.Feature).Where(u => u.UnitId == SelectedItem.Id));
+        UnitFeaturesDelete = new ObservableCollection<UnitFeatures>();
     }
     protected override void FillCollections() //Заполнение списков перечислений
     {
@@ -179,13 +183,13 @@ class StorageUnitWindowVM : EditBaseVM
     private bool ValidateInput(ArchiveBdContext dc)
     {
         if (SelectedItem.Number == 0) { ShowMessage("Введите номер!"); return false; }
-        else if (string.IsNullOrWhiteSpace(SelectedItem.Title)) { ShowMessage("Введите наименование!"); return false; }
+        else if (string.IsNullOrWhiteSpace(SelectedItem.Title)) { ShowMessage("Введите заголовок!"); return false; }
         else if (SelectedItem.Carrier == 0) { ShowMessage("Выберите носитель!"); return false; }
         else if (SelectedItem.Category == 0) { ShowMessage("Выберите категорию!"); return false; }
         else if (SelectedItem.Acess == 0) { ShowMessage("Выберите доступ!"); return false; }
         else if (string.IsNullOrWhiteSpace(SelectedItem.Date)) { ShowMessage("Введите точные даты!"); return false; }
-        else if (SelectedItem.StartDate <= 1000) { ShowMessage("Дата начала не может быть меньше 1000!"); return false; }
-        else if (SelectedItem.EndDate <= 1000) { ShowMessage("Дата конца не может быть меньше 1000!"); return false; }
+        else if (SelectedItem.StartDate <= 1000) { ShowMessage("Начальная дата не может быть меньше 1000!"); return false; }
+        else if (SelectedItem.EndDate <= 1000) { ShowMessage("Конечная дата не может быть меньше 1000!"); return false; }
         else if (SelectedItem.EndDate < SelectedItem.StartDate) { ShowMessage("Начальная дата не может превышать конечную!"); return false; }
         else if (dc.StorageUnits.Any(u => u.Number == SelectedItem.Number && u.Literal == SelectedItem.Literal && u.Inventory == SelectedItem.Inventory && u.Id != SelectedItem.Id))
         { ShowMessage("Единица хранения с таким номером уже существует!"); return false; }
@@ -217,14 +221,7 @@ class StorageUnitWindowVM : EditBaseVM
             UpdateAndAddItems(dc.UnitConditions, UnitConditions, ConditionsDelete, (item) => new UnitCondition { Condition = item.Condition, Note = item.Note, SheetsNumber = item.SheetsNumber, Unit = SelectedItem.Id });
             UpdateAndAddItems(dc.UnitRequiredWorks, RequiredWorks, RequiredWorksDelete, (item) => new UnitRequiredWork { Work = item.Work, Note = item.Note, CheckDate = item.CheckDate, Unit = SelectedItem.Id });
             UpdateAndAddItems(dc.UnitCompletedWorks, CompletedWorks, CompletedWorksDelete, (item) => new UnitCompletedWork { Work = item.Work, Note = item.Note, Date = item.Date, Unit = SelectedItem.Id });
-            var idParam = new SqlParameter("@id", SelectedItem.Id);
-            dc.Database.ExecuteSqlRaw($"Delete From StorageUnitFeatures Where Unit = @id", idParam);
-            dc.SaveChanges();
-            foreach (var feature in UnitFeatures)
-            {
-                var unitFeature = new Feature { Name = feature.Name, Id = feature.Id };
-                SelectedItem.Features.Add(unitFeature);
-            }
+            UpdateAndAddFeatures(dc.UnitFeatures, UnitFeatures, UnitFeaturesDelete, (item) => new UnitFeatures { FeatureId = item.FeatureId, UnitId = SelectedItem.Id });
             Log.Unit = SelectedItem.Id;
             dc.UnitLogs.Add(Log);
             dc.SaveChanges();
@@ -251,17 +248,31 @@ class StorageUnitWindowVM : EditBaseVM
     }
     #endregion
     #region особенности
+    public void UpdateAndAddFeatures(DbSet<UnitFeatures> dbSet, ObservableCollection<UnitFeatures> items, ObservableCollection<UnitFeatures> itemsToDelete, Func<UnitFeatures, UnitFeatures> createNewItem)
+    {
+        if (items.Count == 0) return; //Если коллекция пуста, то выходим из метода.
+        var itemsToUpdate = items.Where(item => dbSet.Any(u => u.FeatureId == item.FeatureId && u.UnitId == item.UnitId)).ToList(); //Выбираем элементы, которые нужно обновить.
+        var itemsToAdd = items.Where(item => !dbSet.Any(u => u.FeatureId == item.FeatureId && u.UnitId == item.UnitId)).ToList(); //Выбираем элементы, которые нужно добавить.
+        foreach (var item in itemsToUpdate.Concat(itemsToAdd)) //Обновляем или добавляем элементы.
+        {
+            var trackedEntity = dbSet.Local.SingleOrDefault(e => e.FeatureId == item.FeatureId && e.UnitId == item.UnitId); //Находим отслеживаемый объект в контексте.
+            if (trackedEntity != null) { dbSet.Remove(trackedEntity); } //Если объект найден, то удаляем его из контекста.
+        }
+        dbSet.UpdateRange(itemsToUpdate); //Обновляем элементы в контексте.
+        foreach (var item in itemsToAdd) { dbSet.Add(createNewItem(item)); } //Добавляем элементы в контекст.
+        dbSet.RemoveRange(itemsToDelete.Where(item => dbSet.Any(u => u.FeatureId == item.FeatureId && u.UnitId == item.UnitId))); //Удаляем элементы из контекста.
+    }
     private void EditFeatureCommand()
     {
         using ArchiveBdContext dc = new();
         Index = UnitFeatures.IndexOf(SelectedFeature);
-        EditedFeature = new Feature() { Id = SelectedFeature.Id, Name = SelectedFeature.Name };
+        EditedFeature = new UnitFeatures() { FeatureId = SelectedFeature.FeatureId, UnitId = SelectedItem.Id };
         Features = new ObservableCollection<Feature>();
         var allFeatures = new ObservableCollection<Feature>(dc.Features.AsNoTracking());
         if (UnitFeatures != null)
         {
             foreach (Feature f in allFeatures)
-                if (!UnitFeatures.Any(uf => uf.Id == f.Id)) Features.Add(f);
+                if (!UnitFeatures.Any(uf => uf.FeatureId == f.Id)) Features.Add(f);
         }
         else Features = allFeatures;
         FeatureVisibility = Visibility.Visible;
@@ -269,20 +280,21 @@ class StorageUnitWindowVM : EditBaseVM
 
     private void SaveFeatureCommand()
     {
-        if (EditedFeature != null)
-            if (EditedFeature.Name == null) ShowMessage("Выберите работу!");
-            else
-            {
-                if (Action == ActionType.Add) { UnitFeatures.Add(EditedFeature); }
-                else UnitFeatures[Index] = EditedFeature;
-                CloseLog();
-                Action = ActionType.Change;
-            }
+        if (SelectedUnitFeature == null) ShowMessage("Выберите особенность!");
+        else
+        {
+            EditedFeature.FeatureId = SelectedUnitFeature.Id;
+            EditedFeature.Feature = SelectedUnitFeature;
+            if (Action == ActionType.Add) { UnitFeatures.Add(EditedFeature); }
+            else UnitFeatures[Index] = EditedFeature;
+            CloseLog();
+            Action = ActionType.Change;
+        }
     }
 
     private void AddFeatureCommand()
     {
-        SelectedFeature = new Feature();
+        SelectedFeature = new UnitFeatures();
         EditFeatureCommand();
         Action = ActionType.Add;
     }
@@ -290,6 +302,7 @@ class StorageUnitWindowVM : EditBaseVM
     private void RemoveFeatureCommand()
     {
         if (SelectedFeature == null) return;
+        UnitFeaturesDelete.Add(SelectedFeature);
         UnitFeatures.Remove(SelectedFeature);
     }
 
@@ -379,8 +392,8 @@ class StorageUnitWindowVM : EditBaseVM
     private void RemoveConditionCommand() //Удаление состояния
     {
         if (SelectedCondition == null) return;
-        UnitConditions.Add(SelectedCondition);
-        ConditionsDelete.Remove(SelectedCondition);
+        ConditionsDelete.Add(SelectedCondition);
+        UnitConditions.Remove(SelectedCondition);
     }
     private void SaveConditionCommand() //Сохранение состояния
     {
@@ -398,5 +411,6 @@ class StorageUnitWindowVM : EditBaseVM
             }
         }
     }
+
     #endregion
 }

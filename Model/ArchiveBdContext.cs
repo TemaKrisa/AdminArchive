@@ -16,7 +16,8 @@ public partial class ArchiveBdContext : DbContext
     }
 
     public virtual DbSet<Acess> Acesses { get; set; }
-
+    public DbSet<UnitFeatures> UnitFeatures { get; set; }
+    public DbSet<DocumentFeatures> DocumentFeatures { get; set; }
     public virtual DbSet<Activity> Activities { get; set; }
 
     public virtual DbSet<Authenticity> Authenticities { get; set; }
@@ -127,6 +128,34 @@ public partial class ArchiveBdContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(50);
         });
 
+
+        modelBuilder.Entity<UnitFeatures>()
+            .ToTable("StorageUnitFeatures", schema: "dbo")
+            .HasKey(uf => new { uf.UnitId, uf.FeatureId });
+
+        modelBuilder.Entity<UnitFeatures>()
+            .HasOne(uf => uf.StorageUnit)
+            .WithMany(su => su.UnitFeatures)
+            .HasForeignKey(uf => uf.UnitId);
+
+        modelBuilder.Entity<UnitFeatures>()
+            .HasOne(uf => uf.Feature)
+            .WithMany(f => f.UnitFeatures)
+            .HasForeignKey(uf => uf.FeatureId);
+
+        modelBuilder.Entity<DocumentFeatures>()
+            .ToTable("DocumentFeatures", schema: "dbo")
+            .HasKey(uf => new { uf.DocumentId, uf.FeatureId });
+
+        modelBuilder.Entity<DocumentFeatures>()
+            .HasOne(uf => uf.Documents)
+            .WithMany(su => su.DocumentFeatures)
+            .HasForeignKey(uf => uf.DocumentId);
+
+        modelBuilder.Entity<DocumentFeatures>()
+            .HasOne(uf => uf.Feature)
+            .WithMany(f => f.DocumentFeatures)
+            .HasForeignKey(uf => uf.FeatureId);
         modelBuilder.Entity<Activity>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_UnitActivity");

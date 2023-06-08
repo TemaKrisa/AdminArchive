@@ -77,12 +77,12 @@
                                 <local:RussianLettersOnlyBehavior/>
                             </i:Interaction.Behaviors>
                         </ui:TextBox>
-                        <TextBlock Grid.Column="3" HorizontalAlignment="Right" Margin="5">Срок хранения</TextBlock>
+                        <TextBlock Grid.Column="3" HorizontalAlignment="Right" Margin="5">Срок хранения*</TextBlock>
                         <ComboBox ItemsSource="{Binding StorageTime}" SelectedValue="{Binding SelectedItem.StorageTime}"
                                   Grid.Column="4"/>
                     </Grid>
                     <Grid Grid.Row="1">
-                        <TextBlock HorizontalAlignment="Left" Margin="105,0">Наименование</TextBlock>
+                        <TextBlock HorizontalAlignment="Left" Margin="105,0">Наименование*</TextBlock>
                         <TextBox Margin="210,0,30,0" Text="{Binding SelectedItem.Name}"/>
                     </Grid>
                     <Grid Grid.Row="2">
@@ -94,13 +94,13 @@
                             <ColumnDefinition Width="50"/>
                             <ColumnDefinition Width="180"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Margin="5">Носитель</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="5">Носитель*</TextBlock>
                         <ComboBox ItemsSource="{Binding Carriers}" SelectedValue="{Binding SelectedItem.Carrier}"
                                   Grid.Column="1" Margin="5" />
                         <TextBlock Grid.Column="2" HorizontalAlignment="Right">Секретность:</TextBlock>
                         <ComboBox ItemsSource="{Binding SecretChar}" SelectedValue="{Binding SelectedItem.SecretChar}"
                                   Grid.Column="3" Margin="5" />
-                        <TextBlock Grid.Column="4">Доступ:</TextBlock>
+                        <TextBlock Grid.Column="4">Доступ*</TextBlock>
                         <ComboBox Grid.Column="5" ItemsSource="{Binding Acess}" SelectedValue="{Binding SelectedItem.Acess}"
                                   Margin="5,0,30,0"/>
                     </Grid>
@@ -124,7 +124,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" Margin="5">Тип описи</TextBlock>
                         <ComboBox Grid.Column="1" ItemsSource="{Binding Types}" SelectedValue="{Binding SelectedItem.Type}"/>
-                        <TextBlock HorizontalAlignment="Right" Margin="3" Grid.Column="2">Тип документов</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Grid.Column="2">Тип документов*</TextBlock>
                         <ComboBox ItemsSource="{Binding DocType}" SelectedValue="{Binding SelectedItem.DocType}"
                                   Grid.Column="3" Margin="0,0,30,0"/>
                     </Grid>
@@ -135,10 +135,10 @@
                             <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="180"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Margin="5">Источник поступления</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="5">Источник поступления*</TextBlock>
                         <ComboBox ItemsSource="{Binding IncomeSource}" SelectedValue="{Binding SelectedItem.IncomeSource}"
                                   Grid.Column="1" Margin="0,0,5,0" />
-                        <TextBlock Grid.Column="2" Margin="5">Категория</TextBlock>
+                        <TextBlock Grid.Column="2" Margin="5">Категория*</TextBlock>
                         <ComboBox Grid.Column="3" ItemsSource="{Binding Categories}" SelectedValue="{Binding SelectedItem.Category}"
                                   Margin="0,0,30,0"/>
                     </Grid>
@@ -150,7 +150,7 @@
                             <ColumnDefinition Width="170"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Margin="5">Движение</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="5">Движение*</TextBlock>
                         <ComboBox ItemsSource="{Binding Movements}" SelectedValue="{Binding SelectedItem.Movement}"
                                   Grid.Column="1"/>
                         <ComboBox SelectedValue="{Binding SelectedItem.MovementType}" ItemsSource="{Binding MovementTypes}"
@@ -166,12 +166,12 @@
                                 </Style>
                             </ComboBox.Style>
                         </ComboBox>
-                        <TextBlock Grid.Column="3" HorizontalAlignment="Center" Margin="5">Основание поступления</TextBlock>
+                        <TextBlock Grid.Column="3" HorizontalAlignment="Center" Margin="3">Основание поступления*</TextBlock>
                         <ComboBox ItemsSource="{Binding ReceiptReasons}" SelectedValue="{Binding SelectedItem.ReceiptReason}"
                             Grid.Column="4" Margin="0,0,30,0" />
                     </Grid>
                     <Grid Grid.Row="7" Margin="-27,0,27,0">
-                        <TextBlock Margin="55,0,0,0">Справка по движению</TextBlock>
+                        <TextBlock Margin="85,0,0,0">Справка по движению</TextBlock>
                         <TextBox Margin="235,5,0,5" Text="{Binding SelectedItem.MovementNote}" MaxLength="150" TextWrapping="Wrap" VerticalAlignment="Stretch"/>
                     </Grid>
                     <Grid Grid.Row="8">

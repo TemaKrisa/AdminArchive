@@ -18,10 +18,7 @@ class AccountVM : BaseViewModel
     public ObservableCollection<Role> Roles { get => roles; set { roles = value; OnPropertyChanged(); } } // Коллекция ролей
     #endregion
     protected void AddItem() // Метод открытия UserControl для добавления нового пользователя
-    {
-        UCVisibility = Visibility.Visible;
-        CurUser = new User() { Role = 1 };
-    }
+    { UCVisibility = Visibility.Visible; CurUser = new User() { Role = 1 }; }
     private void UpdateData() // Метод обновления данных
     {
         using ArchiveBdContext dc = new(); // Создание контекста базы данных
@@ -54,51 +51,31 @@ class AccountVM : BaseViewModel
     public RelayCommand Close { get { return _close ??= new RelayCommand(CloseUC); } } // Команда закрытия UserControl
     protected void SaveItem() // Метод сохранения изменений пользователя
     {
-        string errorMessage = null;
-        if (string.IsNullOrWhiteSpace(CurUser.Surname)) errorMessage = "Введите фамилию!";
-        else if (string.IsNullOrWhiteSpace(CurUser.Name)) errorMessage = "Введите имя!";
-        else if (string.IsNullOrWhiteSpace(CurUser.Password)) errorMessage = "Введите пароль!";
-        if (errorMessage != null)
-        {
-            UpdateData();
-            ShowMessage(errorMessage.ToString());
-            return;
-        }
         try
         {
+            var role = CurUser.Role;
+            string errorMessage = null;
             using ArchiveBdContext dc = new(); // Создание контекста базы данных
-            if (!dc.Users.Contains(CurUser))
+            if (string.IsNullOrWhiteSpace(CurUser.Surname)) errorMessage = "Введите фамилию!";
+            else if (string.IsNullOrWhiteSpace(CurUser.Name)) errorMessage = "Введите имя!";
+            else if (string.IsNullOrWhiteSpace(CurUser.Password)) errorMessage = "Введите пароль!";
+            else if (string.IsNullOrWhiteSpace(CurUser.Login)) errorMessage = "Введите логин!";
+            else if (dc.Users.Any(u => u.Login == CurUser.Login && u.Id != CurUser.Id)) errorMessage = "Аккаунт с таким логином уже существует!";
+            if (errorMessage != null)
             {
-                if (!dc.Users.Any(u => u.Login == curUser.Login))
-                {
-                    dc.Users.Add(CurUser);
-                    ShowMessage("Добавление прошло успешно", "Добавление аккаунта");
-                }
-                else
-                {
-                    UpdateData();
-                    ShowMessage("Аккаунт с таким логином уже существует!", "Добавление аккаунта");
-                    return;
-                }
+                UpdateData();
+                ShowMessage(errorMessage.ToString());
+                return;
             }
-            else
-            {
-                if (CurUser.Login != CurLogin && dc.Users.Any(u => u.Login == curUser.Login))
-                {
-                    UpdateData();
-                    ShowMessage("Аккаунт с таким логином уже существует!", "Изменение аккаунта");
-                    return;
-                }
-                dc.Users.Update(CurUser);
-                ShowMessage("Изменение прошло успешно", "Изменение аккаунта");
-            }
+            if (!dc.Users.Contains(CurUser)) dc.Users.Add(CurUser);
+            else dc.Users.Update(CurUser);
+            CurUser.Role = role;
             dc.SaveChanges();
             UpdateData();
             UCVisibility = Visibility.Collapsed;
         }
         catch (Exception ex) { ShowMessage($"Ошибка: {ex.Message}"); }
     }
-    protected void CloseUC() // Метод закрытия UserControl
-    { UpdateData(); UCVisibility = Visibility.Collapsed; }
+    protected void CloseUC() { UpdateData(); UCVisibility = Visibility.Collapsed; }
     #endregion
 }

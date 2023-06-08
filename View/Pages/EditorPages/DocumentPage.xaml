@@ -25,6 +25,12 @@
             </StackPanel>
         </Grid>
         <ui:DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Documents}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0">
+            <ui:DataGrid.ContextMenu>
+                <ContextMenu>
+                    <ui:MenuItem SymbolIcon="Edit24" Header="Изменить" Command="{Binding Edit}"/>
+                    <ui:MenuItem SymbolIcon="Delete24" Header="Удалить" Command="{Binding Remove}"/>
+                </ContextMenu>
+            </ui:DataGrid.ContextMenu>
             <ui:DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding Number}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Заголовок" Width="*" Binding="{Binding Name}"></DataGridTextColumn>

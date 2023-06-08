@@ -67,7 +67,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"><Run Text="Номер*"/></TextBlock>
                         <ui:NumberBox IntegersOnly="True"   Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding SelectedItem.Number}" Margin="10,0,110,0"/>
-                        <TextBlock Grid.Column="2"><Run Text="Дата документа"/></TextBlock>
+                        <TextBlock Grid.Column="2"><Run Text="Дата документа*"/></TextBlock>
                         <DatePicker Grid.Column="3" SelectedDate="{Binding SelectedItem.Date}" />
                     </Grid>
                     <Grid Grid.Row="1" >
@@ -76,13 +76,13 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock VerticalAlignment="Center"><Run Text="Заголовок"/></TextBlock>
+                        <TextBlock VerticalAlignment="Center"><Run Text="Заголовок*"/></TextBlock>
                         <TextBox Grid.Column="1" Text="{Binding SelectedItem.Name}" TextWrapping="Wrap" AcceptsReturn="True" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" MaxLength="250"/>
                         <Border Grid.Column="2" HorizontalAlignment="Right" Width="300" CornerRadius="6" Margin="10,10,0,10" BorderThickness="1" BorderBrush="Gray">
                             <Grid>
-                                <TextBlock Margin="10,13,192,0" FontSize="14" VerticalAlignment="Top"><Run Text="Кол-во листов"/></TextBlock>
+                                <TextBlock Margin="10,13,192,0" FontSize="14" VerticalAlignment="Top"><Run Text="Кол-во листов*"/></TextBlock>
                                 <ui:NumberBox IntegersOnly="True" Text="{Binding SelectedItem.Vol}" Margin="129,5,10,0" VerticalAlignment="Top"/>
-                                <TextBlock Margin="10,70,185,0" FontSize="14" VerticalAlignment="Top"><Run Text="Номера листов"/></TextBlock>
+                                <TextBlock Margin="10,70,185,0" FontSize="14" VerticalAlignment="Top"><Run Text="Номера листов*"/></TextBlock>
                                 <TextBlock Margin="129,58,155,51" FontSize="14" RenderTransformOrigin="-0.214,0.488"><Run Text="C"/></TextBlock>
                                 <ui:NumberBox IntegersOnly="True"  Margin="152,50,10,0" VerticalAlignment="Top" Text="{Binding SelectedItem.VolStart}"/>
                                 <ui:NumberBox IntegersOnly="True" Margin="152,90,10,0" VerticalAlignment="Top" Text="{Binding SelectedItem.VolEnd}"/>
@@ -97,10 +97,10 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Хар-ка секретности" VerticalAlignment="Center"/>
+                        <TextBlock Text="Секретность" VerticalAlignment="Center"/>
                         <ComboBox SelectedValue="{Binding SelectedItem.SecretChar}" ItemsSource="{Binding SecretChar}"
                                   Grid.Column="1" />
-                        <TextBlock Text="Вид документа" Grid.Column="2" VerticalAlignment="Center"/>
+                        <TextBlock Text="Вид документа*" Grid.Column="2" VerticalAlignment="Center"/>
                         <ComboBox SelectedValue="{Binding SelectedItem.DocType}" ItemsSource="{Binding DocType}"
                                   Grid.Column="3" />
                     </Grid>
@@ -113,7 +113,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock><Run Text="Подлинность"/></TextBlock>
                         <ComboBox Grid.Column="1" SelectedValue="{Binding SelectedItem.Authenticity}" ItemsSource="{Binding Authenticities  }"/>
-                        <TextBlock Grid.Column="2"><Run Text="Способ воспроизведения"/></TextBlock>
+                        <TextBlock Grid.Column="2"><Run Text="Способ воспроизведения*"/></TextBlock>
                         <ComboBox SelectedValue="{Binding SelectedItem.Reproduction}" ItemsSource="{Binding Reproductions}"
                                   Grid.Column="3" />
                     </Grid>
@@ -151,7 +151,7 @@
                     <DataGrid ItemsSource="{Binding DocFeatures}" IsReadOnly="True" AutoGenerateColumns="False"  SelectedItem="{Binding SelectedFeature}"
                     Margin="30,49,30,30">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Name}" Header="Особенность" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Feature.Name}" Header="Особенность" Width="*"/>
                             <DataGridTemplateColumn Width="50">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -173,8 +173,8 @@
             <TabItem Header="Файлы">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="150"/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition Height="250"/>
                     </Grid.RowDefinitions>
                     <Button Command="{Binding AddEditFile}" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Content="Добавить"/>
                     <ui:DataGrid Grid.Row="1" HorizontalAlignment="Stretch" Margin="10,47,10,10" ItemsSource="{Binding DocFiles}" SelectedItem="{Binding SelFile}" AutoGenerateColumns="False" CanUserDeleteRows="False" IsReadOnly="True">
@@ -204,7 +204,7 @@
                             </DataGridTemplateColumn>
                         </ui:DataGrid.Columns>
                     </ui:DataGrid>
-                    <Image Margin="5" Source="{Binding SelFile.File}" />
+                    <Image Margin="5" Source="{Binding SelFile.File}"/>
                 </Grid>
             </TabItem>
         </TabControl>

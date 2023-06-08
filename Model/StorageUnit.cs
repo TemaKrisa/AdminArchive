@@ -12,6 +12,8 @@ public partial class StorageUnit
 
     public int DocType { get; set; }
 
+    public virtual ICollection<UnitFeatures> UnitFeatures { get; set; } = new List<UnitFeatures>();
+
     public int Carrier { get; set; }
 
     public int Acess { get; set; }

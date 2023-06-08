@@ -26,6 +26,13 @@
             </StackPanel>   
         </Grid>
         <ui:DataGrid Grid.Row="1" Margin="10" IsReadOnly="True" ItemsSource="{Binding StorageUnits}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" RowHeaderWidth="0">
+            <ui:DataGrid.ContextMenu>
+                <ContextMenu>
+                    <ui:MenuItem SymbolIcon="Edit24" Header="Изменить" Command="{Binding Edit}"/>
+                    <ui:MenuItem SymbolIcon="Open24" Header="Открыть" Command="{Binding Open}"/>
+                    <ui:MenuItem SymbolIcon="Delete24" Header="Удалить" Command="{Binding Remove}"/>
+                </ContextMenu>
+            </ui:DataGrid.ContextMenu>
             <ui:DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding FullNumber}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Том" Binding="{Binding Vol}"></DataGridTextColumn>

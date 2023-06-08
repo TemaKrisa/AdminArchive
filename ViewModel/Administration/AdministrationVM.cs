@@ -17,7 +17,7 @@ public partial class AdministrationVM : BaseViewModel
     public ObservableCollection<object> Items { get => _items; set { _items = value; OnPropertyChanged(); } } //Свойство для доступа к коллекции объектов.
     public string Type { get => type; set { type = value; OnPropertyChanged(); } } //Свойство для доступа к типу административного раздела.
     public int NavType { get => navType; set { navType = value; OnPropertyChanged(); } } //Свойство для доступа к типу навигации по административному разделу.
-    ICommand Add => new RelayCommand(AddCommand); //Команда для вызова добавления объекта.
+    public ICommand Add => new RelayCommand(AddCommand); //Команда для вызова добавления объекта.
     public ICommand Edit => new RelayCommand(EditCommand); //Команда для вызова изменения объекта.
     public ICommand Remove => new RelayCommand(RemoveCommand); //Команда для удаления выбранного объекта.
     public ICommand Open => new RelayCommand(OpenCommand); //Команда для открытия выбранного объекта.

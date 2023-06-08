@@ -79,12 +79,12 @@
                         <TextBlock Grid.Column="4">Том</TextBlock>
                         <ui:NumberBox Text="{Binding SelectedItem.Vol}" IntegersOnly="True"  
                             Grid.Column="5"/>
-                        <TextBlock Grid.Column="6">Листов:</TextBlock>
+                        <TextBlock Grid.Column="6">Листов</TextBlock>
                         <ui:NumberBox Text="{Binding SelectedItem.Volume}"
                             Grid.Column="7" IntegersOnly="True"/>
                     </Grid>
                     <Grid Grid.Row="1">
-                        <TextBlock HorizontalAlignment="Left" Margin="145,0,0,0">Заголовок</TextBlock>
+                        <TextBlock HorizontalAlignment="Left" Margin="135,0,0,0">Заголовок*</TextBlock>
                         <TextBox Text="{Binding SelectedItem.Title}"  
                                  Margin="210,0,30,0" />
                     </Grid>
@@ -97,10 +97,10 @@
                             <ColumnDefinition Width="170"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Left" Margin="131,0,0,0">Секретность</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="0,0,5,0">Секретность</TextBlock>
                         <ComboBox SelectedValue="{Binding SelectedItem.SecretChar}" ItemsSource="{Binding SecretChars}"
                                   Grid.Column="1" />
-                        <TextBlock HorizontalAlignment="Center" Grid.Column="2">Доступ</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" Grid.Column="2">Доступ*</TextBlock>
                         <ComboBox SelectedValue="{Binding SelectedItem.Acess}" ItemsSource="{Binding Acesses}"
                             Grid.Column="3" ></ComboBox>
                     </Grid>
@@ -110,7 +110,7 @@
                             <ColumnDefinition />
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Margin="10">Носитель</TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Margin="10">Носитель*</TextBlock>
                         <ComboBox ItemsSource="{Binding Carriers}" SelectedValue="{Binding SelectedItem.Carrier}"
                                   Grid.Column="1" />
                     </Grid>
@@ -124,7 +124,7 @@
                         <TextBlock HorizontalAlignment="Right" Margin="10">Категория</TextBlock>
                         <ComboBox ItemsSource="{Binding Categories}" SelectedValue="{Binding SelectedItem.Category}"
                             Grid.Column="1"/>
-                        <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="10">Точные даты</TextBlock>
+                        <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="10">Точные даты*</TextBlock>
                         <TextBox Grid.Column="3" Margin="0,0,30,0" Text="{Binding SelectedItem.Date}"/>
                     </Grid>
                     <Grid Grid.Row="5">
@@ -136,7 +136,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock  Margin="10" HorizontalAlignment="Right">Индекс</TextBlock>
                         <TextBox Grid.Column="1" Text="{Binding SelectedItem.Index}"/>
-                        <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="5">Начальная дата</TextBlock>
+                        <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="5">Начальная дата*</TextBlock>
                         <ui:NumberBox Grid.Column="3" MaxLength="4" Margin="0,0,30,0" IntegersOnly="True" Text="{Binding SelectedItem.StartDate}"/>
                     </Grid>
                     <Grid Grid.Row="6">
@@ -146,10 +146,10 @@
                             <ColumnDefinition Width="210"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Left" Margin="29,0,0,0">Причина ограничения доступа</TextBlock>
+                        <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0">Причина ограничения доступа</TextBlock>
                         <ComboBox SelectedValue="{Binding SelectedItem.CharRestrict}" ItemsSource="{Binding CharRestricts}"
                                   Grid.Column="1"/>
-                        <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="5">Конечная дата</TextBlock>
+                        <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="5">Конечная дата*</TextBlock>
                         <ui:NumberBox Grid.Column="3"  MaxLength="4" Margin="0,0,30,0" IntegersOnly="True" Text="{Binding SelectedItem.EndDate}"/>
                     </Grid>
                     <Grid Grid.Row="7">
@@ -294,7 +294,7 @@
                     <DataGrid ItemsSource="{Binding UnitFeatures}" IsReadOnly="True" AutoGenerateColumns="False"  SelectedItem="{Binding SelectedFeature}"
                     Margin="30,49,30,30">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Name}" Header="Особенность" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Feature.Name}" Header="Особенность" Width="*"/>
                             <DataGridTemplateColumn Width="50">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
